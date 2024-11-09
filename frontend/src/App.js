@@ -8,6 +8,7 @@ import Login from "./Pages/Login/Login";
 import ProfilePage from './Dashboard/ProfilePage';
 import ChangePasswordPage from './Dashboard/ChangePasswordPage';
 import TermsAndConditions from './Dashboard/TermsAndConditions';
+import ParcelOrder from './Dashboard/ParcelOrder';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path='/Profilepage' element={<ProfilePage/>}/>
             <Route path='/ChangePassword' element={<ChangePasswordPage/>}/>
             <Route path='/TermsAndConditions' element={<TermsAndConditions/>}/>
+            <Route path="/parcelorder" element={< ParcelOrder/>} />
       </Routes>
       </Router>
   );
