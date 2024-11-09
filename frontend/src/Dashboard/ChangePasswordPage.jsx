@@ -1,5 +1,5 @@
 import React from "react";
-import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner  } from "react-icons/md";
+import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner , MdExpandMore  } from "react-icons/md";
 import { FaBoxOpen } from "react-icons/fa6";
 import { IoMdLogOut } from "react-icons/io";
 import { FaUser , FaSearch  ,FaClipboardList } from 'react-icons/fa';
@@ -12,8 +12,14 @@ import { FiEdit } from 'react-icons/fi';
 const ChangePasswordPage = () =>{
 
       const [activeLink, setActiveLink] = useState('');
+          const [manageOrderOpen, setManageOrderOpen] = useState(false);
+ 
 
         const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+            const toggleManageOrder = () => {
+        setManageOrderOpen(!manageOrderOpen);
+    };
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
        const handleLinkClick = (linkName) => {
@@ -23,7 +29,7 @@ const ChangePasswordPage = () =>{
     return(
         <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
-      <aside className="w-[200px] h-lvh bg-gray-800 p-4 flex flex-col items-center">
+      <aside className="w-[200px] h-[900px] bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
           {/* Centered Image */}
           <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="w-[216px] h-[100px] rounded-full mb-2" />
@@ -34,10 +40,27 @@ const ChangePasswordPage = () =>{
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </button>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-            <FaBoxOpen className="mr-2 w-[20px] h-[20px] text-yellow-500" />
-            Manage Order
-          </button>
+            <div>
+                        {/* Manage Order Dropdown */}
+                        <button
+                            className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                            onClick={toggleManageOrder}
+                        >
+                            <FaBoxOpen className="mr-2" style={{ color: "#CA923D" }} />
+                            Manage Order
+                            <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        {manageOrderOpen && (
+                            <div className="ml-8 mt-2 space-y-2">
+                                <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                    Parcel Order
+                                </button>
+                                <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                    Onsite Order
+                                </button>
+                            </div>
+                        )}
+                    </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
