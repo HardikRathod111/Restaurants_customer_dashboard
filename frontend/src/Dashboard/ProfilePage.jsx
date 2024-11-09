@@ -128,7 +128,11 @@ function ProfilePage() {
         <a
           href="/"
           onClick={() => handleLinkClick('profile')}
+<<<<<<< HEAD
           className={`flex items-center w-full p-2 rounded-md bg-yellow-600 text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium mb-4`}
+=======
+          className={`flex items-center w-full p-2 rounded-md bg-yellow-500 text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium mb-4`}
+>>>>>>> 0e11f154a57eea780aa3152d0d73100101b82927
         >
           <FaUser className="mr-2" />
           Profile
@@ -170,7 +174,11 @@ function ProfilePage() {
                   className="w-[100px] h-[100px] rounded-full "
                 />
               </div>
+<<<<<<< HEAD
              <button className="mr-10 px-4   py-2 bg-yellow-600 text-gray-900 mb-11 rounded-md flex items-center">
+=======
+             <button className="ml-auto px-4 py-2 bg-yellow-500 text-gray-900 mb-11 rounded-md flex items-center">
+>>>>>>> 0e11f154a57eea780aa3152d0d73100101b82927
                 <FiEdit className="mr-2" />
                 Edit Profile
               </button>

@@ -140,7 +140,11 @@ const ChangePasswordPage = () =>{
         <a
           href="/ChangePassword"
           onClick={() => handleLinkClick('change-password')}
+<<<<<<< HEAD
           className={`flex items-center w-full p-2 rounded-md bg-yellow-600 text-white ${activeLink === 'change-password' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} mb-4`}
+=======
+          className={`flex items-center w-full p-2 rounded-md bg-yellow-500 text-white ${activeLink === 'change-password' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} mb-4`}
+>>>>>>> 0e11f154a57eea780aa3152d0d73100101b82927
         >
           <FaLock className="mr-2" />
           Change Password
@@ -200,7 +204,11 @@ const ChangePasswordPage = () =>{
     />
   </div>
     <div>
+<<<<<<< HEAD
        <button className="flex items-center justify-center p-2 rounded-md mb-7 text-white bg-yellow-600 w-[500px]">
+=======
+       <button className="flex items-center justify-center p-2 rounded-md mb-7 text-white bg-yellow-500 w-[500px]">
+>>>>>>> 0e11f154a57eea780aa3152d0d73100101b82927
             Change Password
           </button>
     </div>
