@@ -1,25 +1,27 @@
-// App.js
-import React from 'react';
-import { FaUser, FaLock, FaFileAlt,  FaSearch  ,FaClipboardList } from 'react-icons/fa';
-import { FiEdit } from 'react-icons/fi';
+import React from "react";
 import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner  } from "react-icons/md";
 import { FaBoxOpen } from "react-icons/fa6";
 import { IoMdLogOut } from "react-icons/io";
+import { FaUser , FaSearch  ,FaClipboardList } from 'react-icons/fa';
 import { useState } from 'react';
+import {  FaLock, FaFileAlt  } from 'react-icons/fa';
+import { FiEdit } from 'react-icons/fi';
 
 
-function ProfilePage() {
+
+const ChangePasswordPage = () =>{
+
+      const [activeLink, setActiveLink] = useState('');
+
+        const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [activeLink, setActiveLink] = useState('');
- 
-     const handleLinkClick = (linkName) => {
+       const handleLinkClick = (linkName) => {
     setActiveLink(linkName);
   };
 
-    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
-
-  return (
-    <div className="flex min-h-screen bg-gray-900 text-white font-sans">
+    return(
+        <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
       <aside className="w-[200px] h-[600px] bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
@@ -119,16 +121,16 @@ function ProfilePage() {
           </div>
         </div>
       </header>
-         <section className="flex gap-3">
+        <section className="flex gap-3">
       {/* Menu Section */}
       <div className="w-[250px] h-[250px] bg-gray-800 p-4 rounded-md">
         <h3 className="text-lg font-semibold mb-4">Menu</h3>
         
         {/* Profile Link */}
         <a
-          href="/"
+          href="/Profilepage"
           onClick={() => handleLinkClick('profile')}
-          className={`flex items-center w-full p-2 rounded-md bg-yellow-500 text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium mb-4`}
+          className={`flex items-center w-full p-2 rounded-md  text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium mb-4`}
         >
           <FaUser className="mr-2" />
           Profile
@@ -138,7 +140,7 @@ function ProfilePage() {
         <a
           href="/ChangePassword"
           onClick={() => handleLinkClick('change-password')}
-          className={`flex items-center w-full p-2 rounded-md text-white ${activeLink === 'change-password' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} mb-4`}
+          className={`flex items-center w-full p-2 rounded-md bg-yellow-500 text-white ${activeLink === 'change-password' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} mb-4`}
         >
           <FaLock className="mr-2" />
           Change Password
@@ -148,140 +150,66 @@ function ProfilePage() {
         <a
           href="/TermsAndConditions"
           onClick={() => handleLinkClick('terms-and-conditions')}
-          className={`flex items-center w-full px-1 py-2 rounded-md text-white ${activeLink === 'terms-and-conditions' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'}`}
+          className={`flex items-center w-full px-1 py-2 rounded-md text-whie ${activeLink === 'terms-and-conditions' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'}`}
         >
           <FaFileAlt className="mr-2" />
           Terms & Condition
         </a>
       </div>
-
-          {/* Profile Information Section */}
-          <div className="relative bg-gray-800 rounded-lg overflow-hidden p-3 w-full">
+       {/* Profile Information Section */}
+          <div className="relative bg-gray-800 rounded-lg overflow-hidden p-3 w-[700px]">
             {/* Background Image */}
             <div
-              className="absolute w-[800px] h-[90px] inset-0 bg-cover bg-center "
+              className="absolute w-[700px] h-[90px] inset-0 bg-cover bg-center "
               style={{ backgroundImage: "url('./assets/images/6b8d7b581303d40fcc1f30dfc6de9d00.jpg')" }}
             ></div>
             <div className="relative flex items-center justify-between">
               <div className="flex items-center ">
-                <img
-                  src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg"
-                  alt="Profile"
-                  className="w-[100px] h-[100px] rounded-full "
-                />
+                <h2 className="mt-6 font-semibold text-xl">Change Password</h2>
               </div>
-             <button className="ml-auto px-4 py-2 bg-yellow-500 text-gray-900 mb-11 rounded-md flex items-center">
-                <FiEdit className="mr-2" />
-                Edit Profile
-              </button>
             </div>
 
             {/* Profile Form Section */}
-           <div className="mt-8 grid grid-cols-3 gap-6">
+           <div className="mt-8  space-y-4">
   {/* First Row */}
   <div>
-    <label className="block text-sm font-medium">First Name</label>
+    <label className="block text-sm font-medium">Current Password</label>
     <input
       type="text"
-      value="Jenny"
-      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      value="Enter Password"
+      className="mt-1 block w-[500px] bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
   <div>
-    <label className="block text-sm font-medium">Last Name</label>
+    <label className="block text-sm font-medium">New Password</label>
     <input
       type="text"
-      value="Wilson"
-      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      value="Enter Password"
+      className="mt-1 block w-[500px]  bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
   <div>
-    <label className="block text-sm font-medium">Email Address</label>
-    <input
-      type="email"
-      value="jenny.wilson@example.com"
-      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
-      readOnly
-    />
-  </div>
-
-  {/* Second Row */}
-  <div>
-    <label className="block text-sm font-medium">Phone Number</label>
+    <label className="block text-sm font-medium">Conform Password</label>
     <input
       type="text"
-      value="+91 95354 98972"
-      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      value="Enter Password"
+      className="mt-1 block w-[500px] bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
-  <div>
-    <label className="block text-sm font-medium">Restaurant Name</label>
-    <input
-      type="text"
-      value="Statesman Restaurant"
-      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
-      readOnly
-    />
-  </div>
-  <div>
-    <label className="block text-sm font-medium">Gender</label>
-    <input
-      type="text"
-      value="Male"
-      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
-      readOnly
-    />
-  </div>
-
-  {/* Third Row */}
-  <div>
-    <label className="block text-sm font-medium">City</label>
-    <input
-      type="text"
-      value="Surat"
-      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
-      readOnly
-    />
-  </div>
-  <div>
-    <label className="block text-sm font-medium">State</label>
-    <input
-      type="text"
-      value="Gujarat"
-      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
-      readOnly
-    />
-  </div>
-  <div>
-    <label className="block text-sm font-medium">Country</label>
-    <input
-      type="text"
-      value="India"
-      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
-      readOnly
-    />
-  </div>
-
-  {/* Fourth Row */}
-  <div className="col-span-3">
-    <label className="block text-sm font-medium">Address</label>
-    <input
-      type="text"
-      value="A-151 Swastik Plaza, Punagam, Varchha, Jamnagar, Gujarat."
-      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
-      readOnly
-    />
-  </div>
-</div>
-
-          </div>
-        </section>
-      </main>
+    <div>
+       <button className="flex items-center justify-center p-2 rounded-md mb-7 text-white bg-yellow-500 w-[500px]">
+            Change Password
+          </button>
     </div>
-  );
-}
+</div>
+</div>
+      </section>
+      </main>
+      </div>
+    )
+};
 
-export default ProfilePage;
+export default ChangePasswordPage;
