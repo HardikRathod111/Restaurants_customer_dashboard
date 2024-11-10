@@ -37,13 +37,13 @@ const Otp = () => {
           </div>
 
           {/* Verify Button */}
-          <button
-            type="button"
-            className="w-full py-2 mt-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md transition duration-200"
-            style={{ backgroundColor: '#CA923D' }}
-          >
-            Verify
-          </button>
+          <a href='/resetpassword'
+              className=" w-full py-2 px-40  bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md transition duration-200"
+              style={{ backgroundColor: '#CA923D' }}
+            >
+             Verify
+            </a>
+
         </div>
       </div>
 

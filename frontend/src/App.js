@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Forgotpassword from './Pages/Forgotpassword';
@@ -10,6 +11,7 @@ import ChangePasswordPage from './Dashboard/ChangePasswordPage';
 import TermsAndConditions from './Dashboard/TermsAndConditions';
 import ParcelOrder from './Dashboard/ParcelOrder';
 import Dashboard from './Dashboard/Dashboard';
+import Editprofile from './Dashboard/Editprofile';
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
             <Route path="/Otp" element={< Otp/>} />
             <Route path="/resetpassword" element={< Resetpassword/>} />
             <Route path="/" element={< Register/>} />
+            <Route path='/editprofile' element={<Editprofile/>}/>
             <Route path='/Profilepage' element={<ProfilePage/>}/>
             <Route path='/ChangePassword' element={<ChangePasswordPage/>}/>
             <Route path='/TermsAndConditions' element={<TermsAndConditions/>}/>

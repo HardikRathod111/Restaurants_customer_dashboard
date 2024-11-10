@@ -1,44 +1,43 @@
-import React from "react";
-import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner , MdExpandMore  } from "react-icons/md";
+// App.js
+import React from 'react';
+import { FaUser, FaLock, FaFileAlt,  FaSearch  ,FaClipboardList } from 'react-icons/fa';
+import { FiEdit } from 'react-icons/fi';
+import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner ,MdExpandMore } from "react-icons/md";
 import { FaBoxOpen } from "react-icons/fa6";
 import { IoMdLogOut } from "react-icons/io";
-import { FaUser , FaSearch  ,FaClipboardList } from 'react-icons/fa';
 import { useState } from 'react';
-import {  FaLock, FaFileAlt  } from 'react-icons/fa';
-import { FiEdit } from 'react-icons/fi';
 
 
+function Editprofile() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [activeLink, setActiveLink] = useState('');
 
-const ChangePasswordPage = () =>{
+              const [manageOrderOpen, setManageOrderOpen] = useState(false);
 
-      const [activeLink, setActiveLink] = useState('');
-          const [manageOrderOpen, setManageOrderOpen] = useState(false);
-          const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
- 
+             const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
 
-        const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-            const toggleManageOrder = () => {
+                const toggleManageOrder = () => {
         setManageOrderOpen(!manageOrderOpen);
     };
 
-      const togglePaymentHistory = () => {
+            const togglePaymentHistory = () => {
         setPaymentHistoryOpen(!PaymentHistoryOpen);
     };
-
-
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-       const handleLinkClick = (linkName) => {
+ 
+     const handleLinkClick = (linkName) => {
     setActiveLink(linkName);
   };
 
-    return(
-        <div className="flex min-h-screen bg-gray-900 text-white font-sans">
+    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+  return (
+    <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
       <aside className="w-[200px] h-[900px] bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
           {/* Centered Image */}
-          <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-20 rounded-full mb-2" />
+          <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="w-[216px] h-[100px] rounded-full mb-2" />
         </div>
 
         <nav className="flex flex-col space-y-3 w-full">
@@ -46,13 +45,13 @@ const ChangePasswordPage = () =>{
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </button>
-              <div>
+           <div>
                         {/* Manage Order Dropdown */}
                         <button
                             className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
                             onClick={toggleManageOrder}
                         >
-                            <FaBoxOpen className="mr-2 text-yellow-500"/>
+                            <FaBoxOpen className="mr-2 text-yellow-500" />
                             Manage Order
                             <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
                         </button>
@@ -71,7 +70,7 @@ const ChangePasswordPage = () =>{
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
           </button>
-           <div>
+          <div>
               {/* PaymentHistory Dropdown */}
               <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
                 onClick={togglePaymentHistory}>
@@ -116,10 +115,10 @@ const ChangePasswordPage = () =>{
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
-            className="w-[300px] h-[40px] p-2 pl-10 ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+            className="w-[300px] h-[40px] p-2 pl-10 ml-52 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
           />
           < FaSearch 
-            className="w-5 h-5 ml-48 text-gray-400 absolute left-3 top-2.5"/>
+            className="w-5 h-5 ml-52 text-gray-400 absolute left-3 top-2.5"/>
         </div>
 
         {/* Notification Icon and User Profile Dropdown */}
@@ -165,16 +164,16 @@ const ChangePasswordPage = () =>{
           </div>
         </div>
       </header>
-        <section className="flex gap-3">
+         <section className="flex gap-3">
       {/* Menu Section */}
       <div className="w-[250px] h-[250px] bg-gray-800 p-4 rounded-md">
         <h3 className="text-lg font-semibold mb-4">Menu</h3>
         
         {/* Profile Link */}
         <a
-          href="/Profilepage"
+          href="/"
           onClick={() => handleLinkClick('profile')}
-          className={`flex items-center w-full p-2 rounded-md  text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium mb-4`}
+          className={`flex items-center w-full  p-2 rounded-md bg-yellow-600 text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium mb-4`}
         >
           <FaUser className="mr-2" />
           Profile
@@ -184,7 +183,7 @@ const ChangePasswordPage = () =>{
         <a
           href="/ChangePassword"
           onClick={() => handleLinkClick('change-password')}
-          className={`flex items-center w-full p-2 rounded-md bg-yellow-600 text-white ${activeLink === 'change-password' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} mb-4`}
+          className={`flex items-center w-full p-2 rounded-md text-white ${activeLink === 'change-password' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} mb-4`}
         >
           <FaLock className="mr-2" />
           Change Password
@@ -194,66 +193,140 @@ const ChangePasswordPage = () =>{
         <a
           href="/TermsAndConditions"
           onClick={() => handleLinkClick('terms-and-conditions')}
-          className={`flex items-center w-full px-1 py-2 rounded-md text-whie ${activeLink === 'terms-and-conditions' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'}`}
+          className={`flex items-center w-full px-1 py-2 rounded-md text-white ${activeLink === 'terms-and-conditions' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'}`}
         >
           <FaFileAlt className="mr-2" />
           Terms & Condition
         </a>
       </div>
-       {/* Profile Information Section */}
-          <div className="relative bg-gray-800 rounded-lg overflow-hidden p-3 w-[700px]">
+
+          {/* Profile Information Section */}
+          <div className="relative bg-gray-800 rounded-lg overflow-hidden p-3 w-full">
             {/* Background Image */}
             <div
-              className="absolute w-[700px] h-[90px] inset-0 bg-cover bg-center "
+              className="absolute w-[800px] h-[90px] inset-0 bg-cover bg-center "
               style={{ backgroundImage: "url('./assets/images/6b8d7b581303d40fcc1f30dfc6de9d00.jpg')" }}
             ></div>
             <div className="relative flex items-center justify-between">
               <div className="flex items-center ">
-                <h2 className="mt-6 font-semibold text-xl">Change Password</h2>
+                <img
+                  src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg"
+                  alt="Profile"
+                  className="w-[100px] h-[100px] rounded-full "
+                />
               </div>
+             <a href='/editprofile' className="mr-10 px-4   py-2 bg-yellow-600 text-gray-900 mb-11 rounded-md flex items-center">
+                <FiEdit className="mr-2" />
+                Edit Profile
+              </a>
             </div>
 
             {/* Profile Form Section */}
-           <div className="mt-8  space-y-4">
+           <div className="mt-8 grid grid-cols-3 gap-6">
   {/* First Row */}
   <div>
-    <label className="block text-sm font-medium">Current Password</label>
+    <label className="block text-sm font-medium">First Name</label>
     <input
       type="text"
-      value="Enter Password"
-      className="mt-1 block w-[500px] bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      value="Jenny"
+      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
   <div>
-    <label className="block text-sm font-medium">New Password</label>
+    <label className="block text-sm font-medium">Last Name</label>
     <input
       type="text"
-      value="Enter Password"
-      className="mt-1 block w-[500px]  bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      value="Wilson"
+      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
   <div>
-    <label className="block text-sm font-medium">Conform Password</label>
+    <label className="block text-sm font-medium">Email Address</label>
     <input
-      type="text"
-      value="Enter Password"
-      className="mt-1 block w-[500px] bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      type="email"
+      value="jenny.wilson@example.com"
+      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
-    <div>
-       <button className="flex items-center justify-center p-2 rounded-md mb-7 text-white bg-yellow-600 w-[500px]">
-            Change Password
-          </button>
-    </div>
-</div>
-</div>
-      </section>
-      </main>
-      </div>
-    )
-};
 
-export default ChangePasswordPage;
+  {/* Second Row */}
+  <div>
+    <label className="block text-sm font-medium">Phone Number</label>
+    <input
+      type="text"
+      value="+91 95354 98972"
+      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      readOnly
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-medium">Restaurant Name</label>
+    <input
+      type="text"
+      value="Statesman Restaurant"
+      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      readOnly
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-medium">Gender</label>
+    <input
+      type="text"
+      value="Male"
+      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      readOnly
+    />
+  </div>
+
+  {/* Third Row */}
+  <div>
+    <label className="block text-sm font-medium">City</label>
+    <input
+      type="text"
+      value="Surat"
+      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      readOnly
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-medium">State</label>
+    <input
+      type="text"
+      value="Gujarat"
+      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      readOnly
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-medium">Country</label>
+    <input
+      type="text"
+      value="India"
+      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      readOnly
+    />
+  </div>
+
+  {/* Fourth Row */}
+  <div className="col-span-3">
+    <label className="block text-sm font-medium">Address</label>
+    <input
+      type="text"
+      value="A-151 Swastik Plaza, Punagam, Varchha, Jamnagar, Gujarat."
+      className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
+      readOnly
+    />
+  </div>
+</div>
+
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+export default Editprofile;  

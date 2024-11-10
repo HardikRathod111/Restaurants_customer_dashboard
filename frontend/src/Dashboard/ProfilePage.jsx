@@ -2,7 +2,7 @@
 import React from 'react';
 import { FaUser, FaLock, FaFileAlt,  FaSearch  ,FaClipboardList } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
-import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner  } from "react-icons/md";
+import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner ,MdExpandMore } from "react-icons/md";
 import { FaBoxOpen } from "react-icons/fa6";
 import { IoMdLogOut } from "react-icons/io";
 import { useState } from 'react';
@@ -11,6 +11,19 @@ import { useState } from 'react';
 function ProfilePage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeLink, setActiveLink] = useState('');
+
+              const [manageOrderOpen, setManageOrderOpen] = useState(false);
+
+             const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
+
+
+                const toggleManageOrder = () => {
+        setManageOrderOpen(!manageOrderOpen);
+    };
+
+            const togglePaymentHistory = () => {
+        setPaymentHistoryOpen(!PaymentHistoryOpen);
+    };
  
      const handleLinkClick = (linkName) => {
     setActiveLink(linkName);
@@ -21,10 +34,10 @@ function ProfilePage() {
   return (
     <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
-      <aside className="w-[200px] h-lvh bg-gray-800 p-4 flex flex-col items-center">
+      <aside className="w-[200px] h-[900px] bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
           {/* Centered Image */}
-          <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="w-[216px] h-[100px] rounded-full mb-2" />
+          <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-20 rounded-full mb-2" />
         </div>
 
         <nav className="flex flex-col space-y-3 w-full">
@@ -32,18 +45,50 @@ function ProfilePage() {
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </button>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-            <FaBoxOpen className="mr-2 w-[20px] h-[20px] text-yellow-500" />
-            Manage Order
-          </button>
+           <div>
+                        {/* Manage Order Dropdown */}
+                        <button
+                            className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                            onClick={toggleManageOrder}
+                        >
+                            <FaBoxOpen className="mr-2 text-yellow-500" />
+                            Manage Order
+                            <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        {manageOrderOpen && (
+                            <div className="ml-8 mt-2 space-y-2">
+                                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                    Parcel Order
+                                </a>
+                                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                    Onsite Order
+                                </a>
+                            </div>
+                        )}
+                    </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
           </button>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-            <FaClipboardList className="mr-2  w-[20px] h-[20px] text-yellow-500" />
-            Payment History
-          </button>
+          <div>
+              {/* PaymentHistory Dropdown */}
+              <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                onClick={togglePaymentHistory}>
+                <FaClipboardList className="mr-2 text-yellow-500" />
+                PaymentHistory
+                <MdExpandMore className={`ml-auto transform ${PaymentHistoryOpen ? 'rotate-180' : '' }`} />
+              </button>
+              {PaymentHistoryOpen && (
+              <div className="ml-8 mt-2 space-y-2">
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Parcel Order
+                </a>
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Onsite Order
+                </a>
+              </div>
+              )}
+            </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
@@ -70,10 +115,10 @@ function ProfilePage() {
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
-            className="w-[300px] h-[40px] p-2 pl-10 ml-52 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+            className="w-[300px] h-[40px] p-2 pl-10 ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
           />
           < FaSearch 
-            className="w-5 h-5 ml-52 text-gray-400 absolute left-3 top-2.5"/>
+            className="w-5 h-5 ml-48 text-gray-400 absolute left-3 top-2.5"/>
         </div>
 
         {/* Notification Icon and User Profile Dropdown */}
@@ -128,7 +173,7 @@ function ProfilePage() {
         <a
           href="/"
           onClick={() => handleLinkClick('profile')}
-          className={`flex items-center w-full p-2 rounded-md bg-yellow-500 text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium mb-4`}
+          className={`flex items-center w-full  p-2 rounded-md bg-yellow-600 text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium mb-4`}
         >
           <FaUser className="mr-2" />
           Profile
@@ -170,10 +215,10 @@ function ProfilePage() {
                   className="w-[100px] h-[100px] rounded-full "
                 />
               </div>
-             <button className="ml-auto px-4 py-2 bg-yellow-500 text-gray-900 mb-11 rounded-md flex items-center">
+             <a href='/editprofile' className="mr-10 px-4   py-2 bg-yellow-600 text-gray-900 mb-11 rounded-md flex items-center">
                 <FiEdit className="mr-2" />
                 Edit Profile
-              </button>
+              </a>
             </div>
 
             {/* Profile Form Section */}
@@ -284,4 +329,4 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+export default ProfilePage;  

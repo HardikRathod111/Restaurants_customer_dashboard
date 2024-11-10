@@ -1,29 +1,48 @@
 import React, { useState } from "react";
-import { MdWindow, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner } from "react-icons/md";
-import { FaBoxOpen, FaUser, FaSearch, FaClipboardList, FaLock, FaFileAlt } from "react-icons/fa";
+import {
+  MdWindow,
+  MdOutlineRestaurantMenu,
+  MdOutlineQrCodeScanner,
+  MdExpandMore
+} from "react-icons/md";
+import { FaBoxOpen, FaUser, FaSearch, FaClipboardList } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
+import { FaLock, FaFileAlt } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 
 const TermsAndConditions = () => {
-  const [activeLink, setActiveLink] = useState("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+ const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [activeLink, setActiveLink] = useState('');
 
-  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+              const [manageOrderOpen, setManageOrderOpen] = useState(false);
+              const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
 
-  const handleLinkClick = (linkName) => {
+                const toggleManageOrder = () => {
+        setManageOrderOpen(!manageOrderOpen);
+    };
+
+      const togglePaymentHistory = () => {
+        setPaymentHistoryOpen(!PaymentHistoryOpen);
+    };
+
+
+ 
+     const handleLinkClick = (linkName) => {
     setActiveLink(linkName);
   };
+
+    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (
     <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
-      <aside className="w-[200px] h-lvh bg-gray-800 p-4 flex flex-col items-center">
+      <aside className="w-[200px] h-[900px] bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
           {/* Centered Image */}
           <img
             src="./assets/images/Frame 1000005156.png"
             alt="Logo"
-            className="w-[216px] h-[100px] rounded-full mb-2"
+            className="h-20 rounded-full mb-2"
           />
         </div>
 
@@ -32,31 +51,63 @@ const TermsAndConditions = () => {
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </button>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-            <FaBoxOpen className="mr-2 w-[20px] h-[20px] text-yellow-500" />
-            Manage Order
-          </button>
+             <div>
+                        {/* Manage Order Dropdown */}
+                        <button
+                            className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                            onClick={toggleManageOrder}
+                        >
+                            <FaBoxOpen className="mr-2 text-yellow-500" />
+                            Manage Order
+                            <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        {manageOrderOpen && (
+                            <div className="ml-8 mt-2 space-y-2">
+                                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                    Parcel Order
+                                </a>
+                                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                    Onsite Order
+                                </a>
+                            </div>
+                        )}
+                    </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
           </button>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-            <FaClipboardList className="mr-2  w-[20px] h-[20px] text-yellow-500" />
-            Payment History
-          </button>
+           <div>
+              {/* PaymentHistory Dropdown */}
+              <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                onClick={togglePaymentHistory}>
+                <FaClipboardList className="mr-2 text-yellow-500"  />
+                PaymentHistory
+                 <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {PaymentHistoryOpen && (
+              <div className="ml-8 mt-2 space-y-2">
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Parcel Order
+                </a>
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Onsite Order
+                </a>
+              </div>
+              )}
+            </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
           </button>
         </nav>
-        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
+        <button className="flex items-center px-4 py-2 mt-auto bg-red-500 rounded-md text-white">
           <IoMdLogOut className="mr-2" />
           Log Out
         </button>
       </aside>
 
       <main className="flex-1 p-6 bg-gray-900">
-        <header className="flex justify-between items-center mb-6 pb-4 ">
+        <header className="flex justify-between items-center mb-6 pb-4">
           {/* Welcome Text */}
           <h2 className="text-xl font-semibold text-white">
             Welcome Back 👋
@@ -64,15 +115,16 @@ const TermsAndConditions = () => {
             <span className="text-gray-400 font-normal text-lg">Jd's Restro</span>
           </h2>
 
-          {/* Search Bar */}
-          <div className="relative w-[400px]">
-            <input
-              type="text"
-              placeholder="Search Here Your Delicious Food..."
-              className="w-[300px] h-[40px] p-2 pl-10 ml-52 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
-            />
-            <FaSearch className="w-5 h-5 ml-52 text-gray-400 absolute left-3 top-2.5" />
-          </div>
+         {/* Search Bar */}
+        <div className="relative w-[400px]">
+          <input
+            type="text"
+            placeholder="Search Here Your Delicious Food..."
+            className="w-[300px] h-[40px] p-2 pl-12 ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+          />
+          < FaSearch 
+            className="w-5 h-5 ml-48 text-gray-400 absolute left-3 top-2.5"/>
+        </div>
 
           {/* Notification Icon and User Profile Dropdown */}
           <div className="flex items-center space-x-4">
@@ -113,7 +165,15 @@ const TermsAndConditions = () => {
               {/* Dropdown Menu */}
               {isDropdownOpen && (
                 <div className="absolute right-0 w-48 bg-gray-800 text-gray-300 rounded-md shadow-lg py-2">
-                  {/* Add menu items if needed */}
+                  {/* <a href="#" className="block px-4 py-2 hover:bg-gray-700">
+                    Profile
+                  </a>
+                  <a href="#" className="block px-4 py-2 hover:bg-gray-700">
+                    Settings
+                  </a>
+                  <a href="#" className="block px-4 py-2 hover:bg-gray-700">
+                    Logout
+                  </a> */}
                 </div>
               )}
             </div>
@@ -130,7 +190,9 @@ const TermsAndConditions = () => {
               href="/Profilepage"
               onClick={() => handleLinkClick("profile")}
               className={`flex items-center w-full p-2 rounded-md text-white ${
-                activeLink === "profile" ? "bg-yellow-500 text-gray-900" : "bg-gray-700 text-gray-300"
+                activeLink === "profile"
+                  ? "bg-yellow-500 text-gray-900"
+                  : "bg-gray-700 text-gray-300"
               } font-medium mb-4`}
             >
               <FaUser className="mr-2" />
@@ -142,7 +204,9 @@ const TermsAndConditions = () => {
               href="/ChangePassword"
               onClick={() => handleLinkClick("change-password")}
               className={`flex items-center w-full p-2 rounded-md text-white ${
-                activeLink === "change-password" ? "bg-yellow-500 text-gray-900" : "bg-gray-700 text-gray-300"
+                activeLink === "change-password"
+                  ? "bg-yellow-500 text-gray-900"
+                  : "bg-gray-700 text-gray-300"
               } mb-4`}
             >
               <FaLock className="mr-2" />
@@ -153,8 +217,10 @@ const TermsAndConditions = () => {
             <a
               href="/TermsAndConditions"
               onClick={() => handleLinkClick("terms-and-conditions")}
-              className={`flex items-center w-full px-1 py-2 bg-yellow-500 rounded-md text-white ${
-                activeLink === "terms-and-conditions" ? "bg-yellow-500 text-gray-900" : "bg-gray-700 text-gray-300"
+              className={`flex items-center bg-yellow-600  text-white w-full px-1 py-2 rounded-md ${
+                activeLink === "terms-and-conditions"
+                  ? "bg-yellow-500 text-gray-900"
+                  : "bg-gray-700 text-gray-300"
               }`}
             >
               <FaFileAlt className="mr-2" />
@@ -162,37 +228,41 @@ const TermsAndConditions = () => {
             </a>
           </div>
 
-          {/* Profile Information Section */}
+             {/* Profile Information Section */}
           <div className="relative bg-gray-800 rounded-lg overflow-hidden p-3 w-[750px]">
             {/* Background Image */}
             <div
-              className="absolute w-[700px] h-[90px] inset-0 bg-cover bg-center"
+              className="absolute w-[750px] h-[90px] inset-0 bg-cover bg-center "
               style={{ backgroundImage: "url('./assets/images/6b8d7b581303d40fcc1f30dfc6de9d00.jpg')" }}
             ></div>
             <div className="relative flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <img
-                  src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg"
-                  alt="User"
-                  className="w-28 h-28 rounded-full"
-                />
-                <div>
-                  <h3 className="text-xl font-semibold">Musabbir Hossain</h3>
-                  <p className="text-gray-300">Owner</p>
-                </div>
+              <div className="flex items-center ">
+                <h2 className="mt-6 font-semibold text-xl">Terms & Condition</h2>
               </div>
-              <FiEdit className="text-yellow-500 w-6 h-6" />
             </div>
-          </div>
-        </section>
 
-        {/* Terms and Conditions Section */}
-        <section className="mt-8 bg-gray-800 p-6 rounded-lg text-gray-300">
-          <h2 className="text-xl font-semibold mb-4">Terms & Conditions</h2>
-          <p className="mb-4">
-            By using this service, you agree to abide by the terms and conditions outlined here.
-            These terms govern the use of this platform, including all services provided.
-          </p>
+            {/* Profile Form Section */}
+           <div className="mt-8  space-y-4 border border-gray-500 rounded-md">
+
+  <div className="space-y-3">
+    <p className="text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+         Fusce quis ante ornare, venenatis tortor sed, fringilla ante. Morbi nec semper justo. Cras eget
+          rhoncus urna, eu fringilla nibh. Class aptent taciti sociosqu ad litora torquent per conubia 
+          nostra, per inceptos himenaeos. Nam pretium eleifend neque, vel blandit erat iaculis id. Etiam
+           ut lectus vitae metus convallis condimentum quis cursus mi.   </p>
+             <p className="text-gray-400"> Dolor sit amet, consectetur adipiscing elit. Fusce quis ante ornare, venenatis tortor sed,
+               fringilla ante. Morbi nec semper justo. Cras eget rhoncus urna, eu fringilla nibh. Class
+                aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. 
+                Nam pretium eleifend neque, vel blandit erat iaculis id.  <p/>
+               <p className="text-gray-400"> Consectetur adipiscing elit
+                Fusce quis ante ornare, venenatis tortor sed, fringilla ante. Morbi nec semper justo. Cras
+                 eget rhoncus urna, eu fringilla nibh. Class aptent taciti sociosqu ad litora torquent per
+                  conubia nostra, per inceptos himenaeos. Nam pretium eleifend neque, vel blandit erat 
+                  iaculis id. Etiam ut lectus vitae metus convallis condimentum quis cursus mi.</p>
+</p>    
+</div>
+</div>
+</div>
         </section>
       </main>
     </div>
