@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Your project description",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "init": "^0.1.2",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.8.1",
+    "passport-jwt": "^4.0.1"
+  }
+}

@@ -9,6 +9,7 @@ import ProfilePage from './Dashboard/ProfilePage';
 import ChangePasswordPage from './Dashboard/ChangePasswordPage';
 import TermsAndConditions from './Dashboard/TermsAndConditions';
 import ParcelOrder from './Dashboard/ParcelOrder';
+import Dashboard from './Dashboard/Dashboard';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path='/ChangePassword' element={<ChangePasswordPage/>}/>
             <Route path='/TermsAndConditions' element={<TermsAndConditions/>}/>
             <Route path="/parcelorder" element={< ParcelOrder/>} />
+            <Route path='/dashboard' element={<Dashboard />} />
       </Routes>
       </Router>
   );
