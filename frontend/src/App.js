@@ -10,6 +10,7 @@ import ProfilePage from './Dashboard/ProfilePage';
 import ChangePasswordPage from './Dashboard/ChangePasswordPage';
 import TermsAndConditions from './Dashboard/TermsAndConditions';
 import ParcelOrder from './Dashboard/ParcelOrder';
+import Editprofile from './Dashboard/Editprofile';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/Otp" element={< Otp/>} />
             <Route path="/resetpassword" element={< Resetpassword/>} />
             <Route path="/" element={< Register/>} />
+            <Route path='/editprofile' element={<Editprofile/>}/>
             <Route path='/Profilepage' element={<ProfilePage/>}/>
             <Route path='/ChangePassword' element={<ChangePasswordPage/>}/>
             <Route path='/TermsAndConditions' element={<TermsAndConditions/>}/>

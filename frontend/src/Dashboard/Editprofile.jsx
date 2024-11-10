@@ -8,7 +8,7 @@ import { IoMdLogOut } from "react-icons/io";
 import { useState } from 'react';
 
 
-function ProfilePage() {
+function Editprofile() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeLink, setActiveLink] = useState('');
 
@@ -329,4 +329,4 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;  
+export default Editprofile;  
