@@ -41,10 +41,10 @@ function Editprofile() {
         </div>
 
         <nav className="flex flex-col space-y-3 w-full">
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700 w-full">
+          <a href='/dashboard' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700 w-full">
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
-          </button>
+          </a>
            <div>
                         {/* Manage Order Dropdown */}
                         <button

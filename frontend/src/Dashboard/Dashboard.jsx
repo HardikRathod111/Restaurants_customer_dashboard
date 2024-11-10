@@ -1,7 +1,7 @@
 'use client'
-import { MdDashboard, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdLogout, MdExpandMore } from 'react-icons/md';
+import { MdDashboard, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdLogout, MdExpandMore , MdWindow } from 'react-icons/md';
 import { FaBoxOpen, FaClipboardList, FaSearch } from 'react-icons/fa';
-import { IoMdCheckmarkCircle, IoMdCloseCircle } from 'react-icons/io';
+import { IoMdCheckmarkCircle, IoMdCloseCircle,IoMdLogOut } from 'react-icons/io';
 import { FaShoppingBag, FaUsers, FaClock, FaChartLine } from 'react-icons/fa';
 import { MoreHorizontal } from 'react-icons/ri';  // Import MoreHorizontal
 
@@ -92,12 +92,17 @@ export default function Dashboard() {
   const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Added toggle function
   
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
+   const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
     const toggleManageOrder = () => {
         setManageOrderOpen(!manageOrderOpen);
+    };
+       const togglePaymentHistory = () => {
+        setPaymentHistoryOpen(!PaymentHistoryOpen);
     };
   useEffect(() => {
     console.log('Notifications visible:', showNotifications);
@@ -125,106 +130,148 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-900 text-white">
+   <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
-      <aside className={`bg-gray-800 w-64 min-h-screen flex flex-col p-4 ${sidebarOpen ? 'block' : 'hidden'} lg:block`}>
-      <div className="flex items-center justify-center mb-8">
-                    <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-24 rounded-full mb-2" />
-                </div>
-                <nav className="flex flex-col space-y-4">
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
-                        <MdDashboard className="mr-2" style={{ color: "#CA923D" }} />
-                        Dashboard
-                    </button>
-                    <div>
+      <aside className="w-[200px] h-[900px] bg-gray-800 p-4 flex flex-col items-center">
+        <div className="flex flex-col items-center mb-8">
+          {/* Centered Image */}
+          <img
+            src="./assets/images/Frame 1000005156.png"
+            alt="Logo"
+            className="h-20 rounded-full mb-2"
+          />
+        </div>
+
+        <nav className="flex flex-col space-y-3 w-full">
+          <a href="/dashboard" className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700 w-full">
+            <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            Dashboard
+          </a>
+             <div>
                         {/* Manage Order Dropdown */}
                         <button
                             className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
                             onClick={toggleManageOrder}
                         >
-                            <FaBoxOpen className="mr-2" style={{ color: "#CA923D" }} />
+                            <FaBoxOpen className="mr-2 text-yellow-500" />
                             Manage Order
                             <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
                         </button>
                         {manageOrderOpen && (
                             <div className="ml-8 mt-2 space-y-2">
-                                <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Parcel Order
-                                </button>
-                                <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                </a>
+                                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Onsite Order
-                                </button>
+                                </a>
                             </div>
                         )}
                     </div>
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
-                        <MdOutlineRestaurantMenu className="mr-2" style={{ color: "#CA923D" }} />
-                        Manage Menu
-                    </button>
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
-                        <FaClipboardList className="mr-2" style={{ color: "#CA923D" }} />
-                        Payment History
-                    </button>
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
-                        <MdOutlineQrCodeScanner className="mr-2" style={{ color: "#CA923D" }} />
-                        QR Codes
-                    </button>
-                </nav>
-                <button className="mt-auto p-3 bg-red-500 text-white rounded-md flex items-center">
-                    <MdLogout className="mr-2" />
-                    Log Out
-                </button>
-      </aside>
-
-
-      {/* Main Content */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        {/* Header */}
-        {/* Header */}
-        <header className="flex justify-between items-center mb-8">
-          <div>
-            <h2 className="text-2xl font-bold">Welcome Back 👋</h2>
-            <p className="text-gray-400">JR's Restro</p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search Here Your Delicious Food..."
-                className="bg-gray-800 rounded-full py-2 px-4 pl-10 w-64"
-              />
-              <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
-            </div>
-            <div className="relative">
-              <button 
-                className="p-2 bg-gray-800 rounded-full relative"
-                onClick={() => setShowNotifications(!showNotifications)}
-              >
-                <Bell className="w-5 h-5" />
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center">
-                  3
-                </span>
+          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+            <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            Manage Menu
+          </button>
+           <div>
+              {/* PaymentHistory Dropdown */}
+              <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                onClick={togglePaymentHistory}>
+                <FaClipboardList className="mr-2 text-yellow-500"  />
+                PaymentHistory
+                 <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
               </button>
-
-              {/* Notification Dropdown */}
-              {showNotifications && (
-                <div className="absolute right-0 mt-2 w-60 bg-gray-800 rounded-lg shadow-lg p-4">
-                  {notifications.map((notification, index) => (
-                    <div key={index} className="p-3 flex items-center space-x-3 hover:bg-gray-700 rounded-md">
-                      <div>
-                        <p className="text-sm">{notification.type}</p>
-                        <p className="text-xs text-gray-400">{notification.customerName} - {notification.phoneNumber}</p>
-                      </div>
-                      <div className="ml-auto text-sm">{notification.timeAgo}</div>
-                    </div>
-                  ))}
-                </div>
+              {PaymentHistoryOpen && (
+              <div className="ml-8 mt-2 space-y-2">
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Parcel Order
+                </a>
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Onsite Order
+                </a>
+              </div>
               )}
             </div>
-            <div className="flex items-center space-x-2">
-              <img src="/placeholder.svg?height=32&width=32" alt="User avatar" className="w-8 h-8 rounded-full" />
-              <span>Musabbir Hossain</span>
-              <ChevronDown className="w-4 h-4" />
+          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+            <MdOutlineQrCodeScanner className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            QR Codes
+          </button>
+        </nav>
+        <button className="flex items-center px-4 py-2 mt-auto bg-red-500 rounded-md text-white">
+          <IoMdLogOut className="mr-2" />
+          Log Out
+        </button>
+      </aside>
+
+      <main className="flex-1 p-6 bg-gray-900">
+        <header className="flex justify-between items-center mb-6 pb-4">
+          {/* Welcome Text */}
+          <h2 className="text-xl font-semibold text-white">
+            Welcome Back 👋
+            <br />
+            <span className="text-gray-400 font-normal text-lg">Jd's Restro</span>
+          </h2>
+
+         {/* Search Bar */}
+        <div className="relative w-[400px]">
+          <input
+            type="text"
+            placeholder="Search Here Your Delicious Food..."
+            className="w-[300px] h-[40px] p-2 pl-12 ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+          />
+          < FaSearch 
+            className="w-5 h-5 ml-48 text-gray-400 absolute left-3 top-2.5"/>
+        </div>
+
+          {/* Notification Icon and User Profile Dropdown */}
+          <div className="flex items-center space-x-4">
+            {/* Notification Icon */}
+            <div className="relative">
+              <svg
+                className="w-6 h-6 text-gray-300 cursor-pointer"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
+              </svg>
+              {/* Notification Badge */}
+              <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
+            </div>
+
+            {/* User Profile Dropdown */}
+            <div className="relative">
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center space-x-2 focus:outline-none"
+              >
+                <img
+                  src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg"
+                  alt="User"
+                  className="w-10 h-10 rounded-full"
+                />
+                <span className="text-white">Musabbir Hossain</span>
+                <svg
+                  className="w-4 h-4 text-gray-300"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M5.25 7.5l4.25 4.25 4.25-4.25L15 9l-5 5-5-5z" />
+                </svg>
+              </button>
+
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 w-48 bg-gray-800 text-gray-300 rounded-md shadow-lg py-2">
+                  {/* <a href="#" className="block px-4 py-2 hover:bg-gray-700">
+                    Profile
+                  </a>
+                  <a href="#" className="block px-4 py-2 hover:bg-gray-700">
+                    Settings
+                  </a>
+                  <a href="#" className="block px-4 py-2 hover:bg-gray-700">
+                    Logout
+                  </a> */}
+                </div>
+              )}
             </div>
           </div>
         </header>
