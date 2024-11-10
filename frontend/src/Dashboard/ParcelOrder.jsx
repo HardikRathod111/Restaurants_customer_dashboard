@@ -117,12 +117,14 @@
 // export default ParcelOrder;
 
 import React, { useState } from 'react';
-import { MdDashboard, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdLogout, MdExpandMore } from 'react-icons/md';
+import { MdDashboard,MdWindow , MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdLogout, MdExpandMore } from 'react-icons/md';
 import { FaBoxOpen, FaClipboardList, FaSearch } from 'react-icons/fa';
-import { IoMdCheckmarkCircle, IoMdCloseCircle } from 'react-icons/io';
+import { IoMdCheckmarkCircle, IoMdLogOut, IoMdCloseCircle } from 'react-icons/io';
 
 const ParcelOrder = () => {
     const [manageOrderOpen, setManageOrderOpen] = useState(false);
+
+     const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
@@ -131,6 +133,11 @@ const ParcelOrder = () => {
         setManageOrderOpen(!manageOrderOpen);
     };
 
+          const togglePaymentHistory = () => {
+        setPaymentHistoryOpen(!PaymentHistoryOpen);
+    };
+ 
+
     const orders = [
         { id: 1, customer: "Davis Lipshutz", item: "Rice", date: "10/02/2024", time: "3:45 PM", phone: "98568 86214", quantity: "500 G.M", total: "₹ 500" },
         { id: 2, customer: "Marcus Dorwart", item: "Biryani Rice", date: "11/02/2024", time: "2:45 PM", phone: "96668 22214", quantity: "100 G.M", total: "₹ 500" },
@@ -138,61 +145,77 @@ const ParcelOrder = () => {
     ];
 
     return (
-        <div className="flex min-h-screen text-white font-sans" style={{ backgroundColor: "#0B0F1F" }}>
-            {/* Sidebar */}
-            <aside className="w-[250px] p-4 flex flex-col" style={{ backgroundColor: '#1F1D2B' }}>
-                <div className="flex items-center justify-center mb-8">
-                    <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-24 rounded-full mb-2" />
-                </div>
-                <nav className="flex flex-col space-y-4">
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
-                        <MdDashboard className="mr-2" style={{ color: "#CA923D" }} />
-                        Dashboard
-                    </button>
-                    <div>
+       <div className="flex min-h-screen bg-gray-900 text-white font-sans">
+      {/* Sidebar */}
+      <aside className="w-[200px] h-[900px] bg-gray-800 p-4 flex flex-col items-center">
+        <div className="flex flex-col items-center mb-8">
+          {/* Centered Image */}
+          <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="w-[216px] h-[100px] rounded-full mb-2" />
+        </div>
+
+        <nav className="flex flex-col space-y-3 w-full">
+          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700 w-full">
+            <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            Dashboard
+          </button>
+           <div>
                         {/* Manage Order Dropdown */}
                         <button
                             className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
                             onClick={toggleManageOrder}
                         >
-                            <FaBoxOpen className="mr-2" style={{ color: "#CA923D" }} />
+                            <FaBoxOpen className="mr-2 text-yellow-500" />
                             Manage Order
                             <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
                         </button>
                         {manageOrderOpen && (
                             <div className="ml-8 mt-2 space-y-2">
-                                <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Parcel Order
-                                </button>
-                                <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                </a>
+                                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Onsite Order
-                                </button>
+                                </a>
                             </div>
                         )}
                     </div>
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
-                        <MdOutlineRestaurantMenu className="mr-2" style={{ color: "#CA923D" }} />
-                        Manage Menu
-                    </button>
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
-                        <FaClipboardList className="mr-2" style={{ color: "#CA923D" }} />
-                        Payment History
-                    </button>
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
-                        <MdOutlineQrCodeScanner className="mr-2" style={{ color: "#CA923D" }} />
-                        QR Codes
-                    </button>
-                </nav>
-                <button className="mt-auto p-3 bg-red-500 text-white rounded-md flex items-center">
-                    <MdLogout className="mr-2" />
-                    Log Out
-                </button>
-            </aside>
+          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+            <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            Manage Menu
+          </button>
+          <div>
+              {/* PaymentHistory Dropdown */}
+              <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                onClick={togglePaymentHistory}>
+                <FaClipboardList className="mr-2 text-yellow-500" />
+                PaymentHistory
+                <MdExpandMore className={`ml-auto transform ${PaymentHistoryOpen ? 'rotate-180' : '' }`} />
+              </button>
+              {PaymentHistoryOpen && (
+              <div className="ml-8 mt-2 space-y-2">
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Parcel Order
+                </a>
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Onsite Order
+                </a>
+              </div>
+              )}
+            </div>
+          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+            <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            QR Codes
+          </button>
+        </nav>
+        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
+          <IoMdLogOut className="mr-2" />
+           Log Out
+         </button>
 
-            {/* Main Content */}
-            <main className="flex-1 p-8">
-                {/* Header */}
-                <header className="flex justify-between items-center mb-6 pb-4 ">
+      </aside>
+
+      <main className="flex-1 p-6 bg-gray-900">
+      <header className="flex justify-between items-center mb-6 pb-4 ">
         {/* Welcome Text */}
         <h2 className="text-xl font-semibold text-white">
           Welcome Back 👋 
@@ -229,11 +252,10 @@ const ParcelOrder = () => {
           {/* User Profile Dropdown */}
           <div className="relative">
             <button
-            //   onClick={toggleDropdown}
-              className="flex items-center rounded-full space-x-2 focus:outline-none"
-              style={{backgroundColor:'#2A2A38',padding:'10px'}}
+              onClick={toggleDropdown}
+              className="flex items-center space-x-2 focus:outline-none"
             >
-              <img src="./assets/images/header.png" alt="User" className="w-10 h-10 rounded-full" />
+              <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="w-10 h-10 rounded-full" />
               <span className="text-white">Musabbir Hossain</span>
               <svg
                 className="w-4 h-4 text-gray-300"

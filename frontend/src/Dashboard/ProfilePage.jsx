@@ -2,7 +2,7 @@
 import React from 'react';
 import { FaUser, FaLock, FaFileAlt,  FaSearch  ,FaClipboardList } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
-import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner  } from "react-icons/md";
+import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner ,MdExpandMore } from "react-icons/md";
 import { FaBoxOpen } from "react-icons/fa6";
 import { IoMdLogOut } from "react-icons/io";
 import { useState } from 'react';
@@ -11,9 +11,19 @@ import { useState } from 'react';
 function ProfilePage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeLink, setActiveLink] = useState('');
- 
+
               const [manageOrderOpen, setManageOrderOpen] = useState(false);
 
+             const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
+
+
+                const toggleManageOrder = () => {
+        setManageOrderOpen(!manageOrderOpen);
+    };
+
+            const togglePaymentHistory = () => {
+        setPaymentHistoryOpen(!PaymentHistoryOpen);
+    };
  
      const handleLinkClick = (linkName) => {
     setActiveLink(linkName);
@@ -35,18 +45,50 @@ function ProfilePage() {
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </button>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-            <FaBoxOpen className="mr-2 w-[20px] h-[20px] text-yellow-500" />
-            Manage Order
-          </button>
+           <div>
+                        {/* Manage Order Dropdown */}
+                        <button
+                            className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                            onClick={toggleManageOrder}
+                        >
+                            <FaBoxOpen className="mr-2 text-yellow-500" />
+                            Manage Order
+                            <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        {manageOrderOpen && (
+                            <div className="ml-8 mt-2 space-y-2">
+                                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                    Parcel Order
+                                </a>
+                                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                    Onsite Order
+                                </a>
+                            </div>
+                        )}
+                    </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
           </button>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-            <FaClipboardList className="mr-2  w-[20px] h-[20px] text-yellow-500" />
-            Payment History
-          </button>
+          <div>
+              {/* PaymentHistory Dropdown */}
+              <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                onClick={togglePaymentHistory}>
+                <FaClipboardList className="mr-2 text-yellow-500" />
+                PaymentHistory
+                <MdExpandMore className={`ml-auto transform ${PaymentHistoryOpen ? 'rotate-180' : '' }`} />
+              </button>
+              {PaymentHistoryOpen && (
+              <div className="ml-8 mt-2 space-y-2">
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Parcel Order
+                </a>
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Onsite Order
+                </a>
+              </div>
+              )}
+            </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes

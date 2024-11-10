@@ -13,6 +13,7 @@ const ChangePasswordPage = () =>{
 
       const [activeLink, setActiveLink] = useState('');
           const [manageOrderOpen, setManageOrderOpen] = useState(false);
+          const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
  
 
         const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
@@ -20,6 +21,11 @@ const ChangePasswordPage = () =>{
             const toggleManageOrder = () => {
         setManageOrderOpen(!manageOrderOpen);
     };
+
+      const togglePaymentHistory = () => {
+        setPaymentHistoryOpen(!PaymentHistoryOpen);
+    };
+
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
        const handleLinkClick = (linkName) => {
@@ -40,24 +46,24 @@ const ChangePasswordPage = () =>{
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </button>
-            <div>
+              <div>
                         {/* Manage Order Dropdown */}
                         <button
                             className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
                             onClick={toggleManageOrder}
                         >
-                            <FaBoxOpen className="mr-2" style={{ color: "#CA923D" }} />
+                            <FaBoxOpen className="mr-2 text-yellow-500"/>
                             Manage Order
                             <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
                         </button>
                         {manageOrderOpen && (
                             <div className="ml-8 mt-2 space-y-2">
-                                <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Parcel Order
-                                </button>
-                                <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                </a>
+                                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Onsite Order
-                                </button>
+                                </a>
                             </div>
                         )}
                     </div>
@@ -65,10 +71,25 @@ const ChangePasswordPage = () =>{
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
           </button>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-            <FaClipboardList className="mr-2  w-[20px] h-[20px] text-yellow-500" />
-            Payment History
-          </button>
+           <div>
+              {/* PaymentHistory Dropdown */}
+              <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                onClick={togglePaymentHistory}>
+                <FaClipboardList className="mr-2 text-yellow-500" />
+                PaymentHistory
+                <MdExpandMore className={`ml-auto transform ${PaymentHistoryOpen ? 'rotate-180' : '' }`} />
+              </button>
+              {PaymentHistoryOpen && (
+              <div className="ml-8 mt-2 space-y-2">
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Parcel Order
+                </a>
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Onsite Order
+                </a>
+              </div>
+              )}
+            </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes

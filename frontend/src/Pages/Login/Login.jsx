@@ -74,7 +74,7 @@ function Login() {
                                 </label>
                             </div>
                             <div className="text-sm">
-                                <a href="/" onClick={handlePlaceholderLink} className="font-medium text-[#4a90e2] hover:text-[#5a9ff2]">
+                                <a href="/forget" className="font-medium text-[#4a90e2] hover:text-[#5a9ff2]">
                                     Forgot Password?
                                 </a>
                             </div>
@@ -90,7 +90,7 @@ function Login() {
                     </form>
                     <p className="mt-2 text-center text-sm text-gray-400">
                         Don't have an account?{' '}
-                        <a href="/" onClick={handlePlaceholderLink} className="font-medium text-[#4a90e2] hover:text-[#5a9ff2]">
+                        <a href="/"  className="font-medium text-[#4a90e2] hover:text-[#5a9ff2]">
                             Register
                         </a>
                     </p>
