@@ -42,7 +42,7 @@ const TermsAndConditions = () => {
           <img
             src="./assets/images/Frame 1000005156.png"
             alt="Logo"
-            className="w-[216px] h-[100px] rounded-full mb-2"
+            className="h-20 rounded-full mb-2"
           />
         </div>
 
@@ -120,10 +120,10 @@ const TermsAndConditions = () => {
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
-            className="w-[300px] h-[40px] p-2 pl-10 ml-52 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+            className="w-[300px] h-[40px] p-2 pl-12 ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
           />
           < FaSearch 
-            className="w-5 h-5 ml-52 text-gray-400 absolute left-3 top-2.5"/>
+            className="w-5 h-5 ml-48 text-gray-400 absolute left-3 top-2.5"/>
         </div>
 
           {/* Notification Icon and User Profile Dropdown */}

@@ -23,7 +23,7 @@ function Login() {
             width: '100vw', 
             }}>
             <div className="flex-1 flex items-center justify-center p-8">
-                <div className="w-full max-w-2xl space-y-6 bg-[#252836] p-8 rounded-lg">
+                <div className="w-full max-w-xl space-y-6 bg-[#252836] p-8 rounded-lg">
                     <h2 className="text-2xl font-semibold">Login</h2>
                     <form className="space-y-4">
                         <div>
