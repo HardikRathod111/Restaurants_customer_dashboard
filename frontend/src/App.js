@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Forgotpassword from './Pages/Forgotpassword';
 import Otp from './Pages/Otp';
 import Register from './Pages/Register';
 import Resetpassword from './Pages/Resetpassword';
@@ -12,6 +11,10 @@ import TermsAndConditions from './Dashboard/TermsAndConditions';
 import ParcelOrder from './Dashboard/ParcelOrder';
 import Dashboard from './Dashboard/Dashboard';
 import Editprofile from './Dashboard/Editprofile';
+import Forgotpassword from './Pages/Forgotpassword';
+
+
+ 
 
 function App() {
   return (
@@ -28,6 +31,10 @@ function App() {
             <Route path='/TermsAndConditions' element={<TermsAndConditions/>}/>
             <Route path="/parcelorder" element={< ParcelOrder/>} />
             <Route path='/dashboard' element={<Dashboard />} />
+            <Route path="/forget" element={< Forgotpassword/>} />
+            <Route path="/Otp" element={< Otp/>} />
+            <Route path="/resetpassword" element={< Resetpassword/>} />
+            <Route path="/parcelorder" element={< ParcelOrder/>} />
       </Routes>
       </Router>
   );

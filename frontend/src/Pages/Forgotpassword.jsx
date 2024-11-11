@@ -20,12 +20,22 @@ const ForgotPassword = () => {
               style={{ backgroundColor: '#2D303E', border: "1px solid #ABBBC240" }}
             />
 
+<<<<<<< HEAD
             <a href='/Otp'
               className=" w-full py-2 px-40  bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md transition duration-200"
               style={{ backgroundColor: '#CA923D' }}
             >
               Get OTP
             </a>
+=======
+            <button
+              type="button"
+              className="w-full py-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md transition duration-200"
+              style={{ backgroundColor: '#CA923D' }}
+            >
+              Get OTP
+            </button>
+>>>>>>> c479502405104ca58779f6e3cf4b7d6bedfe021e
           </form>
         </div>
       </div>

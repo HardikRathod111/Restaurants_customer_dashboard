@@ -84,7 +84,7 @@ const notifications: Notification[] = [
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // Added state for sidebar visibility
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true); // Added state for sidebar visibility
   
   const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Added toggle function
   
@@ -277,9 +277,9 @@ export default function Dashboard() {
           {/* Image Container */}
           <div className="flex-1 rounded-lg p-6 relative overflow-hidden w-full min-h-40 ">
             <img
-              src={`${process.env.PUBLIC_URL}/assets/images/Frame 1000006002.png`}
+              src="./assets/images/Frame 1000006002.png"
               alt="Restaurant interior"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-[590px] h-full object-cover"
             />
           </div>
 
@@ -418,4 +418,4 @@ export default function Dashboard() {
       </main>
     </div>
   )
-};
+}
