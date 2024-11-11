@@ -108,10 +108,10 @@ const ParcelOrder = () => {
                                 </button>
                             </div>
                         )}
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
+                    <a href='/qrcode' className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
                         <MdOutlineQrCodeScanner className="mr-2" style={{ color: "#CA923D" }} />
                         QR Codes
-                    </button>
+                    </a>
                 </nav>
                 <button className="mt-auto p-3 bg-red-500 text-white rounded-md flex items-center">
                     <MdLogout className="mr-2" />

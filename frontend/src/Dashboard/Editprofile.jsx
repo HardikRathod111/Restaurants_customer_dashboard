@@ -80,7 +80,7 @@ function Editprofile() {
               </button>
               {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Parcel Order
                 </a>
                 <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
@@ -89,10 +89,10 @@ function Editprofile() {
               </div>
               )}
             </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href='/qrcode' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
-          </button>
+          </a>
         </nav>
         <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
           <IoMdLogOut className="mr-2" />
@@ -171,7 +171,7 @@ function Editprofile() {
         
         {/* Profile Link */}
         <a
-          href="/"
+          href="/profilepage"
           onClick={() => handleLinkClick('profile')}
           className={`flex items-center w-full  p-2 rounded-md bg-yellow-600 text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium mb-4`}
         >

@@ -12,6 +12,7 @@ import ParcelOrder from './Dashboard/ParcelOrder';
 import Dashboard from './Dashboard/Dashboard';
 import Editprofile from './Dashboard/Editprofile';
 import Forgotpassword from './Pages/Forgotpassword';
+import QrCode from './Dashboard/QrCode';
 
 
  
@@ -35,6 +36,7 @@ function App() {
             <Route path="/Otp" element={< Otp/>} />
             <Route path="/resetpassword" element={< Resetpassword/>} />
             <Route path="/parcelorder" element={< ParcelOrder/>} />
+            <Route path='/qrcode' element={<QrCode/>}/>
       </Routes>
       </Router>
   );

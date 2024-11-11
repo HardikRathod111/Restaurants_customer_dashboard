@@ -95,10 +95,10 @@ const TermsAndConditions = () => {
               </div>
               )}
             </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href="/qrcode" className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
-          </button>
+          </a>
         </nav>
         <button className="flex items-center px-4 py-2 mt-auto bg-red-500 rounded-md text-white">
           <IoMdLogOut className="mr-2" />
@@ -247,7 +247,8 @@ const TermsAndConditions = () => {
   <div className="space-y-3">
     <p className="text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
          Fusce quis ante ornare, venenatis tortor sed, fringilla ante. Morbi nec semper justo. Cras eget
-          rhoncus urna, eu fringilla nibh. Class aptent taciti sociosqu ad litora torquent per conubia 
+          rhoncu
+          s urna, eu fringilla nibh. Class aptent taciti sociosqu ad litora torquent per conubia 
           nostra, per inceptos himenaeos. Nam pretium eleifend neque, vel blandit erat iaculis id. Etiam
            ut lectus vitae metus convallis condimentum quis cursus mi.   </p>
              <p className="text-gray-400"> Dolor sit amet, consectetur adipiscing elit. Fusce quis ante ornare, venenatis tortor sed,
