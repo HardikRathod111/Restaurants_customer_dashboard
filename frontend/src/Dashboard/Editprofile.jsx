@@ -34,7 +34,7 @@ function Editprofile() {
   return (
     <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
-      <aside className="w-[200px] h-[900px] bg-gray-800 p-4 flex flex-col items-center">
+      <aside className="w-[200px] h-screen bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
           {/* Centered Image */}
           <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="w-[216px] h-[100px] rounded-full mb-2" />

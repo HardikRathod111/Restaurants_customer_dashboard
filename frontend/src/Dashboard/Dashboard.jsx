@@ -85,14 +85,13 @@ const notifications: Notification[] = [
 ]
 
 export default function Dashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [showNotifications, setShowNotifications] = useState(false)
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // Added state for sidebar visibility
-  
-  const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Added toggle function
-  
-  const [manageOrderOpen, setManageOrderOpen] = useState(false);
-   const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [showNotifications, setShowNotifications] = useState(false)
+    const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+    const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
+
+    const [manageOrderOpen, setManageOrderOpen] = useState(false);
+    const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -101,12 +100,12 @@ export default function Dashboard() {
     const toggleManageOrder = () => {
         setManageOrderOpen(!manageOrderOpen);
     };
-       const togglePaymentHistory = () => {
-        setPaymentHistoryOpen(!PaymentHistoryOpen);
+    const togglePaymentHistory = () => {
+    setPaymentHistoryOpen(!PaymentHistoryOpen);
     };
-  useEffect(() => {
-    console.log('Notifications visible:', showNotifications);
-  }, [showNotifications]);
+    useEffect(() => {
+      console.log('Notifications visible:', showNotifications);
+    }, [showNotifications]);
 
   const barChartData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -132,7 +131,7 @@ export default function Dashboard() {
   return (
    <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
-      <aside className="w-[200px] h-[900px] bg-gray-800 p-4 flex flex-col items-center">
+      <aside className={`w-[200px] fixed top-0 left-0 h-screen bg-gray-800 p-4 flex flex-col items-center transition-transform ${isSidebarVisible ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col items-center mb-8">
           {/* Centered Image */}
           <img
@@ -202,7 +201,7 @@ export default function Dashboard() {
         </button>
       </aside>
 
-      <main className="flex-1 p-6 bg-gray-900">
+      <main className="flex-1 ml-[200px] p-6 bg-gray-900">
         <header className="flex justify-between items-center mb-6 pb-4">
           {/* Welcome Text */}
           <h2 className="text-xl font-semibold text-white">
@@ -334,80 +333,94 @@ export default function Dashboard() {
 
         
 
-        {/* Charts */}
-        <div className="grid grid-cols-1 2xl:grid-cols-2 gap-8 mb-8">
-          <div className="bg-gray-800 p-6 rounded-lg">
-            <div className="flex justify-between items-center mb-4">
-              <h4 className="text-xl font-bold">Customer Visit</h4>
-              <select className="bg-gray-700 text-white rounded px-2 py-1">
-                <option>Month</option>
-                <option>Week</option>
-                <option>Year</option>
-              </select>
-            </div>
-            <Bar data={barChartData} options={{ responsive: true, plugins: { legend: { display: false } } }} />
-          </div>
-          <div className="bg-gray-800 p-6 rounded-lg">
-            <div className="flex justify-between items-center mb-4">
-              <h4 className="text-xl font-bold">Orders</h4>
-              <select className="bg-gray-700 text-white rounded px-2 py-1">
-                <option>Week</option>
-                <option>Month</option>
-                <option>Year</option>
-              </select>
-            </div>
-            <div className="flex justify-center">
-              <div className="w-64 h-64">
-                <Doughnut data={doughnut} options={{ responsive: true, maintainAspectRatio: false }} />
-              </div>
-            </div>
-            <div className="flex justify-around mt-4">
-              <div className="text-center">
-                <p className="text-2xl font-bold">587</p>
-                <p className="text-gray-400">Parcel Order</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold">475</p>
-                <p className="text-gray-400">Onsite Order</p>
-              </div>
-            </div>
-          </div>
-        </div>
+<div className="grid grid-cols-1 2xl:grid-cols-12 gap-8 mb-8">
+  {/* Left Column (2 Charts) */}
+  <div className="2xl:col-span-7 space-y-8">
+    {/* Customer Visit Chart */}
+    <div className="bg-gray-800 p-6 rounded-lg" style={{ height: '420px' }}>
+      <div className="flex justify-between items-center mb-4">
+        <h4 className="text-xl font-bold">Customer Visit</h4>
+        <select className="bg-gray-700 text-white rounded px-2 py-1">
+          <option>Month</option>
+          <option>Week</option>
+          <option>Year</option>
+        </select>
+      </div>
+      <Bar
+        data={barChartData}
+        options={{
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+          },
+        }}
+      />
+    </div>
 
-        {/* Popular Dishes */}
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <div className="flex justify-between items-center mb-4">
-            <h4 className="text-xl font-bold">Popular Dishes</h4>
-            <select className="bg-gray-700 text-white rounded px-2 py-1">
-              <option>Week</option>
-              <option>Month</option>
-              <option>Year</option>
-            </select>
-          </div>
-          <table className="w-full">
-            <thead>
-              <tr className="text-gray-400 text-left">
-                <th className="py-2">Dish</th>
-                <th className="py-2">Price</th>
-                <th className="py-2">Order Qty</th>
-                <th className="py-2">Revenue</th>
-              </tr>
-            </thead>
-            <tbody>
-              {popularDishes.map((dish, index) => (
-                <tr key={index} className="border-t border-gray-700">
-                  <td className="py-2 flex items-center">
-                    <img src={dish.image} alt={dish.name} className="w-8 h-8 mr-2 rounded" />
-                    {dish.name}
-                  </td>
-                  <td className="py-2">₹{dish.price.toFixed(2)}</td>
-                  <td className="py-2">{dish.orderQty}</td>
-                  <td className="py-2">₹{dish.revenue.toFixed(2)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    {/* Orders Chart */}
+    <div className="bg-gray-800 p-6 rounded-lg">
+      <div className="flex justify-between items-center mb-4">
+        <h4 className="text-xl font-bold">Orders</h4>
+        <select className="bg-gray-700 text-white rounded px-2 py-1">
+          <option>Week</option>
+          <option>Month</option>
+          <option>Year</option>
+        </select>
+      </div>
+      <div className="flex justify-center">
+        <div className="w-64 h-64">
+          <Doughnut data={doughnut} options={{ responsive: true, maintainAspectRatio: false }} />
         </div>
+      </div>
+      <div className="flex justify-around mt-4">
+        <div className="text-center">
+          <p className="text-2xl font-bold">587</p>
+          <p className="text-gray-400">Parcel Order</p>
+        </div>
+        <div className="text-center">
+          <p className="text-2xl font-bold">475</p>
+          <p className="text-gray-400">Onsite Order</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Right Column (Popular Dishes) */}
+  <div className="bg-gray-800 p-6 rounded-lg 2xl:col-span-5">
+    <div className="flex justify-between items-center mb-4">
+      <h4 className="text-xl font-bold">Popular Dishes</h4>
+      <select className="bg-gray-700 text-white rounded px-2 py-1">
+        <option>Week</option>
+        <option>Month</option>
+        <option>Year</option>
+      </select>
+    </div>
+    <table className="w-full">
+      <thead>
+        <tr className="text-gray-400 text-left">
+          <th className="py-2">Dish</th>
+          <th className="py-2">Price</th>
+          <th className="py-2">Order Qty</th>
+          <th className="py-2">Revenue</th>
+        </tr>
+      </thead>
+      <tbody>
+        {popularDishes.map((dish, index) => (
+          <tr key={index} className="border-t border-gray-700">
+            <td className="py-2 flex items-center">
+              <img src={dish.image} alt={dish.name} className="w-8 h-8 mr-2 rounded" />
+              {dish.name}
+            </td>
+            <td className="py-2">₹{dish.price.toFixed(2)}</td>
+            <td className="py-2">{dish.orderQty}</td>
+            <td className="py-2">₹{dish.revenue.toFixed(2)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
       </main>
     </div>
   )
