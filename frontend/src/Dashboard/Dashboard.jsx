@@ -173,13 +173,13 @@ const  Dashboard = () => {
           </button>
           <div>
             {/* PaymentHistory Dropdown */}
-            <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
-              onClick={togglePaymentHistory}>
-              <FaClipboardList className="mr-2 text-yellow-500" />
-              Payment History
-              <MdExpandMore className={`ml-auto transform ${PaymentHistoryOpen ? 'rotate-180' : ''}`} />
-            </button>
-            {PaymentHistoryOpen && (
+              <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                onClick={togglePaymentHistory}>
+                <FaClipboardList className="mr-2 text-yellow-500" />
+                PaymentHistory
+                <MdExpandMore className={`ml-auto transform ${PaymentHistoryOpen ? 'rotate-180' : '' }`} />
+              </button>
+              {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
                 <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Parcel Order
@@ -188,8 +188,8 @@ const  Dashboard = () => {
                   Onsite Order
                 </a>
               </div>
-            )}
-          </div>
+              )}
+            </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
