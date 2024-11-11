@@ -418,6 +418,5 @@ export default function Dashboard() {
       </main>
     </div>
   )
-}
+};
 
-export default Dashboard;

@@ -35,7 +35,6 @@ const ChangePasswordPage = () =>{
     return(
 
         <div className="flex  bg-gray-900 text-white font-sans">
-        <div className="flex bg-gray-900 text-white font-sans">
       {/* Sidebar */}
       <aside className="w-[200px] h-screen bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
@@ -255,8 +254,6 @@ const ChangePasswordPage = () =>{
       </section>
       </main>
       </div>
-      </div>
     )
 };
-
 export default ChangePasswordPage;
