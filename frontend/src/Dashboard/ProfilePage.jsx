@@ -275,7 +275,7 @@ function ProfilePage() {
         <a
           href="/"
           onClick={() => handleLinkClick('profile')}
-          className={`flex items-center w-full  p-2 rounded-md bg-yellow-600 text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium mb-4`}
+          className={`flex items-center w-full  p-2 rounded-md bg-yellow-600 text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium  mb-4`}
         >
           <FaUser className="mr-2" />
           Profile
