@@ -9,10 +9,14 @@ import ProfilePage from './Dashboard/ProfilePage';
 import ChangePasswordPage from './Dashboard/ChangePasswordPage';
 import TermsAndConditions from './Dashboard/TermsAndConditions';
 import ParcelOrder from './Dashboard/ParcelOrder';
+<<<<<<< HEAD
 import Dashboard from './Dashboard/Dashboard';
 import Editprofile from './Dashboard/Editprofile';
 import QrCode from './Dashboard/QrCode';
 import Createqrcode from './Dashboard/Createqrcode';
+=======
+import OnsiteOrder from './Dashboard/OnsiteOrder';
+>>>>>>> 72302be5923bfafe2037cf42356080e588337ec0
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -24,6 +28,7 @@ function App() {
 
   return (
     <Router>
+<<<<<<< HEAD
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
@@ -65,6 +70,14 @@ function App() {
           path="/createqrcode"
           element={isAuthenticated ? <Createqrcode /> : <Navigate to="/login" />}
         />
+=======
+        <Routes>
+            <Route path="/forget" element={< Forgotpassword/>} />
+            <Route path="/Otp" element={< Otp/>} />
+            <Route path="/resetpassword" element={< Resetpassword/>} />
+            <Route path="/parcelorder" element={< ParcelOrder/>} />
+            <Route path="/onsiteorder" element={< OnsiteOrder/>} />
+>>>>>>> 72302be5923bfafe2037cf42356080e588337ec0
       </Routes>
     </Router>
   );
