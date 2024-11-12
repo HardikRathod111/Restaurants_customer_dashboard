@@ -13,6 +13,7 @@ import Dashboard from './Dashboard/Dashboard';
 import Editprofile from './Dashboard/Editprofile';
 import Forgotpassword from './Pages/Forgotpassword';
 import QrCode from './Dashboard/QrCode';
+import Createqrcode from './Dashboard/Createqrcode';
 
 
  
@@ -37,7 +38,8 @@ function App() {
             <Route path="/resetpassword" element={< Resetpassword/>} />
             <Route path="/parcelorder" element={< ParcelOrder/>} />
             <Route path='/qrcode' element={<QrCode/>}/>
-      </Routes>
+            <Route path='/createqrcode' element={<Createqrcode/>}/>
+       </Routes>
       </Router>
   );
 }

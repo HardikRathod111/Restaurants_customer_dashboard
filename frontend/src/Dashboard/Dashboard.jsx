@@ -231,7 +231,7 @@ export default function Dashboard() {
                 <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
               </svg>
               {/* Notification Badge */}
-              <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
+              <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-yellow-500" />
             </div>
 
             {/* User Profile Dropdown */}
