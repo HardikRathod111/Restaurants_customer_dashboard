@@ -1,12 +1,9 @@
 
-<<<<<<< HEAD
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-=======
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Forgotpassword from './Pages/Forgotpassword';
->>>>>>> 5d3d396e31d633f850449176f547454e375fa024
 import Otp from './Pages/Otp';
 import Register from './Pages/Register';
 import Resetpassword from './Pages/Resetpassword';
@@ -37,7 +34,6 @@ function App() {
   return (
     <Router>
         <Routes>
-<<<<<<< HEAD
             <Route path="/login" element={<Login />} />
             <Route path="/forget" element={< Forgotpassword/>} />
             <Route path="/Otp" element={< Otp/>} />
@@ -56,7 +52,6 @@ function App() {
             <Route path='/qrcode' element={<QrCode/>}/>
             <Route path='/createqrcode' element={<Createqrcode/>}/>
        </Routes>
-=======
             {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/forget" element={<Forgotpassword />} />
@@ -89,8 +84,6 @@ function App() {
           path="/dashboard"
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
         />
-      </Routes>
->>>>>>> 5d3d396e31d633f850449176f547454e375fa024
       </Router>
   );
 }

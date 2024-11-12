@@ -5,18 +5,13 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
-<<<<<<< HEAD
-=======
+
     "@headlessui/react": "^2.2.0",
->>>>>>> 5d3d396e31d633f850449176f547454e375fa024
     "@heroicons/react": "^1.0.6",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
-=======
     "axios": "^1.7.7",
->>>>>>> 5d3d396e31d633f850449176f547454e375fa024
     "chart.js": "^4.4.6",
     "lucide-react": "^0.455.0",
     "react": "^18.3.1",
