@@ -6,6 +6,8 @@ import {
 import { MdWindow, MdAddBox , MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore } from 'react-icons/md';
 import { IoMdLogOut } from 'react-icons/io';
 
+
+
 const Createqrcode = () => {
   const [activeLink, setActiveLink] = useState('');
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
@@ -181,116 +183,112 @@ const Createqrcode = () => {
             Counter
           </button>
         </div>
+        <section>
+            <div className="flex flex-col items-center bg-gray-900 min-h-screen py-8 text-white">
+      <div className="w-full max-w-6xl bg-gray-800 p-8 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-semibold mb-6 text-center">Create QR Code</h2>
         
-        {/* QR Code Section */}
-        {activeTab === 'request' && (
-          <section className="relative bg-gray-900 rounded-lg overflow-hidden p-6 w-full">
-            <div className="relative bg-gray-800 rounded-lg p-5 w-full">
-              <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-white">QR Codes</h1>
-               <a href='/createqrcode' className="bg-yellow-600 hover:bg-yellow-700 white font-semibold py-2 px-6 rounded-lg shadow-md flex items-center">
-                   <MdAddBox className="text-white mr-2" />
-                   Create QR Code
-                 </a>
-              </div>
+        {/* Input Fields Row */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          {/* Link Input */}
+          <div>
+            <label className="block text-sm mb-1">Put Your Link Here</label>
+            <input
+              type="text"
+              className="bg-gray-700 p-3 rounded w-full text-gray-200 placeholder-gray-400"
+              placeholder="https://www.musthavemenus.com/category/restaurant-menu.html"
+            />
+          </div>
 
-              <div className="grid grid-cols-3 lg:grid-cols-4 gap-6 w-full">
-                {[1, 2, 3, 4, 5, 6].map((tableNumber) => (
-                  <div key={tableNumber} className="bg-gray-700 rounded-lg p-6 flex h-[250px] flex-col items-center relative w-full">
-                    
-                    {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
-                    <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
-                      <h2 className="text-lg font-semibold text-white">{`Table No - ${tableNumber}`}</h2>
-                      <div
-                        className="text-gray-400 cursor-pointer"
-                        onClick={() => toggledropdown(tableNumber)}
-                      >
-                        <FaEllipsisV />
-                      </div>
-                    </div>
-
-                    {/* Dropdown Menu */}
-                    {dropdownOpen === tableNumber && (
-                      <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28">
-                        <button
-                          className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
-                          onClick={() => alert(`Editing Table ${tableNumber}`)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
-                          onClick={() => alert(`Deleting Table ${tableNumber}`)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    )}
-
-                    {/* QR Code Box with Full Width Dark Background */}
-                    <div className="bg-black p-6 rounded-lg mb-4 w-full flex justify-center items-center">
-                      <img src="./assets/images/Group 1000006213.png" alt={`QR Code for Table ${tableNumber}`} className="w-full h-auto max-w-xs mx-auto"/>
-                    </div>
-
-                  </div>
-                ))}
-              </div>
+          {/* Name and Category */}
+          <div className="flex space-x-4">
+            <div className="w-1/2">
+              <label className="block text-sm mb-1">Name Your QR (Optional)</label>
+              <input
+                type="text"
+                className="bg-gray-700 p-3 rounded w-full text-gray-200 placeholder-gray-400"
+                placeholder="Food & Drink"
+              />
             </div>
-          </section>
-        )}
-        {activeTab === "progress" && (
-  <section className="relative bg-gray-900 rounded-lg overflow-hidden p-6 w-full">
-    <div className="relative bg-gray-800 rounded-lg p-5 w-full">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-white">QR Codes</h1>
-        <a href="/createqrcode" className="bg-yellow-600 hover:bg-yellow-700 white font-semibold py-2 px-6 rounded-lg shadow-md flex items-center">
-          <MdAddBox className="text-white mr-2" />
-          Create QR Code
-        </a>
-      </div>
-
-      <div className="grid grid-cols-3 lg:grid-cols-4 gap-6 w-full">
-        {[1, 2].map((counterNumber) => (
-          <div key={counterNumber} className="bg-gray-700 rounded-lg p-6 flex h-[250px] flex-col items-center relative w-full">
-            {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
-            <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
-              <h2 className="text-base font-semibold text-white">{`Counter No - ${counterNumber}`}</h2>
-              <div
-                className="text-gray-400 cursor-pointer"
-                onClick={() => toggleCounterDropdown(counterNumber)} // Updated to use the correct function
-              >
-                <FaEllipsisV />
-              </div>
-            </div>
-
-            {/* Dropdown Menu */}
-            {dropdownOpen === counterNumber && (
-              <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28">
-                <button
-                  className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
-                  onClick={() => alert(`Editing Table ${counterNumber}`)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
-                  onClick={() => alert(`Deleting Table ${counterNumber}`)}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-
-            {/* QR Code Box with Full Width Dark Background */}
-            <div className="bg-black p-6 rounded-lg mb-4 w-full flex justify-center items-center">
-              <img src="./assets/images/Group 1000006213.png" alt={`QR Code for Table ${counterNumber}`} className="w-full h-auto max-w-xs mx-auto" />
+            <div className="w-1/2">
+              <label className="block text-sm mb-1">Select Content Category</label>
+              <select className="bg-gray-700 p-3 rounded w-full text-gray-200">
+                <option>Food & Drink</option>
+                <option>Other</option>
+              </select>
             </div>
           </div>
-        ))}
+        </div>
+
+        {/* Additional Text and Colors */}
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          <div>
+            <label className="block text-sm mb-1">Additional Text</label>
+            <input
+              type="text"
+              className="bg-gray-700 p-3 rounded w-full text-gray-200 placeholder-gray-400"
+              placeholder="Additional"
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1">Choose Color</label>
+            <input
+              type="color"
+              className="w-full h-10 rounded bg-gray-700"
+              defaultValue="#FFFFFF"
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1">Frame Background</label>
+            <input
+              type="color"
+              className="w-full h-10 rounded bg-gray-700"
+              defaultValue="#FFFFFF"
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1">QR Code Background</label>
+            <input
+              type="color"
+              className="w-full h-10 rounded bg-gray-700"
+              defaultValue="#FFFFFF"
+            />
+          </div>
+        </div>
+
+        {/* Thematic Icons */}
+        <div className="mb-6">
+          <h3 className="text-lg font-medium mb-2">Thematic</h3>
+          <div className="grid grid-cols-6 gap-4">
+            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">🍽️</div>
+            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">☕</div>
+            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">🍩</div>
+            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">🍔</div>
+            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">🥂</div>
+            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">🍱</div>
+          </div>
+        </div>
+
+        {/* QR Code Preview and Download */}
+        <div className="flex justify-between items-center mt-6">
+          {/* QR Code Preview */}
+          <div className="flex items-center">
+            <label className="mr-4">Preview</label>
+            <div className="bg-gray-700 p-8 rounded-lg w-32 h-32 flex items-center justify-center text-2xl">
+              <span className="text-center">QR</span>
+            </div>
+          </div>
+
+          {/* Download Options */}
+          <div className="flex space-x-4">
+            <button className="bg-yellow-500 text-gray-900 px-4 py-2 rounded">SVG</button>
+            <button className="bg-yellow-500 text-gray-900 px-4 py-2 rounded">PNG</button>
+            <button className="bg-yellow-500 text-gray-900 px-6 py-3 rounded-full">Download QR</button>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
-)}
+        </section>
       </main>
     </div>
   );
