@@ -1,31 +1,54 @@
-import React, { useState } from 'react'
-import { Eye, EyeOff } from 'lucide-react'
+import React, { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 import bgheroimg from "../../images/image.png";
 import logoimg from "../../images/Group 1000005985.png";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';  // Import axios
+
 
 function Login() {
-    const [showPassword, setShowPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handlePlaceholderLink = (e) => {
-        e.preventDefault()
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8080/api/v1/admin/adminlogin', {
+                email,
+                password,
+            });
+
+            if (response.status === 200) {
+                navigate('/dashboard'); 
+                if (response.data.token) {
+                    localStorage.setItem('authToken', response.data.token);  // Store token
+                }  // Redirect to the dashboard or another page
+                 // Redirect to dashboard
+            }
+        } catch (err) {
+            setError('Login failed. Please check your credentials or try again later.');
+            console.error(err);
+        }
+    };
 
     return (
-        <div className="flex min-h-screen bg-[#1e2329] text-white bg-cover bg-center"
+        <div 
+            className="flex min-h-screen bg-[#1e2329] text-white bg-cover bg-center"
             style={{
                 backgroundImage: `
                 linear-gradient(89.95deg, rgba(31, 29, 43, 0.96) 0.04%, rgba(30, 28, 42, 0.43) 70.08%, rgba(30, 28, 41, 0.37) 99.14%), 
                 linear-gradient(89.47deg, #1F1D2B 0.37%, rgba(31, 28, 42, 0.74) 99.48%),
                 url(${bgheroimg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            height: '100vh', 
-            width: '100vw', 
-            }}>
-            <div className="flex-1 flex items-center justify-center p-8">
-                <div className="w-full max-w-xl space-y-6 bg-[#252836] p-8 rounded-lg">
-                    <h2 className="text-2xl font-semibold">Login</h2>
-                    <form className="space-y-4">
+            }}
+        >
+            <div className="flex flex-col lg:flex-row flex-1 items-center justify-center p-4 sm:p-8">
+                <div className="w-full max-w-md space-y-6 bg-[#252836] p-8 rounded-lg lg:mr-8">
+                    <h2 className="text-2xl font-semibold text-center lg:text-left">Login</h2>
+                    {error && <div className="text-red-500 text-center">{error}</div>}  {/* Display error if any */}
+                    <form className="space-y-4" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-400">
                                 Email or Phone *
@@ -37,6 +60,8 @@ function Login() {
                                 required
                                 className="mt-1 block w-full px-3 py-2 bg-[#1e2329] border border-gray-600 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="Enter your Email or Phone"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                         <div>
@@ -51,6 +76,8 @@ function Login() {
                                     required
                                     className="block w-full px-3 py-2 bg-[#1e2329] border border-gray-600 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     placeholder="Enter Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <button
                                     type="button"
@@ -90,21 +117,21 @@ function Login() {
                     </form>
                     <p className="mt-2 text-center text-sm text-gray-400">
                         Don't have an account?{' '}
-                        <a href="/"  className="font-medium text-[#4a90e2] hover:text-[#5a9ff2]">
+                        <a href="/" className="font-medium text-[#4a90e2] hover:text-[#5a9ff2]">
                             Register
                         </a>
                     </p>
                 </div>
-                <div className="hidden lg:flex flex-1 relative">
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-14 space-y-4">
-                    <div className='pb-28'>
-                        <img src={logoimg} className='p-14'/>
+                
+                {/* Right Side Image Section */}
+                <div className="hidden lg:flex flex-1 items-center justify-center p-8  relative">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <img src={logoimg} alt="Logo" className="p-14 xl:w-11/12 max-w-lg lg:p-0" />
                     </div>
                 </div>
             </div>
-            </div>
         </div>
-    )
+    );
 }
 
-export default Login
+export default Login;

@@ -7,7 +7,7 @@ const Otp = () => {
       style={{ backgroundImage: "url('/assets/images/d75bfbbb18fefcba2a744eb559378aad.jfif')" }}
     >
       {/* Left side - OTP Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center bg-slate-800 bg-opacity-70">
+      <div className="w-full lg:w-1/2 md:w-full flex items-center justify-center bg-slate-800 bg-opacity-70">
         <div className="p-8 rounded-md shadow-md max-w-md w-full" style={{ backgroundColor: '#333748',margin:'50px' }}>
           <h2 className="text-2xl font-semibold text-white mb-4">Enter OTP</h2>
           <p className="text-gray-400 mb-6">
@@ -48,7 +48,7 @@ const Otp = () => {
       </div>
 
       {/* Right side - Image */}
-      <div className="hidden md:flex w-full md:w-1/2 items-center justify-center bg-slate-800 bg-opacity-70">
+      <div className="hidden lg:flex w-full md:hidden items-center justify-center bg-slate-800 bg-opacity-70">
         <img
           src="/assets/images/Group 1000005985.png"
           alt="Illustration"

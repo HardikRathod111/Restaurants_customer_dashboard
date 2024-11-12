@@ -1,6 +1,12 @@
 
+<<<<<<< HEAD
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+=======
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Forgotpassword from './Pages/Forgotpassword';
+>>>>>>> 5d3d396e31d633f850449176f547454e375fa024
 import Otp from './Pages/Otp';
 import Register from './Pages/Register';
 import Resetpassword from './Pages/Resetpassword';
@@ -19,9 +25,19 @@ import Createqrcode from './Dashboard/Createqrcode';
  
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      setIsAuthenticated(true);  // User is authenticated
+    } else {
+      setIsAuthenticated(false);  // No token found, user is not authenticated
+    }
+  }, []);
   return (
     <Router>
         <Routes>
+<<<<<<< HEAD
             <Route path="/login" element={<Login />} />
             <Route path="/forget" element={< Forgotpassword/>} />
             <Route path="/Otp" element={< Otp/>} />
@@ -40,6 +56,41 @@ function App() {
             <Route path='/qrcode' element={<QrCode/>}/>
             <Route path='/createqrcode' element={<Createqrcode/>}/>
        </Routes>
+=======
+            {/* Public routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/forget" element={<Forgotpassword />} />
+        <Route path="/Otp" element={<Otp />} />
+        <Route path="/resetpassword" element={<Resetpassword />} />
+        <Route path="/" element={<Register />} />
+
+        {/* Protected routes (Only accessible if authenticated) */}
+        <Route
+          path="/editprofile"
+          element={isAuthenticated ? <Editprofile /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/Profilepage"
+          element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/ChangePassword"
+          element={isAuthenticated ? <ChangePasswordPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/TermsAndConditions"
+          element={isAuthenticated ? <TermsAndConditions /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/parcelorder"
+          element={isAuthenticated ? <ParcelOrder /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/dashboard"
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
+        />
+      </Routes>
+>>>>>>> 5d3d396e31d633f850449176f547454e375fa024
       </Router>
   );
 }
