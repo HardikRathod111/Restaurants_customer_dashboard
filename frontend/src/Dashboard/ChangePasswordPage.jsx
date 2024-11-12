@@ -62,7 +62,7 @@ const ChangePasswordPage = () =>{
                                 <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Parcel Order
                                 </a>
-                                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Onsite Order
                                 </a>
                             </div>
@@ -82,7 +82,7 @@ const ChangePasswordPage = () =>{
               </button>
               {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
-                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Parcel Order
                 </a>
                 <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">

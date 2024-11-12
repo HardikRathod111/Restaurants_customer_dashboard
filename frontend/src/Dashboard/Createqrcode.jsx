@@ -5,6 +5,8 @@ import {
 } from 'react-icons/fa';
 import { MdWindow, MdAddBox , MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore } from 'react-icons/md';
 import { IoMdLogOut } from 'react-icons/io';
+import { QRCodeCanvas } from 'qrcode.react'; // Import QRCodeCanvas from qrcode.react
+
 
 
 
@@ -15,6 +17,17 @@ const Createqrcode = () => {
   const [activeTab, setActiveTab] = useState('request');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null); // Fixed state for dropdown menu
+
+
+   const [link, setLink] = useState('');
+  const [qrName, setQrName] = useState('');
+  const [category, setCategory] = useState('Food & Drink');
+  const [additionalText, setAdditionalText] = useState('');
+  
+  // Color states
+  const [chooseColor, setChooseColor] = useState("#FFFFFF");
+  const [frameColor, setFrameColor] = useState("#FFFFFF");
+  const [qrColor, setQRColor] = useState("#FFFFFF");
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
@@ -69,7 +82,7 @@ const Createqrcode = () => {
                 <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Parcel Order
                 </a>
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Onsite Order
                 </a>
               </div>
@@ -87,7 +100,7 @@ const Createqrcode = () => {
             </button>
             {paymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
-                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Parcel Order
                 </a>
                 <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
@@ -186,7 +199,7 @@ const Createqrcode = () => {
         <section>
             <div className="flex flex-col items-center bg-gray-900 min-h-screen py-8 text-white">
       <div className="w-full max-w-6xl bg-gray-800 p-8 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-semibold mb-6 text-center">Create QR Code</h2>
+        <h2 className="text-3xl font-semibold mb-6 ">Create QR Code</h2>
         
         {/* Input Fields Row */}
         <div className="grid grid-cols-2 gap-4 mb-6">
@@ -221,73 +234,81 @@ const Createqrcode = () => {
         </div>
 
         {/* Additional Text and Colors */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div>
-            <label className="block text-sm mb-1">Additional Text</label>
-            <input
-              type="text"
-              className="bg-gray-700 p-3 rounded w-full text-gray-200 placeholder-gray-400"
-              placeholder="Additional"
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Choose Color</label>
-            <input
-              type="color"
-              className="w-full h-10 rounded bg-gray-700"
-              defaultValue="#FFFFFF"
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Frame Background</label>
-            <input
-              type="color"
-              className="w-full h-10 rounded bg-gray-700"
-              defaultValue="#FFFFFF"
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">QR Code Background</label>
-            <input
-              type="color"
-              className="w-full h-10 rounded bg-gray-700"
-              defaultValue="#FFFFFF"
-            />
-          </div>
-        </div>
+      <div className="grid grid-cols-4 gap-4 mb-6">
+              <div>
+                <label className="block text-sm mb-1">Additional Text</label>
+                <input
+                  type="text"
+                  className="bg-gray-700 p-3 rounded w-full text-gray-200 placeholder-gray-400"
+                  placeholder="Additional"
+                  value={additionalText}
+                  onChange={(e) => setAdditionalText(e.target.value)}
+                />
+              </div>
 
-        {/* Thematic Icons */}
-        <div className="mb-6">
-          <h3 className="text-lg font-medium mb-2">Thematic</h3>
-          <div className="grid grid-cols-6 gap-4">
-            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">🍽️</div>
-            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">☕</div>
-            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">🍩</div>
-            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">🍔</div>
-            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">🥂</div>
-            <div className="bg-gray-700 p-4 rounded flex justify-center items-center">🍱</div>
-          </div>
-        </div>
+              {/* Color Pickers */}
+              <div className="relative">
+                <label className="block text-sm mb-1">Choose Color</label>
+                <div className="flex items-center bg-gray-700 rounded p-3 cursor-pointer">
+                  <input
+                    type="color"
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    value={chooseColor}
+                    onChange={(e) => setChooseColor(e.target.value)}
+                  />
+                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: chooseColor }}></div>
+                  <span className="ml-2">{chooseColor}</span>
+                </div>
+              </div>
+              <div className="relative">
+                <label className="block text-sm mb-1">Frame Color</label>
+                <div className="flex items-center bg-gray-700 rounded p-3 cursor-pointer">
+                  <input
+                    type="color"
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    value={frameColor}
+                    onChange={(e) => setFrameColor(e.target.value)}
+                  />
+                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: frameColor }}></div>
+                  <span className="ml-2">{frameColor}</span>
+                </div>
+              </div>
+              <div className="relative">
+                <label className="block text-sm mb-1">QR Color</label>
+                <div className="flex items-center bg-gray-700 rounded p-3 cursor-pointer">
+                  <input
+                    type="color"
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    value={qrColor}
+                    onChange={(e) => setQRColor(e.target.value)}
+                  />
+                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: qrColor }}></div>
+                  <span className="ml-2">{qrColor}</span>
+                </div>
+              </div>
+            </div>
 
-        {/* QR Code Preview and Download */}
-        <div className="flex justify-between items-center mt-6">
-          {/* QR Code Preview */}
-          <div className="flex items-center">
-            <label className="mr-4">Preview</label>
-            <div className="bg-gray-700 p-8 rounded-lg w-32 h-32 flex items-center justify-center text-2xl">
-              <span className="text-center">QR</span>
+            {/* Display QR Code */}
+            {link && (
+              <div className="flex justify-center mb-6">
+                <QRCodeCanvas
+                  value={link}
+                  size={256}
+                  fgColor={qrColor}
+                  bgColor={chooseColor}
+                  level="H"
+                  style={{ borderRadius: '10px', padding: '10px', border: `4px solid ${frameColor}` }}
+                />
+              </div>
+            )}
+
+            <div className="flex justify-center">
+              <button className="bg-yellow-500 px-6 py-2 text-black font-semibold rounded-lg hover:bg-yellow-600">
+                Download
+              </button>
             </div>
           </div>
-
-          {/* Download Options */}
-          <div className="flex space-x-4">
-            <button className="bg-yellow-500 text-gray-900 px-4 py-2 rounded">SVG</button>
-            <button className="bg-yellow-500 text-gray-900 px-4 py-2 rounded">PNG</button>
-            <button className="bg-yellow-500 text-gray-900 px-6 py-3 rounded-full">Download QR</button>
           </div>
-        </div>
-      </div>
-    </div>
         </section>
       </main>
     </div>
