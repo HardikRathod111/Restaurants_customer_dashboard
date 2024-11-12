@@ -6,35 +6,43 @@ import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner ,MdExpandMo
 import { FaBoxOpen } from "react-icons/fa6";
 import { IoMdLogOut } from "react-icons/io";
 import { useState } from 'react';
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
+import { useNavigate } from 'react-router-dom';
+
+// import { XMarkIcon } from '@heroicons/react/24/outline'
+
+
 
 
 function ProfilePage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [activeLink, setActiveLink] = useState('');
+  const [activeLink, setActiveLink] = useState('');
+  const [manageOrderOpen, setManageOrderOpen] = useState(false);
+  const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
+  const navigate = useNavigate
+  const handlenavigateprofile = ()=> {
+    navigate('/Profilepage');
+  }
+  const toggleManageOrder = () => {
+    setManageOrderOpen(!manageOrderOpen);
+  };
 
-              const [manageOrderOpen, setManageOrderOpen] = useState(false);
-
-             const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
-
-
-                const toggleManageOrder = () => {
-        setManageOrderOpen(!manageOrderOpen);
-    };
-
-            const togglePaymentHistory = () => {
-        setPaymentHistoryOpen(!PaymentHistoryOpen);
-    };
+  const togglePaymentHistory = () => {
+    setPaymentHistoryOpen(!PaymentHistoryOpen);
+  };
  
-     const handleLinkClick = (linkName) => {
+  const handleLinkClick = (linkName) => {
     setActiveLink(linkName);
   };
 
-    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const [open, setOpen] = useState(false)
 
   return (
     <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
-      <aside className="w-[200px] h-screen bg-gray-800 p-4 flex flex-col items-center">
+      <aside className="w-[200px] h-screen sm:hidden lg:flex bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
           {/* Centered Image */}
           <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-20 rounded-full mb-2" />
@@ -46,26 +54,26 @@ function ProfilePage() {
             Dashboard
           </a>
            <div>
-                        {/* Manage Order Dropdown */}
-                        <button
-                            className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
-                            onClick={toggleManageOrder}
-                        >
-                            <FaBoxOpen className="mr-2 text-yellow-500" />
-                            Manage Order
-                            <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
-                        </button>
-                        {manageOrderOpen && (
-                            <div className="ml-8 mt-2 space-y-2">
-                                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                                    Parcel Order
-                                </a>
-                                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                                    Onsite Order
-                                </a>
-                            </div>
-                        )}
-                    </div>
+              {/* Manage Order Dropdown */}
+              <button
+                  className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                  onClick={toggleManageOrder}
+              >
+                  <FaBoxOpen className="mr-2 text-yellow-500" />
+                  Manage Order
+                  <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {manageOrderOpen && (
+                  <div className="ml-8 mt-2 space-y-2">
+                      <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                          Parcel Order
+                      </a>
+                      <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                          Onsite Order
+                      </a>
+                  </div>
+              )}
+          </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
@@ -104,18 +112,122 @@ function ProfilePage() {
       <main className="flex-1 p-6 bg-gray-900">
       <header className="flex justify-between items-center mb-6 pb-4 ">
         {/* Welcome Text */}
-        <h2 className="text-xl font-semibold text-white">
+        <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
           Welcome Back 👋 
           <br />
           <span className="text-gray-400 font-normal text-lg">Jd's Restro</span>
         </h2>
 
+        <button id="toggleButton" className='lg:hidden' onClick={() => setOpen(true)}>
+        <BsThreeDotsVertical style={{fontSize:'20px'}}/>
+        </button>
+        <Dialog open={open} onClose={setOpen} className="relative z-10">
+      <DialogBackdrop
+        transition
+        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
+      />
+
+      <div className="fixed inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            <DialogPanel
+              transition
+              className="pointer-events-auto relative w-screen max-w-md sm:w-60 transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"
+            >
+              <TransitionChild>
+                <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 duration-500 ease-in-out data-[closed]:opacity-0 sm:-ml-10 sm:pr-4">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                  >
+                    <span className="absolute -inset-2.5" />
+                    <span className="sr-only">Close panel</span>
+                    {/* <XMarkIcon aria-hidden="true" className="h-6 w-6" /> */}
+                  </button>
+                </div>
+              </TransitionChild>
+              <div className="flex h-screen flex-col overflow-y-scroll  py-6 shadow-xl  bg-gray-800 p-4 items-center">
+                
+                <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                <div className="flex flex-col items-center mb-8">
+          {/* Centered Image */}
+          <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-20 rounded-full mb-2" />
+        </div>
+
+        <nav className="flex flex-col space-y-3 w-full">
+          <a href='/dashboard' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700 w-full">
+            <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            Dashboard
+          </a>
+           <div>
+              {/* Manage Order Dropdown */}
+              <button
+                  className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                  onClick={toggleManageOrder}
+              >
+                  <FaBoxOpen className="mr-2 text-yellow-500" />
+                  Manage Order
+                  <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {manageOrderOpen && (
+                  <div className="ml-8 mt-2 space-y-2">
+                      <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                          Parcel Order
+                      </a>
+                      <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                          Onsite Order
+                      </a>
+                  </div>
+              )}
+          </div>
+          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+            <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            Manage Menu
+          </button>
+          <div>
+              {/* PaymentHistory Dropdown */}
+              <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                onClick={togglePaymentHistory}>
+                <FaClipboardList className="mr-2 text-yellow-500" />
+                PaymentHistory
+                <MdExpandMore className={`ml-auto transform ${PaymentHistoryOpen ? 'rotate-180' : '' }`} />
+              </button>
+              {PaymentHistoryOpen && (
+              <div className="ml-8 mt-2 space-y-2">
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Parcel Order
+                </a>
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Onsite Order
+                </a>
+              </div>
+              )}
+            </div>
+          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+            <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            QR Codes
+          </button>
+        </nav>
+        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
+          <IoMdLogOut className="mr-2" />
+           Log Out
+         </button>
+
+                </div>
+              </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </div>
+    </Dialog>
+        
         {/* Search Bar */}
-        <div className="relative w-[400px]">
+        <div className="relative w-[400px]  marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
-            className="w-[300px] h-[40px] p-2 pl-10 ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+            className="w-[300px] sm:w-[230px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
           />
           < FaSearch 
             className="w-5 h-5 ml-48 text-gray-400 absolute left-3 top-2.5"/>
@@ -139,11 +251,10 @@ function ProfilePage() {
           {/* User Profile Dropdown */}
           <div className="relative">
             <button
-              onClick={toggleDropdown}
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="w-10 h-10 rounded-full" />
-              <span className="text-white">Musabbir Hossain</span>
+              <span className="text-white sm:hidden lg:flex">Musabbir Hossain</span>
               <svg
                 className="w-4 h-4 text-gray-300"
                 fill="currentColor"
@@ -152,21 +263,12 @@ function ProfilePage() {
                 <path d="M5.25 7.5l4.25 4.25 4.25-4.25L15 9l-5 5-5-5z" />
               </svg>
             </button>
-            
-            {/* Dropdown Menu */}
-            {isDropdownOpen && (
-              <div className="absolute right-0 w-48 bg-gray-800 text-gray-300 rounded-md shadow-lg py-2">
-                {/* <a href="#" className="block px-4 py-2 hover:bg-gray-700">Profile</a>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-700">Settings</a>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-700">Logout</a> */}
-              </div>
-            )}
           </div>
         </div>
       </header>
          <section className="flex gap-3">
       {/* Menu Section */}
-      <div className="w-[250px] h-[250px] bg-gray-800 p-4 rounded-md">
+      <div className="w-[250px] h-[250px] xl:h-[250px] lg:h-[270px] md:h-[280px] sm:h-[280px] bg-gray-800 p-4 rounded-md">
         <h3 className="text-lg font-semibold mb-4">Menu</h3>
         
         {/* Profile Link */}

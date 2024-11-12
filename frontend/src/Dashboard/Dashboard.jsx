@@ -4,6 +4,8 @@ import { FaBoxOpen, FaClipboardList, FaSearch } from 'react-icons/fa';
 import { IoMdCheckmarkCircle, IoMdCloseCircle,IoMdLogOut } from 'react-icons/io';
 import { FaShoppingBag, FaUsers, FaClock, FaChartLine } from 'react-icons/fa';
 import { MoreHorizontal } from 'react-icons/ri';  // Import MoreHorizontal
+import { useNavigate } from 'react-router-dom';
+
 
 // import fram_2 from '../assets/images/Frame 1000006002.png'
 
@@ -83,7 +85,6 @@ const notifications: Notification[] = [
     timeAgo: '1 Hrs Ago'
   }
 ]
-
 export default function Dashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const [showNotifications, setShowNotifications] = useState(false)
@@ -96,6 +97,8 @@ export default function Dashboard() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+    const navigate = useNavigate();
+
 
     const toggleManageOrder = () => {
         setManageOrderOpen(!manageOrderOpen);
@@ -128,6 +131,10 @@ export default function Dashboard() {
     ],
   }
 
+  const handlenavigateprofile = ()=> {
+    navigate('/Profilepage');
+  }
+
   return (
    <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
@@ -146,7 +153,7 @@ export default function Dashboard() {
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </a>
-             <div>
+            <div>
                         {/* Manage Order Dropdown */}
                         <button
                             className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -171,13 +178,13 @@ export default function Dashboard() {
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
           </button>
-           <div>
+            <div>
               {/* PaymentHistory Dropdown */}
               <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
                 onClick={togglePaymentHistory}>
                 <FaClipboardList className="mr-2 text-yellow-500"  />
                 PaymentHistory
-                 <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
+                  <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
               </button>
               {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
@@ -239,7 +246,7 @@ export default function Dashboard() {
             {/* User Profile Dropdown */}
             <div className="relative">
               <button
-                onClick={toggleDropdown}
+                onClick={handlenavigateprofile}
                 className="flex items-center space-x-2 focus:outline-none"
               >
                 <img
@@ -256,21 +263,6 @@ export default function Dashboard() {
                   <path d="M5.25 7.5l4.25 4.25 4.25-4.25L15 9l-5 5-5-5z" />
                 </svg>
               </button>
-
-              {/* Dropdown Menu */}
-              {isDropdownOpen && (
-                <div className="absolute right-0 w-48 bg-gray-800 text-gray-300 rounded-md shadow-lg py-2">
-                  {/* <a href="#" className="block px-4 py-2 hover:bg-gray-700">
-                    Profile
-                  </a>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-700">
-                    Settings
-                  </a>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-700">
-                    Logout
-                  </a> */}
-                </div>
-              )}
             </div>
           </div>
         </header>

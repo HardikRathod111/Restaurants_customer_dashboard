@@ -1,25 +1,41 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import axios from 'axios'; // Import axios for API calls
+import { useNavigate } from 'react-router-dom'; 
 
 function Register() {
   const { register, handleSubmit, formState: { errors, isValid, isDirty } } = useForm();
-    const { register: restaurantRegister, handleSubmit: handleRestaurantSubmit, formState: { errors: restaurantErrors } } = useForm();
-
+  // const { register: restaurantRegister, handleSubmit: handleRestaurantSubmit, formState: { errors: restaurantErrors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isRestaurantFormOpen, setIsRestaurantFormOpen] = useState(false); // Added state to toggle the modal
+  const [isRestaurantFormOpen, setIsRestaurantFormOpen] = useState(false); 
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
+    try {
+      console.log("Submitting form with data:", data); 
+      const response = await axios.post('http://localhost:8080/api/v1/admin/admin', data); 
+      if (response.data.success) {
+        alert("Admin registered successfully!");
+        navigate('/login');
+      } else {
+        alert("Error: " + response.data.message);
+      }
+    } catch (error) {
+      console.error("Error registering admin:", error.response || error);
+      alert("Error registering admin");
+    }
   };
 
-    const onRestaurantSubmit = (restaurantData) => {
+  const onRestaurantSubmit = (restaurantData) => {
     console.log('Restaurant Created:', restaurantData);
     setIsRestaurantFormOpen(false); // Close modal after submitting
   };
 
   const togglePassword = () => setShowPassword(!showPassword);
+
   const toggleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
   const toggleRestaurantForm = () => setIsRestaurantFormOpen(!isRestaurantFormOpen);
@@ -32,7 +48,7 @@ function Register() {
       <div className="bg-black bg-opacity-70 p-8 rounded-lg max-w-full w-full flex flex-col md:flex-row items-center md:items-start">
         
         {/* Left Section - Form */}
-        <div className="min-h-screen md:w-1/2 bg-black p-8 flex flex-col justify-center">
+        <div className="min-h-screen md:w-full lg:w-1/2 bg-black p-8 flex flex-col justify-center">
           <h2 className="text-3xl font-semibold text-white mb-6">Registration</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Form Fields */}
@@ -42,7 +58,7 @@ function Register() {
                 <input
                   type="text"
                   placeholder="Enter First Name"
-                  {...register("firstName", { required: "First Name is required" })}
+                  {...register("firstname", { required: "First Name is required" })}
                   className="w-full px-4 py-2 rounded bg-gray-800 text-white"
                 />
                 {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName.message}</p>}
@@ -52,7 +68,7 @@ function Register() {
                 <input
                   type="text"
                   placeholder="Enter Last Name"
-                  {...register("lastName", { required: "Last Name is required" })}
+                  {...register("lastname", { required: "Last Name is required" })}
                   className="w-full px-4 py-2 rounded bg-gray-800 text-white"
                 />
                 {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName.message}</p>}
@@ -73,7 +89,7 @@ function Register() {
               <input
                 type="tel"
                 placeholder="Enter Phone Number"
-                {...register("phone", { required: "Phone number is required" })}
+                {...register("phonenumber", { required: "Phone number is required" })}
                 className="w-full px-4 py-2 rounded bg-gray-800 text-white"
               />
               {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
@@ -109,7 +125,7 @@ function Register() {
             </div>
             <div>
               <label className="block text-gray-400">Select Restaurant</label>
-              <select {...register("restaurant", { required: "Restaurant selection is required" })} className="w-full px-4 py-2  rounded bg-gray-800 text-white">
+              <select {...register("selectrestaurant", { required: "Restaurant selection is required" })} className="w-full px-4 py-2  rounded bg-gray-800 text-white">
                 <option value="">Select Restaurant</option>
                 <option value="Restaurant 1">Cedar Grill & Lounge</option>
                 <option value="Restaurant 2">The Statesman Restaurant</option>
@@ -124,13 +140,13 @@ function Register() {
             </div>
 
           {/* Create New Restaurant Button */}
-<a
-  href="#"
-  onClick={toggleRestaurantForm}
-  className="w-full bg-yellow-500 py-2 rounded text-white mt-4 text-center block cursor-pointer transition duration-300 hover:bg-yellow-400"
->
-  Create New Restaurant
-</a>
+          <a
+            href="#"
+            onClick={toggleRestaurantForm}
+            className="w-full bg-yellow-500 py-2 rounded text-white mt-4 text-center block cursor-pointer transition duration-300 hover:bg-yellow-400"
+          >
+            Create New Restaurant
+          </a>
 
             
             {/* Create New Restaurant Form - Pop-up */}
@@ -214,7 +230,7 @@ function Register() {
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm Password"
-                  {...register("confirmPassword", { required: "Confirm Password is required" })}
+                  {...register("comfirmpassword", { required: "Confirm Password is required" })}
                   className="w-full px-4 py-2 rounded bg-gray-800 text-white"
                 />
                 <span
@@ -248,7 +264,7 @@ function Register() {
         </div>
 
         {/* Right Section - Logo or image */}
-        <div className="w-full md:w-1/2 flex mt-72 justify-center items-center text-center text-white">
+        <div className="w-full md:w-1/2 md:hidden sm:hidden lg:flex flex mt-72 justify-center items-center text-center text-white">
           <img src="./assets/images/Group 1000005985.png" alt="Logo" className="mb-4" />
         </div>
       </div>
