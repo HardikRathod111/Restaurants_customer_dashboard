@@ -110,12 +110,12 @@ const OnsiteOrder = () => {
                     {manageHistoryOpen && (
                             <div className="ml-8 mt-2 space-y-2">
                                 <button 
-                                 onClick={() => navigate('/parcelorder')}
+                                 onClick={() => navigate('/paymentparcel')}
                                 className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Parcel Order
                                 </button>
                                 <button 
-                                 onClick={() => navigate('/onsiteorder')}
+                                 onClick={() => navigate('/paymentonsite')}
                                 className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Onsite Order
                                 </button>
