@@ -5,6 +5,7 @@ import {
 } from 'react-icons/fa';
 import { MdWindow, MdAddBox , MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore } from 'react-icons/md';
 import { IoMdLogOut } from 'react-icons/io';
+import { IoColorFilter } from "react-icons/io5";
 import { QRCodeCanvas } from 'qrcode.react'; // Import QRCodeCanvas from qrcode.react
 
 
@@ -256,8 +257,8 @@ const Createqrcode = () => {
                     value={chooseColor}
                     onChange={(e) => setChooseColor(e.target.value)}
                   />
-                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: chooseColor }}></div>
-                  <span className="ml-2">{chooseColor}</span>
+                  <div className="w-4 h-4 rounded-full"  style={{ backgroundColor: chooseColor }}></div>
+                  <span className="ml-2">{chooseColor}  </span>
                 </div>
               </div>
               <div className="relative">
@@ -302,11 +303,52 @@ const Createqrcode = () => {
               </div>
             )}
 
-            <div className="flex justify-center">
-              <button className="bg-yellow-500 px-6 py-2 text-black font-semibold rounded-lg hover:bg-yellow-600">
-                Download
-              </button>
-            </div>
+             {/* Thematic Icons Section */}
+        <div className="grid grid-cols-3 gap-1  mb-6">
+          <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
+            {/* Insert SVG or Icon Here */}
+            <span className="text-lg">
+              <img src='./assets/images/qrcode_undefined_undefined.png' alt='logo' className='w-16'/>
+            </span>
+          </div>
+          <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
+            <span className="text-xl">
+              <img src='./assets/images/Group 1116601973.png' alt='logo' className='w-20'/>
+            </span>
+          </div>
+          <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
+            <span className="text-xl">
+              <img src='./assets/images/Group 1116601958.png' alt='logo' className='w-20'/>
+            </span>
+          </div>
+          <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
+            <span className="text-xl">
+              <img src='./assets/images/Group 1116601960.png' alt='logo' className='w-20'/>
+            </span>
+          </div>
+          <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
+            <span className="text-xl">
+              <img src='./assets/images/Group 1116601959.png' alt='logo' className='w-20'/>
+            </span>
+          </div>
+            <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
+            <span className="text-xl">
+              <img src='./assets/images/Group 1116601961.png' alt='logo' className='w-20'/>
+            </span>
+          </div>
+        </div>
+
+        {/* Download Button */}
+        <div className=" justify-center">
+            <div className="bg-[#2B2F3F] rounded-lg w-[250px] h-[200px] ml-[290px] p-1 flex justify-center items-center">
+            <span className="text-xl">
+              <img src='./assets/images/qrcode_undefined_undefined_2.png' alt='logo' className='w-96'/>
+            </span>
+          </div>
+          <button className="bg-[#A870FF] text-white px-6 py-2 mt-5 ml-[340px] rounded-lg font-semibold shadow-md hover:bg-[#9142FF]">
+            Download QR
+          </button>
+        </div>  
           </div>
           </div>
         </section>

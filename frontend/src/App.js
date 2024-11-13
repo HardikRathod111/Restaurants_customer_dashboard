@@ -14,6 +14,7 @@ import Editprofile from './Dashboard/Editprofile';
 import QrCode from './Dashboard/QrCode';
 import Createqrcode from './Dashboard/Createqrcode';
 import OnsiteOrder from './Dashboard/OnsiteOrder';
+import DeletePrompt from './Dashboard/DeletePrompt';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -32,6 +33,7 @@ function App() {
         <Route path="/Otp" element={<Otp />} />
         <Route path="/resetpassword" element={<Resetpassword />} />
         <Route path="/" element={<Register />} />
+        <Route path='/deleteprompt' element={<DeletePrompt/>}/>
 
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />

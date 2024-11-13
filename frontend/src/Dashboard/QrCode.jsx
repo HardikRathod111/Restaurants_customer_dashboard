@@ -212,18 +212,18 @@ function QrCode() {
                     {/* Dropdown Menu */}
                     {dropdownOpen === tableNumber && (
                       <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28">
-                        <button
+                        <a href='/createqrcode'
                           className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
                           onClick={() => alert(`Editing Table ${tableNumber}`)}
                         >
                           Edit
-                        </button>
-                        <button
+                        </a>
+                        <a href='/deleteprompt'
                           className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
                           onClick={() => alert(`Deleting Table ${tableNumber}`)}
                         >
                           Delete
-                        </button>
+                        </a>
                       </div>
                     )}
 
@@ -253,7 +253,7 @@ function QrCode() {
         {[1, 2].map((counterNumber) => (
           <div key={counterNumber} className="bg-gray-700 rounded-lg p-6 flex h-[250px] flex-col items-center relative w-full">
             {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
-            <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
+            <div className="flex justify-between items-center w-full bg- py-2 px-4 rounded-t-lg">
               <h2 className="text-base font-semibold text-white">{`Counter No - ${counterNumber}`}</h2>
               <div
                 className="text-gray-400 cursor-pointer"
@@ -266,18 +266,18 @@ function QrCode() {
             {/* Dropdown Menu */}
             {dropdownOpen === counterNumber && (
               <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28">
-                <button
+                <a href='/createqrcode'
                   className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
                   onClick={() => alert(`Editing Table ${counterNumber}`)}
                 >
                   Edit
-                </button>
-                <button
+                </a>
+                <a href='/deleteprompt'
                   className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
                   onClick={() => alert(`Deleting Table ${counterNumber}`)}
                 >
                   Delete
-                </button>
+                </a>
               </div>
             )}
 
