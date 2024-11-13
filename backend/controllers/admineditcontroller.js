@@ -1,118 +1,86 @@
 const adminrest = require("../models/adminrest");
 const bcrypt = require('bcryptjs')
 
-const getadmineditcontroller = async(req,res) => {
-    try{
-        const adminedit = await adminrest.findById({_id:req.body.id})
-        if(!adminedit){
-            return res.status(404).send({
-                success : false,
-                message : 'adminedit is not found',
-            }) 
-        }
-        res.status(200).send({
-            success : false,
-            message : 'adminedit get successfully',
-            adminedit
-        })
-    }
-    catch(error){
-        res.status(500).send({
-            success : false,
-            message : 'error in get admin api',
-            error
-        })
-    }
+const getadmineditcontroller = async (req, res) => {
+    try {
+        const adminId = req.user.id;  // Assuming `req.user` has the correct decoded token data
 
+        // Perform your database query (replace with actual logic)
+        const adminData = await adminrest.findById(adminId);  // Example query, modify as needed
+
+        if (!adminData) {
+            return res.status(404).json({ success: false, message: 'Admin data not found' });
+        }
+
+        res.status(200).json({ success: true, data: adminData });
+    } catch (error) {
+        console.error("Error in getadmineditcontroller:", error.message);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
 };
 
 const updateadmincontroller = async(req,res) => {
-    try{
-        const admin = await adminrest.findById({_id: req.body.id})
-        if(!admin){
-            res.status(404).send({
-                success : false,
-                message : 'admin not found',
-                error
-            })
+    try {
+        const adminId = req.user.id; // Assuming `req.user` contains the decoded JWT token data
+        const { firstname, lastname, email, phonenumber, selectrestaurant, city, state, country } = req.body; // Destructure updated data from request body
+        
+        // Update admin data in the database (use your model and validation)
+        const updatedAdmin = await adminrest.findByIdAndUpdate(
+          adminId,
+          { firstname, lastname, email, phonenumber, selectrestaurant, city, state, country },
+          { new: true } // This will return the updated document
+        );
+    
+        if (!updatedAdmin) {
+          return res.status(404).json({ success: false, message: 'Admin not found' });
         }
-
-        const {firstname, lastname, email, phonenumber, country, state, city, selectrestaurant} = req.body
-        if(firstname) admin.firstname = firstname
-        if(lastname) admin.lastname = lastname
-        if(email) admin.email = email
-        if(phonenumber) admin.phonenumber = phonenumber
-        if(country) admin.country = country
-        if(state) admin.state = state
-        if(city) admin.city = city
-        if(selectrestaurant) admin.selectrestaurant = selectrestaurant
-
-        await admin.save()
-        res.status(200).send({
-            success : true,
-            message : 'admin updata successfully',
-            error
-        })        
-
-    }
-    catch (error)
-    {
-        res.status(500).send({
-            success : false,
-            message : 'error in update admin api',
-            error
-        })
-    }
+    
+        res.status(200).json({
+          success: true,
+          message: 'Admin data updated successfully',
+          data: updatedAdmin, // Return updated data
+        });
+      } catch (error) {
+        console.error("Error in updateAdminController:", error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+      }
 };
 
 
-const updataadminpasswordcontroller = async(req,res) => {
-    try{
-        const admin = await adminrest.findById({_id:req.body.id})
-        if(!admin)
-        {
-            res.status(404).send({
-                success : false,
-                message : 'admin not found',
-                error
-            })
-        }
-        const {oldpassword, newpassword} = req.body
-        if(!oldpassword || !newpassword){
-            res.status(500).send({
-                success : false,
-                message : 'please provide old or new password',
-                error
-            })
-        }
-        const isMatch = await bcrypt.compare(oldpassword, admin.password)
-        if(!isMatch){
-            return res.status(500).send({
-                success:false,
-                message:'invalid oldpassword'
-            });
-        }
-        var salt = bcrypt.genSaltSync(10);
-        const hashedpassword = await (bcrypt.hash(oldpassword, salt))
-        admin.password = hashedpassword
-        await admin.save()
-        res.status(200).send({
-            success : true,
-            message : 'password updated!',
-        })
-        
-    }
-    catch (error)
-    {
-        res.status(500).send({
-            success : false,
-            message : 'error in password update api',
-            error
-        })
-    }
-    
+const updataadminpasswordcontroller = async (req, res) => {
+    const { id, oldpassword, newpassword } = req.body;
 
-}
+  // Check if all required fields are present
+  if (!id || !oldpassword || !newpassword) {
+    return res.status(400).json({ success: false, message: 'Missing required fields: id, oldpassword, and newpassword must be provided.' });
+  }
+
+  // Proceed with password update logic
+  try {
+    // Your password update logic here (e.g., find user by id and update password)
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Check if the old password matches
+    const isOldPasswordCorrect = await bcrypt.compare(oldpassword, user.password);
+    if (!isOldPasswordCorrect) {
+      return res.status(400).json({ success: false, message: 'Old password is incorrect' });
+    }
+
+    // Hash new password and save it
+    const hashedPassword = await bcrypt.hash(newpassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({ success: true, message: 'Password updated successfully' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
 
 
 const resetpasswordcontroller = async(req,res) => {

@@ -1,27 +1,22 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.jwt_secret || 'mysecretvalue';
 
-module.exports = async(req,res,next) => {
-    try{
-        const token = req.headers["authorization"].split(" ")[1]
-        jwt.verify(token, process.env.jwt_secret,(err,decode)=>{
-            if(err){
-                return res.status(401).send({
-                    success : false,
-                    message : 'Un-authorize admin'
-                })
-            }else{
-                req.body.id = decode.id;
-                next();
-            }
-        })
+module.exports = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ success: false, message: 'Authorization token missing or malformed' });
     }
-    catch (error){
-        console.log(error);
-        res.status(500).send({
-            success : false,
-            message : 'please provide admin token',
-            error
-        })
-        
+
+    // Extract the token from the "Bearer <token>" format
+    const token = authHeader.split(' ')[1];
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        console.error("JWT Verification Error:", error.message);  // Log error details
+        res.status(403).json({ success: false, message: 'Token is invalid or expired' });
     }
-}
+};
