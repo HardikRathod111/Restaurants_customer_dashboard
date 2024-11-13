@@ -192,13 +192,13 @@ const Createqrcode = () => {
           </button>
           <button
             onClick={() => setActiveTab('progress')}
-            className={`px-4 py-2 ${activeTab === 'progress' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'}`}
+            className={`px-4 py-2 ${activeTab === 'progress' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'} rounded-e-lg rounded-ee-none`}
           >
             Counter
           </button>
         </div>
         <section>
-            <div className="flex flex-col items-center bg-gray-900 min-h-screen py-8 text-white">
+            <div className="relative bg-gray-900 rounded-lg   w-full overflow-auto rounded-ss-none rounded-r-lg rounded-bl-lg">
       <div className="w-full max-w-6xl bg-gray-800 p-8 rounded-lg shadow-lg">
         <h2 className="text-3xl font-semibold mb-6 ">Create QR Code</h2>
         
