@@ -10,7 +10,7 @@ router.put('/updateadmin', adminmiddleware,updateadmincontroller)
 
 router.post('/updatepassword', adminmiddleware,updataadminpasswordcontroller)
 
-router.post('/resetpassword', adminmiddleware, resetpasswordcontroller)
+router.post('/resetpassword', resetpasswordcontroller);
 
 router.delete('/deleteadmin/:id',adminmiddleware, deleteadminprofilecontroller)
 

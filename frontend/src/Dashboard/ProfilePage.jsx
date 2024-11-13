@@ -1,5 +1,5 @@
 // App.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaUser, FaLock, FaFileAlt,  FaSearch  ,FaClipboardList } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner ,MdExpandMore } from "react-icons/md";
@@ -9,12 +9,9 @@ import { useState } from 'react';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // import { XMarkIcon } from '@heroicons/react/24/outline'
-
-
-
-
 function ProfilePage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
@@ -39,10 +36,31 @@ function ProfilePage() {
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const [open, setOpen] = useState(false)
 
+  const [adminData, setAdminData] = useState({});
+  useEffect(() => {
+    // Fetch admin data
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+  .then(response => {
+    if (response.data.success) {
+      setAdminData(response.data.data); // Set admin data to the state
+    }
+  })
+  .catch(error => {
+      console.error("Error fetching admin data:", error);
+  });
+  }, []);
+
   return (
     <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
-      <aside className="w-[200px] h-screen sm:hidden lg:flex bg-gray-800 p-4 flex flex-col items-center">
+      <aside className="w-[200px] fixed top-0 left-0 h-screen sm:hidden lg:flex bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
           {/* Centered Image */}
           <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-20 rounded-full mb-2" />
@@ -109,8 +127,8 @@ function ProfilePage() {
 
       </aside>
 
-      <main className="flex-1 p-6 bg-gray-900">
-      <header className="flex justify-between items-center mb-6 pb-4 ">
+      <main className="flex-1 lg:ml-[200px] md:ml-0 sm:w-svw p-6 bg-gray-900">
+      <header className="flex justify-between sm:justify-normal md:justify-between items-center mb-6 pb-4 ">
         {/* Welcome Text */}
         <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
           Welcome Back 👋 
@@ -209,7 +227,7 @@ function ProfilePage() {
             QR Codes
           </a>
         </nav>
-        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
+        <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
           <IoMdLogOut className="mr-2" />
            Log Out
          </button>
@@ -227,10 +245,10 @@ function ProfilePage() {
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
-            className="w-[300px] sm:w-[230px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+            className="w-[300px] sm:w-[150px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
           />
           < FaSearch 
-            className="w-5 h-5 ml-48 text-gray-400 absolute left-3 top-2.5"/>
+            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5"/>
         </div>
 
         {/* Notification Icon and User Profile Dropdown */}
@@ -253,7 +271,7 @@ function ProfilePage() {
             <button
               className="flex items-center space-x-2 focus:outline-none"
             >
-              <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="w-10 h-10 rounded-full" />
+              <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
               <span className="text-white sm:hidden lg:flex">Musabbir Hossain</span>
               <svg
                 className="w-4 h-4 text-gray-300"
@@ -266,16 +284,21 @@ function ProfilePage() {
           </div>
         </div>
       </header>
-         <section className="flex gap-3">
+      <section className="flex gap-3 sm:flex-col md:flex-row w-full">
       {/* Menu Section */}
-      <div className="w-[250px] h-[250px] xl:h-[250px] lg:h-[270px] md:h-[280px] sm:h-[280px] bg-gray-800 p-4 rounded-md">
+      <div className="md:w-[250px] h-[250px] xl:h-[250px] lg:h-[270px] md:h-[280px] sm:h-[280px] sm:w-full   bg-gray-800 p-4 rounded-md">
         <h3 className="text-lg font-semibold mb-4">Menu</h3>
         
         {/* Profile Link */}
         <a
-          href="/"
-          onClick={() => handleLinkClick('profile')}
-          className={`flex items-center w-full  p-2 rounded-md bg-yellow-600 text-white ${activeLink === 'profile' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} font-medium  mb-4`}
+         href="/Profilepage"
+         onClick={() => handleLinkClick("profile")}
+         className={`flex items-center w-full p-2 rounded-md text-white ${
+           activeLink === "profile"
+             ? "bg-yellow-500 text-gray-900"
+             : "bg-gray-700 text-gray-300"
+         } font-medium mb-4`}
+
         >
           <FaUser className="mr-2" />
           Profile
@@ -284,8 +307,12 @@ function ProfilePage() {
         {/* Change Password Link */}
         <a
           href="/ChangePassword"
-          onClick={() => handleLinkClick('change-password')}
-          className={`flex items-center w-full p-2 rounded-md text-white ${activeLink === 'change-password' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'} mb-4`}
+          onClick={() => handleLinkClick("change-password")}
+          className={`flex items-center w-full p-2 rounded-md text-white ${
+            activeLink === "change-password"
+              ? "bg-yellow-500 text-gray-900"
+              : "bg-gray-700 text-gray-300"
+          } mb-4`}
         >
           <FaLock className="mr-2" />
           Change Password
@@ -294,8 +321,12 @@ function ProfilePage() {
         {/* Terms & Conditions Link */}
         <a
           href="/TermsAndConditions"
-          onClick={() => handleLinkClick('terms-and-conditions')}
-          className={`flex items-center w-full px-1 py-2 rounded-md text-white ${activeLink === 'terms-and-conditions' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-gray-300'}`}
+          onClick={() => handleLinkClick("terms-and-conditions")}
+          className={`flex items-center bg-yellow-600  text-white w-full px-1 py-2 rounded-md ${
+            activeLink === "terms-and-conditions"
+              ? "bg-yellow-500 text-gray-900"
+              : "bg-gray-700 text-gray-300"
+          }`}
         >
           <FaFileAlt className="mr-2" />
           Terms & Condition
@@ -314,10 +345,10 @@ function ProfilePage() {
                 <img
                   src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg"
                   alt="Profile"
-                  className="w-[100px] h-[100px] rounded-full "
+                  className="md:w-[100px] md:h-[100px] rounded-full sm:w-[80px] sm:h-[80px]"
                 />
               </div>
-             <a href='/editprofile' className="mr-10 px-4   py-2 bg-yellow-600 text-gray-900 mb-11 rounded-md flex items-center">
+             <a href='/editprofile' className="md:mr-10 sm:mr-2 px-4 md:py-2 sm:py-1 bg-yellow-600 text-gray-900 mb-11 rounded-md flex items-center">
                 <FiEdit className="mr-2" />
                 Edit Profile
               </a>
@@ -326,87 +357,87 @@ function ProfilePage() {
             {/* Profile Form Section */}
            <div className="mt-8 grid grid-cols-3 gap-6">
   {/* First Row */}
-  <div>
+  <div className="md:col-span-1 sm:col-span-3">
     <label className="block text-sm font-medium">First Name</label>
     <input
       type="text"
-      value="Jenny"
+      value={adminData.firstname || ''}
       className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
-  <div>
+  <div className="md:col-span-1 sm:col-span-3">
     <label className="block text-sm font-medium">Last Name</label>
     <input
       type="text"
-      value="Wilson"
+      value={adminData.lastname || ''}
       className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
-  <div>
+  <div className="md:col-span-1 sm:col-span-3">
     <label className="block text-sm font-medium">Email Address</label>
     <input
       type="email"
-      value="jenny.wilson@example.com"
+      value={adminData.email || ''}
       className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
 
   {/* Second Row */}
-  <div>
+  <div className="md:col-span-1 sm:col-span-3">
     <label className="block text-sm font-medium">Phone Number</label>
     <input
       type="text"
-      value="+91 95354 98972"
+      value={adminData.phonenumber || ''}
       className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
-  <div>
+  <div className="md:col-span-1 sm:col-span-3">
     <label className="block text-sm font-medium">Restaurant Name</label>
     <input
       type="text"
-      value="Statesman Restaurant"
+      value={adminData.selectrestaurant || ''}
       className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
-  <div>
+  <div className="md:col-span-1 sm:col-span-3">
     <label className="block text-sm font-medium">Gender</label>
     <input
       type="text"
-      value="Male"
+      value="male"
       className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
 
   {/* Third Row */}
-  <div>
+  <div className="md:col-span-1 sm:col-span-3">
     <label className="block text-sm font-medium">City</label>
     <input
       type="text"
-      value="Surat"
+      value={adminData.city || ''}
       className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
-  <div>
+  <div className="md:col-span-1 sm:col-span-3">
     <label className="block text-sm font-medium">State</label>
     <input
       type="text"
-      value="Gujarat"
+      value={adminData.state || ''}
       className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
   </div>
-  <div>
+  <div className="md:col-span-1 sm:col-span-3">
     <label className="block text-sm font-medium">Country</label>
     <input
       type="text"
-      value="India"
+      value={adminData.country || ''}
       className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />
@@ -417,7 +448,7 @@ function ProfilePage() {
     <label className="block text-sm font-medium">Address</label>
     <input
       type="text"
-      value="A-151 Swastik Plaza, Punagam, Varchha, Jamnagar, Gujarat."
+      value={adminData.city || ''}
       className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
       readOnly
     />

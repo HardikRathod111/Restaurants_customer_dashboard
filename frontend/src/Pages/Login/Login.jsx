@@ -45,7 +45,8 @@ function Login() {
             }}
         >
             <div className="flex flex-col lg:flex-row flex-1 items-center justify-center p-4 sm:p-8">
-                <div className="w-full max-w-2xl md:max-w-md space-y-6 bg-[#252836] p-8 rounded-lg lg:mr-8">
+                <div className="w-full max-w-2xl xl:max-w-xl md:max-w-md space-y-6 bg-[#252836] p-8 rounded-lg lg:mr-8">
+
                     <h2 className="text-2xl font-semibold text-center lg:text-left">Login</h2>
                     {error && <div className="text-red-500 text-center">{error}</div>}  {/* Display error if any */}
                     <form className="space-y-4" onSubmit={handleSubmit}>
