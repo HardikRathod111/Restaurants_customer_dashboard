@@ -253,7 +253,7 @@ function QrCode() {
         {[1, 2].map((counterNumber) => (
           <div key={counterNumber} className="bg-gray-700 rounded-lg p-6 flex h-[250px] flex-col items-center relative w-full">
             {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
-            <div className="flex justify-between items-center w-full bg- py-2 px-4 rounded-t-lg">
+            <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
               <h2 className="text-base font-semibold text-white">{`Counter No - ${counterNumber}`}</h2>
               <div
                 className="text-gray-400 cursor-pointer"
