@@ -1,4 +1,3 @@
-// App.js
 import React, { useEffect } from 'react';
 import { FaUser, FaLock, FaFileAlt,  FaSearch  ,FaClipboardList } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';

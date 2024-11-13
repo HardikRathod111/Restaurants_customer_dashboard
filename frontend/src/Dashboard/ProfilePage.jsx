@@ -193,7 +193,7 @@ function ProfilePage() {
                       <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Parcel Order
                       </a>
-                      <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                      <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
                   </div>
@@ -222,10 +222,10 @@ function ProfilePage() {
               </div>
               )}
             </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href='/qrcode' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
-          </button>
+          </a>
         </nav>
         <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
           <IoMdLogOut className="mr-2" />
@@ -298,6 +298,7 @@ function ProfilePage() {
              ? "bg-yellow-500 text-gray-900"
              : "bg-gray-700 text-gray-300"
          } font-medium mb-4`}
+
         >
           <FaUser className="mr-2" />
           Profile
