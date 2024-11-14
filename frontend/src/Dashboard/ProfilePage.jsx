@@ -17,7 +17,7 @@ function ProfilePage() {
   const [activeLink, setActiveLink] = useState('');
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
   const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
-  const navigate = useNavigate
+  const navigate = useNavigate();
   const handlenavigateprofile = ()=> {
     navigate('/Profilepage');
   }

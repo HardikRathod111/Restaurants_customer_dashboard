@@ -1,5 +1,17 @@
 const adminrest = require("../models/adminrest");
 const bcrypt = require('bcryptjs')
+const passport = require('passport');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const { promisify } = require('util');
+const randomBytesAsync = promisify(crypto.randomBytes);
+const transporter = nodemailer.createTransport({
+  service: 'Gmail', // Or your email service
+  auth: {
+      user: 'harahrathod1432@gmail.com',
+      pass: 'nsymdceluqwacark',
+  },
+});
 
 const getadmineditcontroller = async (req, res) => {
     try {
@@ -46,37 +58,35 @@ const updateadmincontroller = async(req,res) => {
       }
 };
 
-
 const updataadminpasswordcontroller = async (req, res) => {
-    const { id, oldpassword, newpassword } = req.body;
+  const { id, oldPassword, newPassword } = req.body; // Match with frontend naming convention
 
   // Check if all required fields are present
-  if (!id || !oldpassword || !newpassword) {
-    return res.status(400).json({ success: false, message: 'Missing required fields: id, oldpassword, and newpassword must be provided.' });
+  if (!id || !oldPassword || !newPassword) {
+    return res.status(400).json({ success: false, message: 'Missing required fields: id, oldPassword, and newPassword must be provided.' });
   }
 
-  // Proceed with password update logic
   try {
-    // Your password update logic here (e.g., find user by id and update password)
-    const user = await User.findById(id);
+    // Find user by id
+    const user = await adminrest.findById(id);
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
 
-    // Check if the old password matches
-    const isOldPasswordCorrect = await bcrypt.compare(oldpassword, user.password);
+    // Verify the old password
+    const isOldPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
     if (!isOldPasswordCorrect) {
       return res.status(400).json({ success: false, message: 'Old password is incorrect' });
     }
 
-    // Hash new password and save it
-    const hashedPassword = await bcrypt.hash(newpassword, 10);
+    // Hash the new password and save
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
     await user.save();
 
     return res.status(200).json({ success: true, message: 'Password updated successfully' });
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("Error updating password:", error); // Improved error logging
     return res.status(500).json({ success: false, message: 'Server error' });
   }
 };
@@ -84,39 +94,50 @@ const updataadminpasswordcontroller = async (req, res) => {
 
 
 const resetpasswordcontroller = async(req,res) => {
-    try{
-        const {email, newpassword, firstname} = req.body
-        if(!email || !newpassword || !firstname){
-            return res.status(500).send({
-                success : false,
-                message : 'please privide all fields',
-            })
-        }
-        const admin = await adminrest.findOne({email,firstname})
-        if(!admin){
-            return res.status(500).send({
-                success : false,
-                message : 'admin not found or invladi firstname',
-            })
-        }
-        var salt = bcrypt.genSaltSync(10);
-        const hashedpassword = await (bcrypt.hash(newpassword, salt))
-        admin.password = hashedpassword
-        await admin.save()
-        res.status(200).send({
-            success : true,
-            message : 'password reset successfully'
-        })
-    }
-    catch(error)
-    {
-        res.status(500).send({
-            success : false,
-            message : 'error in password reset api',
-            error
-        })
-    }
+  const { email } = req.body;
+  const user = await adminrest.findOne({ email });
+  
+  if (!user) {
+      return res.render('ForgotPassword', { errors: [{ msg: 'User not found' }] });
+  }
+   // Generate Reset Token
+   const token = (await randomBytesAsync(20)).toString('hex');
 
+   // Set token and expiration (e.g., 1 hour)
+   user.resetPasswordToken = token;
+   user.resetPasswordExpires = Date.now() + 3600000;
+  // Generate OTP (4-6 digits)
+  const otp = crypto.randomInt(100000, 999999).toString();
+
+  // Save OTP and expiration (5 minutes)
+  user.resetOtp = otp;
+  user.otpExpires = Date.now() + 5 * 60 * 1000; // 5 minutes expiration
+  await user.save();
+
+  const resetLink = `http://${req.headers.host}/Change_pass/${token}`;
+  // Send OTP to user's email
+  const mailOptions = {
+      from: 'harahrathod1432@gmail.com',
+      to: user.email,
+      subject: 'Your OTP for Password Reset',
+      text: `Your OTP is ${otp}`+
+              `You are receiving this email because you (or someone else) requested a password reset for your account.\n\n` +
+              `Please click the following link, or paste it into your browser to complete the process:\n\n` +
+              `${resetLink}\n\n`,
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          return console.log(error);
+      }
+      else{
+      console.log('OTP sent: ' + info.response);
+      }
+  });
+
+  console.log(`Generated OTP for ${user.email}: ${otp}`);
+
+  res.redirect(`/Otp_Conf/${user._id}`);
 };
 
 const deleteadminprofilecontroller = async(req,res) => {
