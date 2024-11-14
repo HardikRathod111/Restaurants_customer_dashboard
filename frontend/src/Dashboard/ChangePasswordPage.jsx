@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { MdWindow , MdOutlineRestaurantMenu , MdOutlineQrCodeScanner , MdExpandMore  } from "react-icons/md";
 import { FaBoxOpen } from "react-icons/fa6";
 import { FaUser, FaLock, FaFileAlt,  FaSearch  ,FaClipboardList } from 'react-icons/fa';
@@ -41,6 +41,28 @@ const ChangePasswordPage = () =>{
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  
+  const [adminData, setAdminData] = useState({});
+  useEffect(() => {
+    // Fetch admin data
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+  .then(response => {
+    if (response.data.success) {
+      setAdminData(response.data.data); // Set admin data to the state
+    }
+  })
+  .catch(error => {
+      console.error("Error fetching admin data:", error);
+  });
+  }, []);
+
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
@@ -53,8 +75,8 @@ const ChangePasswordPage = () =>{
       setError('No token found');
       return;
     }
-  const decodedToken = jwtDecode(token); // You'll need the jwt-decode library
-  const userId = decodedToken.id;
+  // const decodedToken = jwtDecode(token); // You'll need the jwt-decode library
+  const userId = adminData._id;
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
@@ -362,7 +384,12 @@ const ChangePasswordPage = () =>{
   <div className="mt-8  space-y-4">
   {/* First Row */}
   <form onSubmit={handlePasswordChange}>
-  <div>
+  <input
+  type="id"
+  value={adminData._id} 
+  hidden
+  />
+  <div className="mb-3">
     <label className="block text-sm font-medium">Current Password</label>
     <input
       type="password"
@@ -371,7 +398,7 @@ const ChangePasswordPage = () =>{
       className="mt-1 block md:w-[500px] sm:w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
     />
   </div>
-  <div>
+  <div className="mb-3">
     <label className="block text-sm font-medium">New Password</label>
     <input
       type="password"
@@ -380,7 +407,7 @@ const ChangePasswordPage = () =>{
       className="mt-1 block md:w-[500px] sm:w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-300"
     />
   </div>
-  <div>
+  <div className="mb-6">
     <label className="block text-sm font-medium">Conform Password</label>
     <input
       type="password"
