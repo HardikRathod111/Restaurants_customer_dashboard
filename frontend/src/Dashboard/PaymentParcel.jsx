@@ -90,10 +90,10 @@ const PaymentParcel = () => {
                     <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-24 rounded-full mb-2" />
                 </div>
                 <nav className="flex flex-col space-y-4">
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
+                    <a href='/dashboard' className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
                         <MdDashboard className="mr-2" style={{ color: "#CA923D" }} />
                         Dashboard
-                    </button>
+                    </a>
                     <div>
                         <button
                             className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -105,23 +105,23 @@ const PaymentParcel = () => {
                         </button>
                         {manageOrderOpen && (
                             <div className="ml-8 mt-2 space-y-2">
-                                <button
+                                <a href='/parcelorder'
                                     onClick={() => navigate('/parcelorder')}
                                     className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Parcel Order
-                                </button>
-                                <button
+                                </a>
+                                <a href='/onsiteorder'
                                     onClick={() => navigate('/onsiteorder')}
                                     className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                     Onsite Order
-                                </button>
+                                </a>
                             </div>
                         )}
                     </div>
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
+                    <a href='/managemenu' className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
                         <MdOutlineRestaurantMenu className="mr-2" style={{ color: "#CA923D" }} />
                         Manage Menu
-                    </button>
+                    </a>
                     <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700" onClick={toggleManageHistory}>
                         <FaClipboardList className="mr-2" style={{ color: "#CA923D" }} />
                         Payment History
@@ -129,22 +129,22 @@ const PaymentParcel = () => {
                     </button>
                     {manageHistoryOpen && (
                         <div className="ml-8 mt-2 space-y-2">
-                            <button
+                            <a href='/paymentparcel'
                                 onClick={() => navigate('/paymentparcel')}
                                 className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                 Parcel Order
-                            </button>
-                            <button
+                            </a>
+                            <a href='/paymentonsite'
                                 onClick={() => navigate('/paymentonsite')}
                                 className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                                 Onsite Order
-                            </button>
+                            </a>
                         </div>
                     )}
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
+                    <a href='/qrcode' className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
                         <MdOutlineQrCodeScanner className="mr-2" style={{ color: "#CA923D" }} />
                         QR Codes
-                    </button>
+                    </a>
                 </nav>
                 <button className="mt-auto p-3 bg-red-500 text-white rounded-md flex items-center">
                     <MdLogout className="mr-2" />

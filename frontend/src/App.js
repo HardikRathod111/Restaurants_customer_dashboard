@@ -17,9 +17,6 @@ import OnsiteOrder from './Dashboard/OnsiteOrder';
 import PaymentParcel from './Dashboard/PaymentParcel';
 import PaymentOnsite from './Dashboard/PaymentOnsite';
 import DeletePrompt from './Dashboard/DeletePrompt';
-import Managemenu from './Dashboard/Managemenu';
-import AddCategories from './Dashboard/AddCategories';
-import Edititem from './Dashboard/BurgerEditDetailsBox';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -39,15 +36,8 @@ function App() {
         <Route path="/resetpassword" element={<Resetpassword />} />
         <Route path="/" element={<Register />} />
         <Route path='/deleteprompt' element={<DeletePrompt/>}/>
-<<<<<<< HEAD
-        <Route path='/managemenu' element={<Managemenu/>}/>
-        <Route path='/addcategories' element={<AddCategories/>}/>
-        <Route path='/edititem' element={<Edititem/>}/>
-
-=======
             <Route path="/paymentparcel" element={< PaymentParcel/>} />
             <Route path="/paymentonsite" element={< PaymentOnsite/>} />
->>>>>>> 4f3e4e976cefa848c70379e9c3d1684750c677f4
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
         <Route path="/editprofile" element={isAuthenticated ? <Editprofile /> : <Navigate to="/login" />} />
