@@ -112,16 +112,16 @@ const ChangePasswordPage = () =>{
                       <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Parcel Order
                       </a>
-                      <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                      <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
                   </div>
               )}
           </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href="/managemenu" className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
-          </button>
+          </a>
           <div>
               {/* PaymentHistory Dropdown */}
               <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -141,10 +141,10 @@ const ChangePasswordPage = () =>{
               </div>
               )}
             </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href="/qrcode" className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
-          </button>
+          </a>
         </nav>
         <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
           <IoMdLogOut className="mr-2" />
@@ -206,29 +206,29 @@ const ChangePasswordPage = () =>{
           </a>
            <div>
               {/* Manage Order Dropdown */}
-              <button
+              <a href="/managemenu"
                   className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
                   onClick={toggleManageOrder}
               >
                   <FaBoxOpen className="mr-2 text-yellow-500" />
                   Manage Order
                   <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
-              </button>
+              </a>
               {manageOrderOpen && (
                   <div className="ml-8 mt-2 space-y-2">
                       <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Parcel Order
                       </a>
-                      <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                      <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
                   </div>
               )}
           </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href="/managemenu" className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
-          </button>
+          </a>
           <div>
               {/* PaymentHistory Dropdown */}
               <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -248,10 +248,10 @@ const ChangePasswordPage = () =>{
               </div>
               )}
             </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href="/qrcode" className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
-          </button>
+          </a>
         </nav>
         <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
           <IoMdLogOut className="mr-2" />
@@ -265,7 +265,6 @@ const ChangePasswordPage = () =>{
         </div>
       </div>
     </Dialog>
-        
         {/* Search Bar */}
         <div className="relative w-[400px]  marker">
           <input

@@ -15,6 +15,9 @@ import QrCode from './Dashboard/QrCode';
 import Createqrcode from './Dashboard/Createqrcode';
 import OnsiteOrder from './Dashboard/OnsiteOrder';
 import DeletePrompt from './Dashboard/DeletePrompt';
+import Managemenu from './Dashboard/Managemenu';
+import AddCategories from './Dashboard/AddCategories';
+import Edititem from './Dashboard/BurgerEditDetailsBox';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -34,6 +37,9 @@ function App() {
         <Route path="/resetpassword" element={<Resetpassword />} />
         <Route path="/" element={<Register />} />
         <Route path='/deleteprompt' element={<DeletePrompt/>}/>
+        <Route path='/managemenu' element={<Managemenu/>}/>
+        <Route path='/addcategories' element={<AddCategories/>}/>
+        <Route path='/edititem' element={<Edititem/>}/>
 
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />

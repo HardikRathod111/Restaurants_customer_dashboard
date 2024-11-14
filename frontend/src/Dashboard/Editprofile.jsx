@@ -117,16 +117,16 @@ function Editprofile() {
                       <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Parcel Order
                       </a>
-                      <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                      <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
                   </div>
               )}
           </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href='/managemenu' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
-          </button>
+          </a>
           <div>
               {/* PaymentHistory Dropdown */}
               <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -146,10 +146,10 @@ function Editprofile() {
               </div>
               )}
             </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href='/qrcode' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
-          </button>
+          </a>
         </nav>
         <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
           <IoMdLogOut className="mr-2" />
@@ -224,16 +224,16 @@ function Editprofile() {
                       <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Parcel Order
                       </a>
-                      <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                      <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
                   </div>
               )}
           </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href='/managemenu' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
-          </button>
+          </a>
           <div>
               {/* PaymentHistory Dropdown */}
               <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -253,10 +253,10 @@ function Editprofile() {
               </div>
               )}
             </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href='/qrcode' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
-          </button>
+          </a>
         </nav>
         <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
           <IoMdLogOut className="mr-2" />
