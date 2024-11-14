@@ -11,21 +11,22 @@ const ForgotPassword = () => {
         <div className="p-8 rounded-md shadow-md max-w-md w-full m-4" style={{ backgroundColor: '#333748' }}>
           <h2 className="text-2xl font-semibold text-white mb-6">Forgot Password</h2>
 
-          <form>
+          <form method="POST">
             <label className="block text-sm text-white mb-1">Email or Phone</label>
             <input
               type="text"
+              name="emailOrPhone"
               placeholder="+91 98652 32699"
-              className="w-full px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 mb-4"
+              className="w-full px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 mb-6"
               style={{ backgroundColor: '#2D303E', border: "1px solid #ABBBC240" }}
             />
 
-            <a href='/Otp'
+            <button type="submit"
               className=" w-full py-2 px-40  bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md transition duration-200"
               style={{ backgroundColor: '#CA923D' }}
             >
               Get OTP
-            </a>
+            </button>
           </form>
         </div>
       </div>
