@@ -89,10 +89,10 @@ const Createqrcode = () => {
               </div>
             )}
           </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href='/managemenu' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
-          </button>
+          </a>
           <div>
             <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700" onClick={togglePaymentHistory}>
               <FaClipboardList className="mr-2 text-yellow-500" />
