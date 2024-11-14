@@ -1,12 +1,16 @@
 'use client'
-import { MdDashboard, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdLogout, MdExpandMore } from 'react-icons/md';
+import { MdDashboard, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdLogout, MdExpandMore , MdWindow } from 'react-icons/md';
 import { FaBoxOpen, FaClipboardList, FaSearch } from 'react-icons/fa';
-import { IoMdCheckmarkCircle, IoMdCloseCircle, IoMdLogOut } from 'react-icons/io';
+import { IoMdCheckmarkCircle, IoMdCloseCircle,IoMdLogOut } from 'react-icons/io';
 import { FaShoppingBag, FaUsers, FaClock, FaChartLine } from 'react-icons/fa';
 import { MoreHorizontal } from 'react-icons/ri';  // Import MoreHorizontal
+import { useNavigate } from 'react-router-dom';
+
+
+// import fram_2 from '../assets/images/Frame 1000006002.png'
 
 import { useState, useEffect } from 'react'
-import { Bar, Doughnut } from 'react-chartjs-2'
+import { Bar, Pie ,Doughnut} from 'react-chartjs-2'
 import { 
   Chart as ChartJS, 
   CategoryScale, 
@@ -39,7 +43,8 @@ const sidebarItems = [
   { icon: Tag, label: 'QR Codes' },
 ]
 
-const popularDishes = [  
+const popularDishes = [
+  { name: 'Rice Noodles', price: 215.00, orderQty: 100, revenue: 21500.00, image: '/placeholder.svg?height=50&width=50' },
   { name: 'French Fries', price: 150.00, orderQty: 80, revenue: 12000.00, image: '/placeholder.svg?height=50&width=50' },
   { name: 'Biryani rice', price: 315.00, orderQty: 200, revenue: 63000.00, image: '/placeholder.svg?height=50&width=50' },
   { name: 'Pasta', price: 160.00, orderQty: 80, revenue: 12800.00, image: '/placeholder.svg?height=50&width=50' },
@@ -80,30 +85,30 @@ const notifications: Notification[] = [
     timeAgo: '1 Hrs Ago'
   }
 ]
-
 export default function Dashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [showNotifications, setShowNotifications] = useState(false)
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // Added state for sidebar visibility
-  
-  const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Added toggle function
-  
-  const [manageOrderOpen, setManageOrderOpen] = useState(false);
-   const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [showNotifications, setShowNotifications] = useState(false)
+    const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+    const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [manageOrderOpen, setManageOrderOpen] = useState(false);
+    const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
 
-  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+    const navigate = useNavigate();
+
 
     const toggleManageOrder = () => {
         setManageOrderOpen(!manageOrderOpen);
     };
-       const togglePaymentHistory = () => {
-        setPaymentHistoryOpen(!PaymentHistoryOpen);
+    const togglePaymentHistory = () => {
+    setPaymentHistoryOpen(!PaymentHistoryOpen);
     };
-  useEffect(() => {
-    console.log('Notifications visible:', showNotifications);
-  }, [showNotifications]);
+    useEffect(() => {
+      console.log('Notifications visible:', showNotifications);
+    }, [showNotifications]);
 
   const barChartData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -126,8 +131,12 @@ export default function Dashboard() {
     ],
   }
 
+  const handlenavigateprofile = ()=> {
+    navigate('/Profilepage');
+  }
+
   return (
-    <div className="flex min-h-screen bg-gray-900 text-white font-sans">
+   <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
       <aside className={`w-[200px] fixed top-0 left-0 h-screen bg-gray-800 p-4 flex flex-col items-center transition-transform ${isSidebarVisible ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col items-center mb-8">
@@ -141,41 +150,41 @@ export default function Dashboard() {
 
         <nav className="flex flex-col space-y-3 w-full">
           <a href="/dashboard" className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700 w-full">
-            <MdDashboard className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </a>
-          <div>
-            {/* Manage Order Dropdown */}
-            <button
-              className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
-              onClick={toggleManageOrder}
-            >
-              <FaBoxOpen className="mr-2 text-yellow-500" />
-              Manage Order
-              <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
-            </button>
-            {manageOrderOpen && (
-              <div className="ml-8 mt-2 space-y-2">
-                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                  Parcel Order
-                </a>
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                  Onsite Order
-                </a>
-              </div>
-            )}
-          </div>
+            <div>
+                        {/* Manage Order Dropdown */}
+                        <button
+                            className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                            onClick={toggleManageOrder}
+                        >
+                            <FaBoxOpen className="mr-2 text-yellow-500" />
+                            Manage Order
+                            <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        {manageOrderOpen && (
+                            <div className="ml-8 mt-2 space-y-2">
+                                <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                    Parcel Order
+                                </a>
+                                <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                                    Onsite Order
+                                </a>
+                            </div>
+                        )}
+                    </div>
           <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
           </button>
-          <div>
-            {/* PaymentHistory Dropdown */}
+            <div>
+              {/* PaymentHistory Dropdown */}
               <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
                 onClick={togglePaymentHistory}>
-                <FaClipboardList className="mr-2 text-yellow-500" />
+                <FaClipboardList className="mr-2 text-yellow-500"  />
                 PaymentHistory
-                <MdExpandMore className={`ml-auto transform ${PaymentHistoryOpen ? 'rotate-180' : '' }`} />
+                  <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
               </button>
               {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
@@ -188,10 +197,10 @@ export default function Dashboard() {
               </div>
               )}
             </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href='/qrcode' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineQrCodeScanner className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             QR Codes
-          </button>
+          </a>
         </nav>
         <button className="flex items-center px-4 py-2 mt-auto bg-red-500 rounded-md text-white">
           <IoMdLogOut className="mr-2" />
@@ -208,16 +217,16 @@ export default function Dashboard() {
             <span className="text-gray-400 font-normal text-lg">Jd's Restro</span>
           </h2>
 
-          {/* Search Bar */}
-          <div className="relative w-[400px]">
-            <input
-              type="text"
-              placeholder="Search Here Your Delicious Food..."
-              className="w-[300px] h-[40px] p-2 pl-12 ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
-            />
-            <FaSearch
-              className="w-5 h-5 ml-48 text-gray-400 absolute left-3 top-2.5" />
-          </div>
+         {/* Search Bar */}
+        <div className="relative w-[400px]">
+          <input
+            type="text"
+            placeholder="Search Here Your Delicious Food..."
+            className="w-[300px] h-[40px] p-2 pl-12 ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+          />
+          < FaSearch 
+            className="w-5 h-5 ml-48 text-gray-400 absolute left-3 top-2.5"/>
+        </div>
 
           {/* Notification Icon and User Profile Dropdown */}
           <div className="flex items-center space-x-4">
@@ -237,7 +246,7 @@ export default function Dashboard() {
             {/* User Profile Dropdown */}
             <div className="relative">
               <button
-                onClick={toggleDropdown}
+                onClick={handlenavigateprofile}
                 className="flex items-center space-x-2 focus:outline-none"
               >
                 <img
@@ -254,78 +263,67 @@ export default function Dashboard() {
                   <path d="M5.25 7.5l4.25 4.25 4.25-4.25L15 9l-5 5-5-5z" />
                 </svg>
               </button>
-
-              {/* Dropdown Menu */}
-              {isDropdownOpen && (
-                <div className="absolute right-0 w-48 bg-gray-800 text-gray-300 rounded-md shadow-lg py-2">
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-700">
-                    Profile
-                  </a>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-700">
-                    Settings
-                  </a>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-700">
-                    Logout
-                  </a>
-                </div>
-              )}
             </div>
           </div>
         </header>
 
+
         <div className="flex flex-col 2xl:flex-row gap-8 mb-8 w-full">
-          {/* Image Container */}
-          <div className="flex-1 rounded-lg p-6 relative overflow-hidden w-full min-h-40 ">
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/images/Frame 1000006002.png`}
-              alt="Restaurant interior"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </div>
+  {/* Image Container */}
+  <div className="flex-1 rounded-lg p-6 relative overflow-hidden w-full min-h-40 ">
+    <img
+      src={`${process.env.PUBLIC_URL}/assets/images/Frame 1000006002.png`}
+      alt="Restaurant interior"
+      className="absolute inset-0 w-full h-full object-cover"
+    />
+  </div>
 
-          {/* Stats Section */}
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gray-800 p-6 rounded-lg flex items-center gap-4">
-              <div className="p-3 bg-red-500 rounded-full">
-                <FaShoppingBag className="text-white" />
-              </div>
-              <div>
-                <h4 className="text-gray-300">Total Order Today</h4>
-                <p className="text-3xl font-bold text-white">265</p>
-              </div>
-            </div>
+  {/* Stats Section */}
+  <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="bg-gray-800 p-6 rounded-lg flex items-center gap-4">
+      <div className="p-3 bg-red-500 rounded-full">
+        <FaShoppingBag className="text-white" />
+      </div>
+      <div>
+        <h4 className="text-gray-300">Total Order Today</h4>
+        <p className="text-3xl font-bold text-white">265</p>
+      </div>
+    </div>
 
-            <div className="bg-gray-800 p-6 rounded-lg flex items-center gap-4">
-              <div className="p-3 bg-green-500 rounded-full">
-                <FaUsers className="text-white" />
-              </div>
-              <div>
-                <h4 className="text-gray-300">Average Customer</h4>
-                <p className="text-3xl font-bold text-white">589</p>
-              </div>
-            </div>
+    <div className="bg-gray-800 p-6 rounded-lg flex items-center gap-4">
+      <div className="p-3 bg-green-500 rounded-full">
+        <FaUsers className="text-white" />
+      </div>
+      <div>
+        <h4 className="text-gray-300">Average Customer</h4>
+        <p className="text-3xl font-bold text-white">589</p>
+      </div>
+    </div>
 
-            <div className="bg-gray-800 p-6 rounded-lg flex items-center gap-4">
-              <div className="p-3 bg-blue-500 rounded-full">
-                <FaClock className="text-white" />
-              </div>
-              <div>
-                <h4 className="text-gray-300">Average Waiting Time</h4>
-                <p className="text-3xl font-bold text-white">00:30 Hr</p>
-              </div>
-            </div>
+    <div className="bg-gray-800 p-6 rounded-lg flex items-center gap-4">
+      <div className="p-3 bg-blue-500 rounded-full">
+        <FaClock className="text-white" />
+      </div>
+      <div>
+        <h4 className="text-gray-300">Average Waiting Time</h4>
+        <p className="text-3xl font-bold text-white">00:30 Hr</p>
+      </div>
+    </div>
 
-            <div className="bg-gray-800 p-6 rounded-lg flex items-center gap-4">
-              <div className="p-3 bg-yellow-500 rounded-full">
-                <FaChartLine className="text-white" />
-              </div>
-              <div>
-                <h4 className="text-gray-300">Today Revenue</h4>
-                <p className="text-3xl font-bold text-white">₹256</p>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="bg-gray-800 p-6 rounded-lg flex items-center gap-4">
+      <div className="p-3 bg-yellow-500 rounded-full">
+        <FaChartLine className="text-white" />
+      </div>
+      <div>
+        <h4 className="text-gray-300">Today Revenue</h4>
+        <p className="text-3xl font-bold text-white">₹256</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        
 
 <div className="grid grid-cols-1 2xl:grid-cols-12 gap-8 mb-8">
   {/* Left Column (2 Charts) */}
@@ -418,4 +416,4 @@ export default function Dashboard() {
       </main>
     </div>
   )
-};
+}

@@ -7,7 +7,7 @@ const ForgotPassword = () => {
       style={{ backgroundImage: "url('/assets/images/d75bfbbb18fefcba2a744eb559378aad.jfif')" }}
     >
       {/* Left side - Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center bg-slate-800 bg-opacity-70">
+      <div className="w-full md:w-full lg:w-1/2 flex items-center justify-center bg-slate-800 bg-opacity-70">
         <div className="p-8 rounded-md shadow-md max-w-md w-full m-4" style={{ backgroundColor: '#333748' }}>
           <h2 className="text-2xl font-semibold text-white mb-6">Forgot Password</h2>
 
@@ -20,19 +20,18 @@ const ForgotPassword = () => {
               style={{ backgroundColor: '#2D303E', border: "1px solid #ABBBC240" }}
             />
 
-            <button
-              type="button"
-              className="w-full py-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md transition duration-200"
+            <a href='/Otp'
+              className=" w-full py-2 px-40  bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md transition duration-200"
               style={{ backgroundColor: '#CA923D' }}
             >
               Get OTP
-            </button>
+            </a>
           </form>
         </div>
       </div>
 
       {/* Right side - Image */}
-      <div className="hidden md:flex w-1/2 items-center justify-center bg-slate-800 bg-opacity-70">
+      <div className="hidden w-1/2 lg:flex md:hidden items-center justify-center bg-slate-800 bg-opacity-70">
         <img
           src="/assets/images/Group 1000005985.png"
           alt="Illustration"
