@@ -4,7 +4,7 @@ import Forgotpassword from './Pages/Forgotpassword';
 import Otp from './Pages/Otp';
 import Register from './Pages/Register';
 import Resetpassword from './Pages/Resetpassword';
-import Login from './Pages/Login/Login';
+import Login from './Pages/Login';
 import ProfilePage from './Dashboard/ProfilePage';
 import ChangePasswordPage from './Dashboard/ChangePasswordPage';
 import TermsAndConditions from './Dashboard/TermsAndConditions';

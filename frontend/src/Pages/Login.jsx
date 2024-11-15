@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import bgheroimg from "../../images/image.png";
-import logoimg from "../../images/Group 1000005985.png";
+// import bgheroimg from "../../images/image.png";
+// import logoimg from "../../images/Group 1000005985.png";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';  // Import axios
 
@@ -41,7 +41,7 @@ function Login() {
                 backgroundImage: `
                 linear-gradient(89.95deg, rgba(31, 29, 43, 0.96) 0.04%, rgba(30, 28, 42, 0.43) 70.08%, rgba(30, 28, 41, 0.37) 99.14%), 
                 linear-gradient(89.47deg, #1F1D2B 0.37%, rgba(31, 28, 42, 0.74) 99.48%),
-                url(${bgheroimg})`,
+                url('./assets/images/b031f0ade82ec13db272ea276a0e4068.jpg')`,
             }}
         >
             <div className="flex flex-col lg:flex-row flex-1 items-center justify-center p-4 sm:p-8">
@@ -127,7 +127,7 @@ function Login() {
                 {/* Right Side Image Section */}
                 <div className="hidden lg:flex flex-1 items-center justify-center p-8  relative">
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <img src={logoimg} alt="Logo" className="p-14 xl:w-11/12 max-w-lg lg:p-0" />
+                        <img src='./assets/images/Group 1000005985.png' alt="Logo" className="p-14 xl:w-11/12 max-w-lg lg:p-0" />
                     </div>
                 </div>
             </div>

@@ -15,13 +15,16 @@ const ParcelOrder = () => {
     const [selectedOrder, setSelectedOrder] = useState(null); // For selected order details
     const [showModal, setShowModal] = useState(false); 
     const [activeLink, setActiveLink] = useState('');
+    const [dropdownOpen, setDropdownOpen] = useState(null);
     const navigate = useNavigate();
+
     const [open, setOpen] = useState(false)
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
     const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
     const togglePaymentHistory = () => {
       setPaymentHistoryOpen(!PaymentHistoryOpen);
-    };    const handleViewBill = (order) => {
+    };    
+    const handleViewBill = (order) => {
         setSelectedOrder(order); // Set the selected order details
         setShowModal(true); // Open the modal
     };
@@ -52,7 +55,9 @@ const ParcelOrder = () => {
         { id: 1, customer: "Davis Lipshutz", item: "Rice", date: "10/02/2024", time: "3:45 PM", phone: "98568 86214", quantity: "500 G.M", total: "₹ 500" },
         { id: 2, customer: "Marcus Dorwart", item: "Biryani Rice", date: "11/02/2024", time: "2:45 PM", phone: "96668 22214", quantity: "100 G.M", total: "₹ 500" },
     ];
-
+    const handlenavigateprofile = ()=> {
+      navigate('/Profilepage');
+    }
     return (
       <div className="flex min-h-screen bg-gray-900 text-white font-sans">
         {/* Sidebar */}
@@ -267,6 +272,7 @@ const ParcelOrder = () => {
           {/* User Profile Dropdown */}
           <div className="relative">
             <button
+            onClick={handlenavigateprofile}
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
@@ -281,7 +287,7 @@ const ParcelOrder = () => {
             </button>
           </div>
         </div>
-      </header>
+        </header>
 
                   {/* Tabs */}
                   <div className="flex">

@@ -12,8 +12,6 @@ import { FiEdit } from 'react-icons/fi';
 import { jwtDecode } from 'jwt-decode';
 import axios from "axios";
 
-
-
 const ChangePasswordPage = () =>{
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');

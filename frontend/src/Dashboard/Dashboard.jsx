@@ -137,7 +137,7 @@ export default function Dashboard() {
   }
 
   return (
-   <div className="flex min-h-screen bg-gray-900 text-white font-sans">
+   <div className="flex bg-gray-900 text-white font-sans">
       {/* Sidebar */}
       <aside className="w-[200px] fixed top-0 left-0 h-screen sm:hidden lg:flex bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
@@ -348,6 +348,7 @@ export default function Dashboard() {
           {/* User Profile Dropdown */}
           <div className="relative">
             <button
+              onClick={handlenavigateprofile}
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
