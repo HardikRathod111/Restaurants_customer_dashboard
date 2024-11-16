@@ -73,10 +73,10 @@ function QrCode() {
               </div>
             )}
           </div>
-          <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+          <a href='/managemenu' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
             <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Manage Menu
-          </button>
+          </a>
           <div>
             <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700" onClick={togglePaymentHistory}>
               <FaClipboardList className="mr-2 text-yellow-500" />
@@ -176,7 +176,7 @@ function QrCode() {
           </button>
           <button
             onClick={() => setActiveTab('progress')}
-            className={`px-4 py-2 ${activeTab === 'progress' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'}`}
+            className={`px-4 py-2 ${activeTab === 'progress' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'} rounded-e-lg rounded-ee-none`}
           >
             Counter
           </button>
@@ -184,10 +184,10 @@ function QrCode() {
         
         {/* QR Code Section */}
         {activeTab === 'request' && (
-          <section className="relative bg-gray-900 rounded-lg overflow-hidden p-6 w-full">
+          <section className="relative bg-gray-900 rounded-lg   w-full overflow-auto rounded-ss-none rounded-r-lg rounded-bl-lg">
             <div className="relative bg-gray-800 rounded-lg p-5 w-full">
               <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-white">QR Codes</h1>
+                <h1 className="text-2xl font-semibold text-white">QR Codes</h1>
                <a href='/createqrcode' className="bg-yellow-600 hover:bg-yellow-700 white font-semibold py-2 px-6 rounded-lg shadow-md flex items-center">
                    <MdAddBox className="text-white mr-2" />
                    Create QR Code
@@ -196,7 +196,7 @@ function QrCode() {
 
               <div className="grid grid-cols-3 lg:grid-cols-4 gap-6 w-full">
                 {[1, 2, 3, 4, 5, 6].map((tableNumber) => (
-                  <div key={tableNumber} className="bg-gray-700 rounded-lg p-6 flex h-[250px] flex-col items-center relative w-full">
+                  <div key={tableNumber} className="bg-gray-700 rounded-lg  flex h-[250px] flex-col items-center relative w-full">
                     
                     {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
                     <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
@@ -228,8 +228,8 @@ function QrCode() {
                     )}
 
                     {/* QR Code Box with Full Width Dark Background */}
-                    <div className="bg-black p-6 rounded-lg mb-4 w-full flex justify-center items-center">
-                      <img src="./assets/images/Group 1000006213.png" alt={`QR Code for Table ${tableNumber}`} className="w-full h-auto max-w-xs mx-auto"/>
+                    <div className="bg-gray-900 rounded-lg w-44 h-40 mt-6 flex justify-center items-center">
+                      <img src="./assets/images/Group 1000006213.png" alt={`QR Code for Table ${tableNumber}`} className="w-[120px] h-auto max-w-xs mx-auto"/>
                     </div>
 
                   </div>
@@ -239,10 +239,10 @@ function QrCode() {
           </section>
         )}
         {activeTab === "progress" && (
-  <section className="relative bg-gray-900 rounded-lg overflow-hidden p-6 w-full">
+  <section className="relative bg-gray-900 rounded-lg   w-full overflow-auto rounded-ss-none rounded-r-lg rounded-bl-lg">
     <div className="relative bg-gray-800 rounded-lg p-5 w-full">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-white">QR Codes</h1>
+        <h1 className="text-2xl font-semibold text-white">QR Codes</h1>
         <a href="/createqrcode" className="bg-yellow-600 hover:bg-yellow-700 white font-semibold py-2 px-6 rounded-lg shadow-md flex items-center">
           <MdAddBox className="text-white mr-2" />
           Create QR Code
@@ -251,9 +251,9 @@ function QrCode() {
 
       <div className="grid grid-cols-3 lg:grid-cols-4 gap-6 w-full">
         {[1, 2].map((counterNumber) => (
-          <div key={counterNumber} className="bg-gray-700 rounded-lg p-6 flex h-[250px] flex-col items-center relative w-full">
+          <div key={counterNumber} className="bg-gray-700 rounded-lg  flex h-[250px] flex-col items-center relative w-full">
             {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
-            <div className="flex justify-between items-center w-full bg- py-2 px-4 rounded-t-lg">
+            <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
               <h2 className="text-base font-semibold text-white">{`Counter No - ${counterNumber}`}</h2>
               <div
                 className="text-gray-400 cursor-pointer"
@@ -282,8 +282,8 @@ function QrCode() {
             )}
 
             {/* QR Code Box with Full Width Dark Background */}
-            <div className="bg-black p-6 rounded-lg mb-4 w-full flex justify-center items-center">
-              <img src="./assets/images/Group 1000006213.png" alt={`QR Code for Table ${counterNumber}`} className="w-full h-auto max-w-xs mx-auto" />
+            <div className="bg-black p-6 rounded-lg  w-44 h-40 mt-5 flex justify-center items-center">
+              <img src="./assets/images/Group 1000006213.png" alt={`QR Code for Table ${counterNumber}`} className="w-[120px] h-auto max-w-xs mx-auto" />
             </div>
           </div>
         ))}
