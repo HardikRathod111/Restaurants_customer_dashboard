@@ -34,6 +34,9 @@ const OnsiteOrder = () => {
     const handleLinkClick = (linkName) => {
       setActiveLink(linkName);
     };
+    const handlenavigateprofile = ()=> {
+      navigate('/Profilepage');
+    }
 
     const getTabLabel = () => {
         switch (activeTab) {
@@ -96,16 +99,16 @@ const OnsiteOrder = () => {
                         <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                             Parcel Order
                         </a>
-                        <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                        <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                             Onsite Order
                         </a>
                     </div>
                 )}
             </div>
-            <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+            <a href='/managemenu' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
               <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
               Manage Menu
-            </button>
+            </a>
             <div>
                 {/* PaymentHistory Dropdown */}
                 <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -116,19 +119,19 @@ const OnsiteOrder = () => {
                 </button>
                 {PaymentHistoryOpen && (
                 <div className="ml-8 mt-2 space-y-2">
-                  <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  <a href='/paymentparcel' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                     Parcel Order
                   </a>
-                  <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  <a href='/paymentonsite' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                     Onsite Order
                   </a>
                 </div>
                 )}
               </div>
-            <button className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+            <a href='/qrcode' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
               <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
               QR Codes
-            </button>
+            </a>
           </nav>
           <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
             <IoMdLogOut className="mr-2" />
@@ -225,10 +228,10 @@ const OnsiteOrder = () => {
               </button>
               {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/paymentparcel' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Parcel Order
                 </a>
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/paymentonsite' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Onsite Order
                 </a>
               </div>
@@ -281,6 +284,7 @@ const OnsiteOrder = () => {
           {/* User Profile Dropdown */}
           <div className="relative">
             <button
+            onClick={handlenavigateprofile}
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />

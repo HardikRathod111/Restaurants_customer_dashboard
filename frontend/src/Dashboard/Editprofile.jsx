@@ -137,10 +137,10 @@ function Editprofile() {
               </button>
               {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/paymentparcel' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Parcel Order
                 </a>
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/paymentonsite' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Onsite Order
                 </a>
               </div>
@@ -244,10 +244,10 @@ function Editprofile() {
               </button>
               {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/paymentparcel' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Parcel Order
                 </a>
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/paymentonsite' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Onsite Order
                 </a>
               </div>
@@ -300,6 +300,7 @@ function Editprofile() {
           {/* User Profile Dropdown */}
           <div className="relative">
             <button
+              onClick={handlenavigateprofile}
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />

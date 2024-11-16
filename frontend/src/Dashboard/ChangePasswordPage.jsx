@@ -12,8 +12,6 @@ import { FiEdit } from 'react-icons/fi';
 import { jwtDecode } from 'jwt-decode';
 import axios from "axios";
 
-
-
 const ChangePasswordPage = () =>{
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
@@ -121,14 +119,14 @@ const ChangePasswordPage = () =>{
           </a>
            <div>
               {/* Manage Order Dropdown */}
-              <button
+              <a href="/manageorder"
                   className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
                   onClick={toggleManageOrder}
               >
                   <FaBoxOpen className="mr-2 text-yellow-500" />
                   Manage Order
                   <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
-              </button>
+              </a>
               {manageOrderOpen && (
                   <div className="ml-8 mt-2 space-y-2">
                       <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
@@ -154,10 +152,10 @@ const ChangePasswordPage = () =>{
               </button>
               {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/paymentparcel' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Parcel Order
                 </a>
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/paymentonsite' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Onsite Order
                 </a>
               </div>
@@ -228,7 +226,7 @@ const ChangePasswordPage = () =>{
           </a>
            <div>
               {/* Manage Order Dropdown */}
-              <a href="/managemenu"
+              <a href="/manageorder"
                   className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
                   onClick={toggleManageOrder}
               >
@@ -261,10 +259,10 @@ const ChangePasswordPage = () =>{
               </button>
               {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/paymentparcel' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Parcel Order
                 </a>
-                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                <a href='/paymentonsite' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                   Onsite Order
                 </a>
               </div>
