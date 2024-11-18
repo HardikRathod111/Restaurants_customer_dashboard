@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import axios from 'axios'; // Import axios for API calls
@@ -10,8 +11,21 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isRestaurantFormOpen, setIsRestaurantFormOpen] = useState(false); 
+  const [restaurants, setRestaurants] = useState([]);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/v1/resturant/getRestaurant');  // Ensure this matches the backend route
+        setRestaurants(response.data);  // Save the fetched data into the state
+      } catch (error) {
+        console.error('Error fetching restaurants', error);
+      }
+    };
+
+    fetchRestaurants();
+  }, []); 
   const onSubmit = async (data, e) => {
     e.preventDefault();
     try {
@@ -40,6 +54,60 @@ function Register() {
 
   const toggleRestaurantForm = () => setIsRestaurantFormOpen(!isRestaurantFormOpen);
 
+  const [formData, setFormData] = useState({
+    restaurantName: "",
+    restaurantAddress: "",
+    country: "",
+    state: "",
+    city: "",
+    zipCode: "",
+  });
+
+  const [error, setError] = useState("");
+
+  // Handle input changes
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Handle form submission
+  const handleCreateSubmit = async (e) => {
+    e.preventDefault();
+
+    // Access form data from state
+    const { restaurantName, restaurantAddress, country, state, city, zipCode } = formData;
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/resturant/create", // Update this to match your route
+        {
+          restaurantName,
+          restaurantAddress,
+          country,
+          state,
+          city,
+          zipCode,
+        }
+      );
+
+      if (response.data.success) {
+        alert("Restaurant created successfully!");
+        // Close form logic (if applicable)
+      } else {
+        setError(response.data.message || "Something went wrong.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || "Server error occurred.");
+    }
+  };
+
+  
+  
+  
   return (
     <div
       className="h-full min-h-screen w-full flex items-center justify-center bg-cover bg-center"
@@ -126,15 +194,13 @@ function Register() {
             <div>
               <label className="block text-gray-400">Select Restaurant</label>
               <select {...register("selectrestaurant", { required: "Restaurant selection is required" })} className="w-full px-4 py-2  rounded bg-gray-800 text-white">
-                <option value="">Select Restaurant</option>
-                <option value="Restaurant 1">Cedar Grill & Lounge</option>
-                <option value="Restaurant 2">The Statesman Restaurant</option>
-                <option value="Restaurant 3">The Capital Grille</option>
-                <option value="Restaurant 4">Frosty Favourites</option>
-                <option value="Restaurant 5">Crumbl Cookies</option>
-                <option value="Restaurant 6">Fancy Sushi House</option>
-                <option value="Restaurant 7">Wesabi kitchen</option>
-                <option value="Restaurant 8">Maki Restaurant</option>
+              <option value="">Select Restaurant</option>
+                {/* Map over the restaurants to create the options dynamically */}
+                {restaurants.map((restaurant) => (
+                  <option key={restaurant._id} value={restaurant._id}>
+                    {restaurant.restaurantName}
+                  </option>
+                ))}
               </select>
               {errors.restaurant && <p className="text-red-500 text-sm">{errors.restaurant.message}</p>}
             </div>
@@ -149,62 +215,7 @@ function Register() {
           </a>
 
             
-            {/* Create New Restaurant Form - Pop-up */}
-            {isRestaurantFormOpen && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-black text-gray-700 p-8 rounded-lg max-w-md w-full space-y-4">
-                  <h3 className="text-2xl font-semibold">Add New Restaurant</h3>
-                  <form className="space-y-4">
-                    <div>
-                      <label className="block text-gray-700">Restaurant Name</label>
-                      <input type="text" placeholder="Enter Restaurant Name" className="w-full px-4 py-2 rounded border" />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700">Address</label>
-                      <input type="text" placeholder="Enter Address" className="w-full px-4 py-2 rounded border" />
-                    </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                 {/* Country and State on the same line */}
-                 <div>
-                   <label className="block text-gray-700">Country</label>
-                   <select className="w-full px-4 py-2 rounded border">
-                     <option value="">Select Country</option>
-                     <option value="India">India</option>
-                     <option value="USA">USA</option>
-                   </select>
-                 </div>
-                 <div>
-                   <label className="block text-gray-700">State</label>
-                   <select className="w-full px-4 py-2 rounded border">
-                     <option value="">Select State</option>
-                     <option value="Gujarat">Gujarat</option>
-                    <option value="California">California</option>
-                   </select>
-                 </div>
-
-                 {/* City and Zip Code on the next line */}
-                 <div>
-                   <label className="block text-gray-700">City</label>
-                   <select className="w-full px-4 py-2 rounded border">
-                     <option value="">Select City</option>
-                     <option value="Surat">Surat</option>
-                     <option value="San Francisco">San Francisco</option>
-                   </select>
-                 </div>
-                 <div>
-                <label className="block text-gray-700">Zip Code</label>
-                <input type="text" placeholder="Enter Zip Code" className="w-full px-4 py-2 rounded border" />
-                </div>
-                  </div>
-
-                   <div className="flex justify-between">
-                      <button type="button" onClick={toggleRestaurantForm} className="text-gray-500">Cancel</button>
-                      <button type="submit" className="bg-yellow-500 text-white py-2 px-6 rounded">Create</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            )}
+            
 
             <div>
               <label className="block text-gray-400">Password</label>
@@ -262,6 +273,106 @@ function Register() {
             </div>
           </form>
         </div>
+
+        {/* Create New Restaurant Form - Pop-up */}
+        {isRestaurantFormOpen && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-black text-gray-700 p-8 rounded-lg max-w-md w-full space-y-4">
+                  <h3 className="text-2xl font-semibold">Add New Restaurant</h3>
+                  <form onSubmit={handleCreateSubmit} className="space-y-4">
+                  {error && <div className="text-red-500">{error}</div>}
+                    <div>
+                      <label className="block text-gray-700">Restaurant Name</label>
+                      <input
+                        type="text"
+                        name="restaurantName"
+                        value={formData.restaurantName}
+                        onChange={handleChange}
+                        placeholder="Enter Restaurant Name"
+                        className="w-full px-4 py-2 rounded border"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700">Address</label>
+                      <input
+                        type="text"
+                        name="restaurantAddress"
+                        value={formData.restaurantAddress}
+                        onChange={handleChange}
+                        placeholder="Enter Address"
+                        className="w-full px-4 py-2 rounded border"
+                        required
+                      />
+                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 {/* Country and State on the same line */}
+                 <div>
+                   <label className="block text-gray-700">Country</label>
+                   <select
+                    name="country"
+                    value={formData.country}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 rounded border"
+                    required
+                  >
+                    <option value="">Select Country</option>
+                    <option value="India">India</option>
+                    <option value="USA">USA</option>
+                  </select>
+                 </div>
+                 <div>
+                   <label className="block text-gray-700">State</label>
+                   <select
+                    name="state"
+                    value={formData.state}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 rounded border"
+                    required
+                  >
+                    <option value="">Select State</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="California">California</option>
+                  </select>
+                 </div>
+
+                 {/* City and Zip Code on the next line */}
+                 <div>
+                   <label className="block text-gray-700">City</label>
+                   <select
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 rounded border"
+                    required
+                  >
+                    <option value="">Select City</option>
+                    <option value="Surat">Surat</option>
+                    <option value="San Francisco">San Francisco</option>
+                  </select>
+                 </div>
+                 <div>
+                <label className="block text-gray-700">Zip Code</label>
+                <input
+                  type="text"
+                  name="zipCode"
+                  value={formData.zipCode}
+                  onChange={handleChange}
+                  placeholder="Enter Zip Code"
+                  className="w-full px-4 py-2 rounded border"
+                  required
+                />
+                </div>
+                </div>
+                <div className="flex justify-between">
+                  <button type="button" onClick={toggleRestaurantForm} className="text-gray-500">Cancel</button>
+                  <button type="submit" className="bg-yellow-500 text-white py-2 px-6 rounded">Create</button>
+                </div>
+                </form>
+                </div>
+              </div>
+            )}
+
 
         {/* Right Section - Logo or image */}
         <div className="w-full md:w-1/2 md:hidden sm:hidden lg:flex flex mt-72 justify-center items-center text-center text-white">

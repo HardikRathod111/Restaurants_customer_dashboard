@@ -47,9 +47,6 @@ function App() {
         <Route path='/additems' element={<AddItems/>}/>
         <Route path='/addcategories' element={<AddCategories/>}/>
         <Route path='/edititem' element={<Edititem/>}/>
-        <Route path="/paymentparcel" element={< PaymentParcel/>} />
-        <Route path="/paymentonsite" element={< PaymentOnsite/>} /> 
-
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
         <Route path="/editprofile" element={isAuthenticated ? <Editprofile /> : <Navigate to="/login" />} />

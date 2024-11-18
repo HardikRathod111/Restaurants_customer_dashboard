@@ -17,6 +17,7 @@ app.use(morgan('dev'));
 app.use("/api/v1/test",require('./routes/testroutes'));
 app.use("/api/v1/admin",require('./routes/admin'));
 app.use("/api/v1/adminedit",require('./routes/adminedit'));
+app.use("/api/v1/resturant",require('./routes/createnewresturantroutes'));
 
 app.get('/',(req,res)=>{
     return res.status(200).send("<h1>wellcome</h1>");
