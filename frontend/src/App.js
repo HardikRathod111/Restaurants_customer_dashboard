@@ -18,7 +18,6 @@ import PaymentParcel from './Dashboard/PaymentParcel';
 import PaymentOnsite from './Dashboard/PaymentOnsite';
 import DeletePrompt from './Dashboard/DeletePrompt';
 import Managemenu from './Dashboard/Managemenu';
-import AddCategories from './Dashboard/AddCategories';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -41,7 +40,6 @@ function App() {
             <Route path="/paymentparcel" element={< PaymentParcel/>} />
             <Route path="/paymentonsite" element={< PaymentOnsite/>} />
             <Route path='/managemenu' element={<Managemenu/>}/>
-            <Route path='/addcategories' element={<AddCategories/>}/>
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
         <Route path="/editprofile" element={isAuthenticated ? <Editprofile /> : <Navigate to="/login" />} />

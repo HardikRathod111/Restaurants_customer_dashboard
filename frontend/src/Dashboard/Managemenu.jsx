@@ -19,6 +19,16 @@ const Managemenu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dotsMenuOpen, setDotsMenuOpen] = useState(null);
    const [isVeg, setIsVeg] = useState(true);
+     const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [Category, setCategory] = useState([]);
+
+  const handleOpenPopup = () => setIsPopupOpen(true);
+  const handleClosePopup = () => setIsPopupOpen(false);
+
+  const handleAddCategory = (category) => {
+    setCategory([...categories, category]);
+    console.log("Category Added:", category);
+  };
 
   // Function to toggle between Veg and Non-Veg
   const toggleVegStatus = () => {
@@ -291,10 +301,13 @@ const categories = [
        <section className="mb-6">
   <div className="flex justify-between items-center mb-4">
     <h3 className="text-xl font-semibold text-white">Categories (250)</h3>
-             <a href='/addcategories' type='button' className="bg-yellow-600 hover:bg-yellow-700 white font-semibold py-2 px-6 rounded-lg shadow-md flex items-center">
-                   <MdAddBox className="text-white mr-2" />
-                   Add Categories
-                 </a>
+            <button
+            onClick={handleOpenPopup}
+            className="bg-yellow-600 hover:bg-yellow-700 white font-semibold py-2 px-6 rounded-lg shadow-md flex items-center"
+          >
+             <MdAddBox className="text-white mr-2" />
+            Add Category
+          </button>
               </div>
    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
       {categories.map((category, index) => (
