@@ -42,15 +42,12 @@ const adminrestSchema = new mongoose.Schema(
             type: String,
             require: [true, "comfirmpassword is required"],
         },
-<<<<<<< HEAD
         resetOtp:{
             type: String,
         },
         otpExpires: {
             type: Number, // Timestamp for OTP expiration
         },
-=======
->>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
 
     },{timestamps:true}
 )
