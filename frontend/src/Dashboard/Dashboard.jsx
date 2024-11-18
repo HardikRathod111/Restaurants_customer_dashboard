@@ -48,10 +48,10 @@ const sidebarItems = [
 const popularDishes = [
   { name: 'Rice Noodles', price: 215.00, orderQty: 100, revenue: 21500.00, image: 'p_d_1.png' },
   { name: 'French Fries', price: 150.00, orderQty: 80, revenue: 12000.00, image: 'p_d_2.png' },
-  { name: 'Biryani rice', price: 315.00, orderQty: 200, revenue: 63000.00, image: '/placeholder.svg?height=50&width=50' },
-  { name: 'Pasta', price: 160.00, orderQty: 80, revenue: 12800.00, image: '/placeholder.svg?height=50&width=50' },
-  { name: 'Salad', price: 280.00, orderQty: 100, revenue: 28000.00, image: '/placeholder.svg?height=50&width=50' },
-  { name: 'Rice Noodles', price: 280.00, orderQty: 100, revenue: 28000.00, image: '/placeholder.svg?height=50&width=50' },
+  { name: 'Biryani rice', price: 315.00, orderQty: 200, revenue: 63000.00, image: 'thai-food.png' },
+  { name: 'Pasta', price: 160.00, orderQty: 80, revenue: 12800.00, image: 'p_d_4.png' },
+  { name: 'Salad', price: 280.00, orderQty: 100, revenue: 28000.00, image: 'p_d_5.png' },
+  { name: 'Rice Noodles', price: 280.00, orderQty: 100, revenue: 28000.00, image: 'p_d_6.png' },
 ]
 
 interface Notification {

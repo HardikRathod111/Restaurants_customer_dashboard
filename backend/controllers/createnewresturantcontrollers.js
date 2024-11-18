@@ -1,4 +1,3 @@
-
 const Restaurant = require("../models/createnewresturantmodel");
 
 const createnewresturantcontroller = async (req, res) => {

@@ -1,4 +1,3 @@
-
 const express = require('express');
 const { getadmineditcontroller, updateadmincontroller, resetpasswordcontroller, updataadminpasswordcontroller, deleteadminprofilecontroller, sendOtpController, verifyOtpController, resetPassword } = require('../controllers/admineditcontroller');
 const adminmiddleware = require('../middlewares/adminmiddleware');
