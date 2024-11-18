@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
@@ -68,6 +69,11 @@ const Otp = () => {
       setError("Failed to resend OTP. Please try again.");
     }
   };
+=======
+import React from 'react';
+
+const Otp = () => {
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
   return (
     <div
       className="flex min-h-screen bg-cover bg-center"
@@ -78,20 +84,31 @@ const Otp = () => {
         <div className="p-8 rounded-md shadow-md max-w-md w-full" style={{ backgroundColor: '#333748',margin:'50px' }}>
           <h2 className="text-2xl font-semibold text-white mb-4">Enter OTP</h2>
           <p className="text-gray-400 mb-6">
+<<<<<<< HEAD
           A verification code has been sent to <span className="text-white">{email || "your email"}</span>.
+=======
+            A verification code has been sent on <span className="text-white">XXX98</span>. Enter the code below.
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
           </p>
 
           {/* OTP Input Fields */}
           <div className="flex justify-between mb-4">
+<<<<<<< HEAD
             {otpFields.map((value, index) => (
+=======
+            {[...Array(6)].map((_, index) => (
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
               <input
                 key={index}
                 type="text"
                 maxLength="1"
                 className="w-12 h-12 text-center text-white text-lg rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
                 style={{ backgroundColor: '#2D303E', border: '1px solid #ABBBC2' }}
+<<<<<<< HEAD
                 onChange={(e) => handleInputChange(index, e)} // Pass event to the function
                 value={value}
+=======
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
               />
             ))}
           </div>
@@ -100,6 +117,7 @@ const Otp = () => {
           <div className="flex items-center justify-between mb-4 text-gray-400 text-sm">
             <div className="flex items-center space-x-1">
               <span>⏰</span>
+<<<<<<< HEAD
               <span>{timer} sec</span>
             </div>
             <button
@@ -121,6 +139,21 @@ const Otp = () => {
           </button>
           {message && <p className="text-green-400 mt-4">{message}</p>}
           {error && <p className="text-red-400 mt-4">{error}</p>}
+=======
+              <span>00:30 sec</span>
+            </div>
+            <button className="text-blue-400 hover:text-blue-500 focus:outline-none">Resend OTP</button>
+          </div>
+
+          {/* Verify Button */}
+          <a href='/resetpassword'
+              className=" w-full py-2 px-40  bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md transition duration-200"
+              style={{ backgroundColor: '#CA923D' }}
+            >
+             Verify
+            </a>
+
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
         </div>
       </div>
 

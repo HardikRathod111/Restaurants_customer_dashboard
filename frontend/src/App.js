@@ -14,10 +14,20 @@ import Editprofile from './Dashboard/Editprofile';
 import QrCode from './Dashboard/QrCode';
 import Createqrcode from './Dashboard/Createqrcode';
 import OnsiteOrder from './Dashboard/OnsiteOrder';
+<<<<<<< HEAD
 import PaymentParcel from './Dashboard/PaymentParcel';
 import PaymentOnsite from './Dashboard/PaymentOnsite';
 import DeletePrompt from './Dashboard/DeletePrompt';
 import Managemenu from './Dashboard/Managemenu';
+=======
+import DeletePrompt from './Dashboard/DeletePrompt';
+import Managemenu from './Dashboard/Managemenu';
+import AddCategories from './Dashboard/AddCategories';
+import Edititem from './Dashboard/BurgerEditDetailsBox';
+import AddItems from './Dashboard/AddItems';
+import PaymentParcel from './Dashboard/PaymentParcel';
+import PaymentOnsite from './Dashboard/PaymentOnsite';
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -37,9 +47,19 @@ function App() {
         <Route path="/resetpassword" element={<Resetpassword />} />
         <Route path="/" element={<Register />} />
         <Route path='/deleteprompt' element={<DeletePrompt/>}/>
+<<<<<<< HEAD
             <Route path="/paymentparcel" element={< PaymentParcel/>} />
             <Route path="/paymentonsite" element={< PaymentOnsite/>} />
             <Route path='/managemenu' element={<Managemenu/>}/>
+=======
+        <Route path='/managemenu' element={<Managemenu/>}/>
+        <Route path='/additems' element={<AddItems/>}/>
+        <Route path='/addcategories' element={<AddCategories/>}/>
+        <Route path='/edititem' element={<Edititem/>}/>
+        <Route path="/paymentparcel" element={< PaymentParcel/>} />
+        <Route path="/paymentonsite" element={< PaymentOnsite/>} /> 
+
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
         <Route path="/editprofile" element={isAuthenticated ? <Editprofile /> : <Navigate to="/login" />} />

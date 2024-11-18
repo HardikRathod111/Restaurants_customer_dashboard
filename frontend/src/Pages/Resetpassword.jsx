@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom';
+=======
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
 
 const Resetpassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+<<<<<<< HEAD
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -52,6 +56,11 @@ const Resetpassword = () => {
       setError('An error occurred while resetting the password.');
     }
   };
+=======
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
 
   return (
     <div
@@ -62,8 +71,12 @@ const Resetpassword = () => {
       <div className="w-full lg:w-1/2 md:w-full flex items-center justify-center bg-slate-800 bg-opacity-70">
         <div className="p-8 rounded-md shadow-md max-w-md w-full m-4" style={{ backgroundColor: '#333748' }}>
           <h2 className="text-2xl font-semibold text-white mb-6">Reset Password</h2>
+<<<<<<< HEAD
           {error && <div className="text-red-500 mb-4">{error}</div>}
           {message && <div className="text-green-500 mb-4">{message}</div>}
+=======
+
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
           {/* Enter New Password Field */}
           <div className="mb-4 relative">
             <label className="block text-sm text-white mb-1">Enter New Password<span className="text-red-500">*</span></label>
@@ -72,8 +85,11 @@ const Resetpassword = () => {
               placeholder="Enter New Password"
               className="w-full px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
               style={{ backgroundColor: '#2D303E', border: '1px solid #ABBBC240' }}
+<<<<<<< HEAD
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
+=======
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
             />
             <button
               type="button"
@@ -92,8 +108,11 @@ const Resetpassword = () => {
               placeholder="Enter Confirm Password"
               className="w-full px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
               style={{ backgroundColor: '#2D303E', border: '1px solid #ABBBC240' }}
+<<<<<<< HEAD
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+=======
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
             />
             <button
               type="button"
@@ -109,7 +128,10 @@ const Resetpassword = () => {
             type="button"
             className="w-full py-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md transition duration-200"
             style={{ backgroundColor: '#CA923D' }}
+<<<<<<< HEAD
             onClick={handleSubmit}
+=======
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
           >
             Reset Password
           </button>

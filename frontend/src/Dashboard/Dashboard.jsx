@@ -292,7 +292,11 @@ export default function Dashboard() {
               </button>
               {PaymentHistoryOpen && (
               <div className="ml-8 mt-2 space-y-2">
+<<<<<<< HEAD
                 <a href='/paymentparcel' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+=======
+                <a href='/' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
                   Parcel Order
                 </a>
                 <a href='/paymentonsite' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">

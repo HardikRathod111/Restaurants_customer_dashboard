@@ -9,6 +9,7 @@ const transporter = nodemailer.createTransport({
   service: 'Gmail', // Or your email service
   auth: {
       user: 'harahrathod1432@gmail.com',
+<<<<<<< HEAD
       pass: 'jimrawsdgnfdsjsw',
   },
 });
@@ -122,6 +123,12 @@ const resetPassword = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+=======
+      pass: 'nsymdceluqwacark',
+  },
+});
+
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
 const getadmineditcontroller = async (req, res) => {
     try {
         const adminId = req.user.id;  // Assuming `req.user` has the correct decoded token data
@@ -267,4 +274,8 @@ const deleteadminprofilecontroller = async(req,res) => {
     }
 }
 
+<<<<<<< HEAD
 module.exports = {getadmineditcontroller,sendOtpController,verifyOtpController,resetPassword, updateadmincontroller, updataadminpasswordcontroller,resetpasswordcontroller,deleteadminprofilecontroller};
+=======
+module.exports = {getadmineditcontroller, updateadmincontroller, updataadminpasswordcontroller,resetpasswordcontroller,deleteadminprofilecontroller};
+>>>>>>> a7ff61a57dd5ec835b3edeb4182ab3bd2061376b
