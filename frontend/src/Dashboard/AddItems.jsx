@@ -40,6 +40,16 @@ const AddItems = () => {
         }
     };
 
+    const [imagePreview, setImagePreview] = useState(null);
+
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => setImagePreview(reader.result);
+            reader.readAsDataURL(file);
+        }
+    };
 
     const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
     const toggleManageHistory = () => setManageHistoryOpen(!manageHistoryOpen);
@@ -99,7 +109,7 @@ const AddItems = () => {
     return (
         <div className="flex min-h-screen text-white font-sans" style={{ backgroundColor: "#0B0F1F" }}>
             {/* Sidebar */}
-            <aside className="w-[250px] p-4 flex flex-col" style={{ backgroundColor: '#1F1D2B' }}>
+            <aside className="w-[200px] h-screen p-4 flex flex-col" style={{ backgroundColor: '#1F1D2B' }}>
                 <div className="flex items-center justify-center mb-8">
                     <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-24 rounded-full mb-2" />
                 </div>
@@ -265,59 +275,83 @@ const AddItems = () => {
                     style={{ backgroundColor: "#2D303E" }}
                 >
 
-                    <table border="1" width="100%" cellpadding="10" >
+                    <table border="1" width="100%" cellpadding="10">
                         <tr>
                             <td>
+                                <label htmlFor="item-name" className="text-gray-400 block mb-2">Item Name</label>
                                 <input
                                     type="text"
+                                    id="item-name"
                                     placeholder="Enter Item Name"
                                     className="p-2 bg-gray-700 rounded-md text-white placeholder-gray-400"
                                 />
                             </td>
-
                             <td>
+                                <label htmlFor="item-ingredients" className="text-gray-400 block mb-2">Item Ingredients</label>
                                 <input
                                     type="text"
+                                    id="item-ingredients"
                                     placeholder="Enter Item Ingredients"
                                     className="p-2 bg-gray-700 rounded-md text-white placeholder-gray-400"
                                 />
                             </td>
                             <td>
+                                <label htmlFor="item-price" className="text-gray-400 block mb-2">Item Price</label>
                                 <input
                                     type="text"
+                                    id="item-price"
                                     placeholder="Enter Item Price"
                                     className="p-2 bg-gray-700 rounded-md text-white placeholder-gray-400"
                                 />
                             </td>
                             <td rowSpan="2">
+                                <label className="block mb-2 text-gray-400">Upload Item Image</label>
                                 <div className="p-3 bg-gray-700 rounded-md text-white placeholder-gray-400">
-                                    <label className="block mb-2 text-gray-400">Upload Item Image</label>
-                                    <input type="file" className="hidden" />
-                                    <div className="border-2 border-dashed border-gray-500 p-4 rounded-md text-center cursor-pointer">
-                                        <p className="text-gray-400">Upload Image or drag and drop</p>
-                                        <p className="text-gray-400 text-xs">(PNG, JPG, GIF up to 3MB)</p>
-                                    </div>
+                                    <input
+                                        type="file"
+                                        id="upload-image"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={handleImageUpload}
+                                    />
+                                    <label htmlFor="upload-image" className="cursor-pointer p-4 rounded-md text-center">
+                                        {imagePreview ? (
+                                            <img src={imagePreview} alt="Uploaded Preview" className="w-full h-auto rounded-md" />
+                                        ) : (
+                                            <>
+                                                <p className="text-gray-400">Upload Image or drag and drop</p>
+                                                <p className="text-gray-400 text-xs">(PNG, JPG, GIF up to 3MB)</p>
+                                            </>
+                                        )}
+                                    </label>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
+                                <label htmlFor="item-discount" className="text-gray-400 block mb-2">Add Discount</label>
                                 <input
                                     type="text"
+                                    id="item-discount"
                                     placeholder="Enter Add Discount"
                                     className="p-2 bg-gray-700 rounded-md text-white placeholder-gray-400"
                                 />
                             </td>
-                            <td> <select
-                                className="p-2 bg-gray-700 rounded-md text-white"
-                                defaultValue=""
-                                style={{ paddingRight: '50px' }}
-                            >
-                                <option value="" disabled>Select Item Type</option>
-                                <option>Spicy</option>
-                                <option>Sweet</option>
-                            </select></td>
                             <td>
+                                <label htmlFor="item-type" className="text-gray-400 block mb-2">Item Type</label>
+                                <select
+                                    id="item-type"
+                                    className="p-2 bg-gray-700 rounded-md text-white"
+                                    defaultValue=""
+                                    style={{ paddingRight: '50px' }}
+                                >
+                                    <option value="" disabled>Select Item Type</option>
+                                    <option>Spicy</option>
+                                    <option>Sweet</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label className="text-gray-400 block mb-2">Spice Level</label>
                                 <div className="col-span-2 flex space-x-4 text-white">
                                     <label className="flex items-center">
                                         <input type="radio" name="spice-level" value="Less Spicy" className="mr-2" />
@@ -335,6 +369,7 @@ const AddItems = () => {
                             </td>
                         </tr>
                     </table>
+
 
                 </section>
 
@@ -359,73 +394,191 @@ const AddItems = () => {
 
                 {/* Form container */}
                 {showForm && (
-                    <div style={{ marginTop: "20px", backgroundColor: "#1A1C23", padding: "20px", borderRadius: "10px" }}>
-                        <h2>Step 1</h2>
-                        <div style={{ marginBottom: "10px" }}>
+                    <div style={{ marginTop: "10px", backgroundColor: "#1A1C23", padding: "20px", borderRadius: "10px" }}>
+                        <h2 style={{ marginBottom: "10px", fontSize: "20px" }}>Step 1</h2>
+                        <div >
+                            <label
+                                htmlFor="customization-title"
+                                style={{ display: "block", color: "#fff" }}
+                            >
+                                Customization Title
+                            </label>
                             <input
+                                id="customization-title"
                                 type="text"
                                 placeholder="Enter Customization Title"
-                                style={{ padding: "10px", marginRight: "10px", width: "30%", borderRadius: "5px", backgroundColor: "#343644", color: "#fff",marginBottom:'15px' }}
+                                style={{
+                                    padding: "10px",
+                                    marginRight: "10px",
+                                    width: "30%",
+                                    borderRadius: "5px",
+                                    backgroundColor: "#343644",
+                                    color: "#fff",
+                                    marginBottom: "15px",
+                                }}
                             />
-                            <label style={{ marginRight: "10px" }}>
+                            <label style={{ marginRight: "10px", color: "#fff" }}>
                                 <input type="radio" name="selection" /> Multiple Selection
                             </label>
-                            <label>
+                            <label style={{ color: "#fff" }}>
                                 <input type="radio" name="selection" /> Single Selection
                             </label>
                             <button
-                        
                                 style={{
                                     marginTop: "10px",
                                     backgroundColor: "#FFB74D",
                                     color: "#000",
                                     padding: "10px 20px",
                                     borderRadius: "5px",
-                                    marginLeft:'270px',
+                                    marginLeft: "290px",
                                 }}
                             >
                                 + Add Customization
                             </button>
-                            <div  style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
-                                <input
-                                    type="text"
-                                    placeholder="Enter Customization Name"
-                                    style={{ padding: "10px", marginRight: "10px", width: "30%", borderRadius: "5px", backgroundColor: "#343644", color: "#fff" }}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Enter Customization Detail"
-                                    style={{ padding: "10px", marginRight: "10px", width: "30%", borderRadius: "5px", backgroundColor: "#343644", color: "#fff" }}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Enter Extra Rate"
-                                    style={{ padding: "10px", marginRight: "10px", width: "30%", borderRadius: "5px", backgroundColor: "#343644", color: "#fff" }}
-                                />
+
+                            <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                                <div style={{ marginRight: "10px", width: "30%" }}>
+                                    <label
+                                        htmlFor="customization-name-1"
+                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
+                                    >
+                                        Customization Name
+                                    </label>
+                                    <input
+                                        id="customization-name-1"
+                                        type="text"
+                                        placeholder="Enter Customization Name"
+                                        style={{
+                                            padding: "10px",
+                                            width: "100%",
+                                            borderRadius: "5px",
+                                            backgroundColor: "#343644",
+                                            color: "#fff",
+                                        }}
+                                    />
+                                </div>
+                                <div style={{ marginRight: "10px", width: "30%" }}>
+                                    <label
+                                        htmlFor="customization-detail-1"
+                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
+                                    >
+                                        Customization Detail
+                                    </label>
+                                    <input
+                                        id="customization-detail-1"
+                                        type="text"
+                                        placeholder="Enter Customization Detail"
+                                        style={{
+                                            padding: "10px",
+                                            width: "100%",
+                                            borderRadius: "5px",
+                                            backgroundColor: "#343644",
+                                            color: "#fff",
+                                        }}
+                                    />
+                                </div>
+                                <div style={{ marginRight: "10px", width: "30%" }}>
+                                    <label
+                                        htmlFor="extra-rate-1"
+                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
+                                    >
+                                        Extra Rate
+                                    </label>
+                                    <input
+                                        id="extra-rate-1"
+                                        type="text"
+                                        placeholder="Enter Extra Rate"
+                                        style={{
+                                            padding: "10px",
+                                            width: "100%",
+                                            borderRadius: "5px",
+                                            backgroundColor: "#343644",
+                                            color: "#fff",
+                                        }}
+                                    />
+                                </div>
                                 <button
-                                    style={{ backgroundColor: "red", color: "white", borderRadius: "5px", padding: "10px" }}
+                                    style={{
+                                        backgroundColor: "red",
+                                        color: "white",
+                                        borderRadius: "5px",
+                                        padding: "10px",
+                                        marginTop:'20px',
+                                    }}
                                 >
                                     🗑
                                 </button>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                                <div style={{ marginRight: "10px", width: "30%" }}>
+                                    <label
+                                        htmlFor="customization-name-2"
+                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
+                                    >
+                                        Customization Name
+                                    </label>
+                                    <input
+                                        id="customization-name-2"
+                                        type="text"
+                                        placeholder="Enter Customization Name"
+                                        style={{
+                                            padding: "10px",
+                                            width: "100%",
+                                            borderRadius: "5px",
+                                            backgroundColor: "#343644",
+                                            color: "#fff",
+                                        }}
+                                    />
                                 </div>
-                                <div>
-                                <input
-                                    type="text"
-                                    placeholder="Enter Customization Name"
-                                    style={{ padding: "10px", marginRight: "10px", width: "30%", borderRadius: "5px", backgroundColor: "#343644", color: "#fff" }}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Enter Customization Detail"
-                                    style={{ padding: "10px", marginRight: "10px", width: "30%", borderRadius: "5px", backgroundColor: "#343644", color: "#fff" }}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Enter Extra Rate"
-                                    style={{ padding: "10px", marginRight: "10px", width: "30%", borderRadius: "5px", backgroundColor: "#343644", color: "#fff" }}
-                                />
+                                <div style={{ marginRight: "10px", width: "30%" }}>
+                                    <label
+                                        htmlFor="customization-detail-2"
+                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
+                                    >
+                                        Customization Detail
+                                    </label>
+                                    <input
+                                        id="customization-detail-2"
+                                        type="text"
+                                        placeholder="Enter Customization Detail"
+                                        style={{
+                                            padding: "10px",
+                                            width: "100%",
+                                            borderRadius: "5px",
+                                            backgroundColor: "#343644",
+                                            color: "#fff",
+                                        }}
+                                    />
+                                </div>
+                                <div style={{ marginRight: "10px", width: "30%" }}>
+                                    <label
+                                        htmlFor="extra-rate-2"
+                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
+                                    >
+                                        Extra Rate
+                                    </label>
+                                    <input
+                                        id="extra-rate-2"
+                                        type="text"
+                                        placeholder="Enter Extra Rate"
+                                        style={{
+                                            padding: "10px",
+                                            width: "100%",
+                                            borderRadius: "5px",
+                                            backgroundColor: "#343644",
+                                            color: "#fff",
+                                        }}
+                                    />
+                                </div>
                                 <button
-                                    style={{ backgroundColor: "red", color: "white", borderRadius: "5px", padding: "10px" }}
+                                    style={{
+                                        backgroundColor: "red",
+                                        color: "white",
+                                        borderRadius: "5px",
+                                        padding: "10px",
+                                        marginTop:'20px',
+                                    }}
                                 >
                                     🗑
                                 </button>
@@ -433,6 +586,7 @@ const AddItems = () => {
                         </div>
                     </div>
                 )}
+
 
 
             </main>
