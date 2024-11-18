@@ -53,15 +53,15 @@ const ParcelOrder = () => {
     return (
         <div className="flex min-h-screen text-white font-sans" style={{ backgroundColor: "#0B0F1F" }}>
             {/* Sidebar */}
-            <aside className="w-[250px] p-4 flex flex-col" style={{ backgroundColor: '#1F1D2B' }}>
+            <aside className="w-[200px] h-screen p-4 flex flex-col" style={{ backgroundColor: '#1F1D2B' }}>
                 <div className="flex items-center justify-center mb-8">
                     <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-24 rounded-full mb-2" />
                 </div>
                 <nav className="flex flex-col space-y-4">
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
+                    <a href='/dashboard' className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
                         <MdDashboard className="mr-2" style={{ color: "#CA923D" }} />
                         Dashboard
-                    </button>
+                    </a>
                     <div>
                         <button
                             className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -86,13 +86,13 @@ const ParcelOrder = () => {
                             </div>
                         )}
                     </div>
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
+                    <a href='/managemenu' className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
                         <MdOutlineRestaurantMenu className="mr-2" style={{ color: "#CA923D" }} />
                         Manage Menu
-                    </button>
+                    </a>
                     <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700" onClick={toggleManageHistory}>
                         <FaClipboardList className="mr-2" style={{ color: "#CA923D" }} />
-                        Payment History
+                        PaymentHistory
                         <MdExpandMore className={`ml-auto transform ${manageHistoryOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {manageHistoryOpen && (
@@ -109,10 +109,10 @@ const ParcelOrder = () => {
                                 </button>
                             </div>
                         )}
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
+                    <a href='/qrcode' className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
                         <MdOutlineQrCodeScanner className="mr-2" style={{ color: "#CA923D" }} />
                         QR Codes
-                    </button>
+                    </a>
                 </nav>
                 <button className="mt-auto p-3 bg-red-500 text-white rounded-md flex items-center">
                     <MdLogout className="mr-2" />
