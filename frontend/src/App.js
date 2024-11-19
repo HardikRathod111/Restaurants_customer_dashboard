@@ -44,7 +44,7 @@ function App() {
             <Route path="/paymentonsite" element={< PaymentOnsite/>} />
             <Route path='/managemenu' element={<Managemenu/>}/>
         <Route path='/additems' element={<AddItems/>}/>
-\        <Route path='/edititem' element={<Edititem/>}/>
+        <Route path='/edititem' element={<Edititem/>}/>
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
         <Route path="/editprofile" element={isAuthenticated ? <Editprofile /> : <Navigate to="/login" />} />
