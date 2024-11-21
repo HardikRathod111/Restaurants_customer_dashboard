@@ -586,14 +586,14 @@ const Managemenu = () => {
                     {/* Burger Section */}
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-2xl font-semibold  text-white mt-6">{selectedCategory}</h2>
-                        <button
+                        <a href='/managemenu'
                             type="button"
                             onClick={handleAddItemClick}
                             className="bg-yellow-600 hover:bg-yellow-700 white mt-5 font-semibold sm:text-[14px] md:text-[16px] py-2 px-6 rounded-lg shadow-md flex items-center"
                         >
                             <MdAddBox className="text-white mr-2" />
-                            Add burger {selectedCategory}
-                        </button>
+                            Add {selectedCategory}
+                        </a>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-6">
