@@ -592,7 +592,7 @@ const Managemenu = () => {
                             className="bg-yellow-600 hover:bg-yellow-700 white mt-5 font-semibold sm:text-[14px] md:text-[16px] py-2 px-6 rounded-lg shadow-md flex items-center"
                         >
                             <MdAddBox className="text-white mr-2" />
-                            Add {selectedCategory}
+                            Add burger {selectedCategory}
                         </button>
                     </div>
 

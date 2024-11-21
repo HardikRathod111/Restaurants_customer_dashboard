@@ -35,7 +35,6 @@ const AddItems = () => {
 
     const toggleDropdown1 = () => setIsOpen(!isOpen);
 
-<<<<<<< HEAD:frontend/src/Admin/Dashboard/AddItems.jsx
        const [steps, setSteps] = useState([
         // Initial empty steps or data structure
         { title: '', name: '', detail: '', rate: '' },
@@ -67,10 +66,8 @@ const AddItems = () => {
         return step.title && step.name && step.detail && step.rate;
     };
 
-=======
     const location = useLocation();
     const category = location.state?.category
->>>>>>> 3af7f3b8bedf18485b2ecc2ba91a7381dfbd6de9:frontend/src/Dashboard/AddItems.jsx
     const handleOptionClick1 = (option) => {
         setSelectedOption1(option);
         setIsOpen(false);
