@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
-import {
-    FaQrcode, FaHome, FaList, FaMoneyBillWave, FaSignOutAlt, FaEllipsisV,
-    FaBoxOpen, FaUser, FaSearch, FaClipboardList
-} from 'react-icons/fa';
-import {
-    MdWindow, MdAddBox, MdAddToPhotos, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore,
-    MdImage
-} from 'react-icons/md';
+import React, { useEffect, useState } from 'react';
+import {FaQrcode, FaHome, FaList, FaMoneyBillWave, FaSignOutAlt, FaEllipsisV,FaBoxOpen, FaUser, FaSearch, FaClipboardList} from 'react-icons/fa';
+import {MdWindow, MdAddBox, MdAddToPhotos, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore,MdImage} from 'react-icons/md';
 import { BiImageAdd } from "react-icons/bi";
 import { IoMdLogOut } from 'react-icons/io';
 import BurgerEditDetailsBox from "./BurgerEditDetailsBox";
 import { useNavigate } from 'react-router-dom';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react';
+
 
 const Managemenu = () => {
     const [activeLink, setActiveLink] = useState('');
@@ -29,22 +24,20 @@ const Managemenu = () => {
     const handleOpenPopup = () => setIsPopupOpen(true);
     const handleClosePopup = () => setIsPopupOpen(false);
 
+
     const [previewImage, setPreviewImage] = useState(null);
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
+        setSelectedImageFile(file);
+    
         if (file) {
             const reader = new FileReader();
-            reader.onload = () => {
+            reader.onloadend = () => {
                 setPreviewImage(reader.result);
             };
             reader.readAsDataURL(file);
         }
-    };
-
-    const handleAddCategory = (category) => {
-        setCategory([...categories, category]);
-        console.log("Category Added:", category);
     };
 
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -57,27 +50,47 @@ const Managemenu = () => {
         setIsVeg(!isVeg);
     };
 
+    const handleAddItemClick = () => {
+        navigate('/additems', { state: { category: selectedCategory } });
+    };
+
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
     const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
     const togglePaymentHistory = () => {
         setPaymentHistoryOpen(!PaymentHistoryOpen);
-      }; 
-    const categories = [
-        { name: 'All', icon: './assets/images/pngwing 14-2.png' },
-        { name: 'Burger', icon: './assets/images/pngwing 14-2.png' },
-        { name: 'Ice Cream', icon: './assets/images/pngwing 5.png' },
-        { name: 'French Fries', icon: './assets/images/pngwing 6.png' },
-        { name: 'Sandwich', icon: './assets/images/pngwing 7.png' },
-        { name: 'Drink Juice', icon: './assets/images/pngwing 11.png' },
-    ];
+    }; 
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);       // To handle loading state
+    const [error, setError] = useState(null);  // Initial empty state for categories
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/category/getCategory');
+            
+            // Check if the response is ok
+            if (!response.ok) {
+                throw new Error('Failed to fetch categories');
+            }
+
+            const data = await response.json();
+            setCategories(data);  // Set categories in state
+        } catch (error) {
+            setError(error.message);  // Set error message in state
+        } finally {
+            setLoading(false);  // Set loading to false after fetching
+        }
+    };
+
+    // Use useEffect to call fetchCategories when the component is mounted
+    useEffect(() => {
+        fetchCategories();
+    }, []);  
 
     const [selectedCategory, setSelectedCategory] = useState('All');
-
+    
     const handleCategoryClick = (categoryName) => {
         setSelectedCategory(categoryName);
-    };
-   
-
+    };    
+    
     const handleOpenEdit = () => setIsEditOpen(true);
     const handleCloseEdit = () => setIsEditOpen(false);
     const handleSaveEdit = (details) => {
@@ -85,8 +98,8 @@ const Managemenu = () => {
         setIsEditOpen(false);
     };
 
-// Dropdown options for Item Name
-const itemNames = ["Biryani Rice", "Chicken Burger", "Veg Sandwich", "Pizza", "Pasta"];
+    // Dropdown options for Item Name
+    const itemNames = ["Biryani Rice", "Chicken Burger", "Veg Sandwich", "Pizza", "Pasta"];
     const menuItems = [
         {
             id: 1,
@@ -197,8 +210,33 @@ const itemNames = ["Biryani Rice", "Chicken Burger", "Veg Sandwich", "Pizza", "P
     const navigate = useNavigate();
     const handlenavigateprofile = ()=> {
         navigate('/Profilepage');
-      }
+    }
+    const [categoryName, setCategoryName] = useState('');
+     // Initial empty state for categories
+    const [selectedImageFile, setSelectedImageFile] = useState(null);
 
+    const handleAddCategory = async () => {
+        const formData = new FormData();
+        formData.append('categoryName', categoryName);
+        formData.append('image', selectedImageFile); // Make sure `selectedImageFile` is a valid file object
+    
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/category/createCategory', {
+                method: 'POST',
+                body: formData,
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            console.log('Category added successfully:', result);
+        } catch (error) {
+            console.error('Error adding category:', error);
+        }
+    };
+    
     return (
         <div className="flex min-h-screen bg-gray-900 text-white font-sans">
             {/* Sidebar */}
@@ -443,97 +481,119 @@ const itemNames = ["Biryani Rice", "Chicken Burger", "Veg Sandwich", "Pizza", "P
                         Add Category
                         </button>
                         {/* Popup */}
-                {isPopupOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-gray-800 text-white rounded-lg p-6 md:w-96 sm:w-90">
-                        <h2 className="text-lg font-bold mb-4">Add Category</h2>
+                        {isPopupOpen && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="bg-gray-800 text-white rounded-lg p-6 md:w-96 sm:w-90">
+            <h2 className="text-lg font-bold mb-4">Add Category</h2>
 
-                        {/* Category Name Input */}
-                        <div className="mb-4">
-                            <label className="block text-sm mb-2">Category Name</label>
-                            <input
-                                type="text"
-                                placeholder="Enter Category Name"
-                                className="w-full px-4 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                            />
-                        </div>
-
-                         <div className="mb-4">
-            <label className="block text-sm mb-2">Upload Item Image</label>
-            <div className="border-2 border-dashed border-gray-600 p-4 rounded-md text-center">
+            {/* Category Name Input */}
+            <div className="mb-4">
+                <label className="block text-sm mb-2">Category Name</label>
                 <input
-                    type="file"
-                    id="file-upload"
-                    className="hidden"
-                    accept="image/png, image/jpeg, image/gif"
-                    onChange={handleImageUpload}
+                    type="text"
+                    value={categoryName}
+                    onChange={(e) => setCategoryName(e.target.value)}
+                    placeholder="Enter Category Name"
+                    className="w-full px-4 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                 />
-                <label
-                    htmlFor="file-upload"
-                    className="cursor-pointer text-yellow-500"
+            </div>
+
+            {/* Image Upload */}
+            <div className="mb-4">
+                <label className="block text-sm mb-2">Upload Item Image</label>
+                <div className="border-2 border-dashed border-gray-600 p-4 rounded-md text-center">
+                    <input
+                        type="file"
+                        id="file-upload"
+                        className="hidden"
+                        accept="image/png, image/jpeg, image/gif"
+                        onChange={handleImageUpload}
+                    />
+                    <label
+                        htmlFor="file-upload"
+                        className="cursor-pointer text-yellow-500"
+                    >
+                        {previewImage ? (
+                            <img
+                                src={previewImage}
+                                alt="Preview"
+                                className="mx-auto h-32 w-auto object-cover rounded-md"
+                            />
+                        ) : (
+                            <>
+                                <p className="text-blue-400">
+                                    <BiImageAdd className="text-gray-400 text-5xl ml-32" />
+                                    Upload Image <span className="text-white">or drag and drop</span> <br />
+                                    <span className="text-sm text-gray-400">
+                                        PNG, JPG, GIF up to 10MB
+                                    </span>
+                                </p>
+                            </>
+                        )}
+                    </label>
+                </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex justify-end space-x-4">
+                <button
+                    onClick={handleClosePopup}
+                    className="bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-md"
                 >
-                    {previewImage ? (
-                        <img
-                            src={previewImage}
-                            alt="Preview"
-                            className="mx-auto h-32 w-auto object-cover rounded-md"
-                        />
-                    ) : (
-                        <>
-                         <p className='text-blue-400'>
-                             <BiImageAdd className='text-gray-400 text-5xl ml-32'/>
-                           Upload Image <span className='text-white'>or drag and drop </span> <br />
-                            <span className="text-sm text-gray-400">
-                                PNG, JPG, GIF up to 10MB
-                            </span>
-                            </p>
-                        </>
-                    )}
-                </label>
+                    Cancel
+                </button>
+                <button
+                    onClick={handleAddCategory}
+                    className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-md"
+                >
+                    Add
+                </button>
             </div>
         </div>
-                        {/* Buttons */}
-                        <div className="flex justify-end space-x-4">
-                            <button
-                                onClick={handleClosePopup}
-                                className="bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-md"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-md"
-                            >
-                                Add
-                            </button>
-                        </div>
+    </div>
+)}
+
                     </div>
-                </div>
-            )}
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-                        {categories.map((category, index) => (
-                            <button
-                                key={index}
-                                onClick={() => handleCategoryClick(category.name)}
-                                className={`bg-gray-800 text-white p-2 rounded-md flex items-center ${selectedCategory === category.name ? 'bg-yellow-600' : ''
-                                    }`}
-                            >
-                                <img
-                                    src={category.icon}
-                                    alt={category.name}
-                                    className="w-10 h-10 mr-2 bg-gray-900" // Set the image size
-                                />
-                                {category.name}
-                            </button>
-                        ))}
-                    </div>
+                            {/* Displaying categories in a grid */}
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                                    <button
+                                        onClick={() => handleCategoryClick('All')}
+                                        className={`bg-gray-800 text-white p-2 rounded-md flex items-center bg-yellow-600`}
+                                    >
+                                        <img
+                                            src="./assets/images/pngwing 14-2.png"
+                                            alt='all'
+                                            className="w-10 h-10 mr-2 bg-gray-900"
+                                        />
+                                        All
+                                    </button>
+                                {categories.map((category, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleCategoryClick(category.categoryName)}
+                                        className={`bg-gray-800 text-white p-2 rounded-md flex items-center ${selectedCategory === category.name ? 'bg-yellow-600' : ''}`}
+                                    >
+                                        <img
+                                            src={`http://localhost:8080/${category.image}`}
+                                            alt={category.categoryName}
+                                            className="w-10 h-10 mr-2 bg-gray-900"
+                                        />
+                                    {category.categoryName}
+                                    </button>
+                                ))}
+                            </div>
+
                     {/* Burger Section */}
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-semibold  text-white mt-6">Burger</h2>
-                        <a href='/additems' type='button' className="bg-yellow-600 hover:bg-yellow-700 white mt-5 font-semibold sm:text-[14px] md:text-[16px] py-2 px-6 rounded-lg shadow-md flex items-center">
+                        <h2 className="text-2xl font-semibold  text-white mt-6">{selectedCategory}</h2>
+                        <button
+                            type="button"
+                            onClick={handleAddItemClick}
+                            className="bg-yellow-600 hover:bg-yellow-700 white mt-5 font-semibold sm:text-[14px] md:text-[16px] py-2 px-6 rounded-lg shadow-md flex items-center"
+                        >
                             <MdAddBox className="text-white mr-2" />
-                            Add Burger
-                        </a>
+                            Add {selectedCategory}
+                        </button>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-6">

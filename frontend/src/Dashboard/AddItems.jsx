@@ -4,6 +4,7 @@ import { MdDashboard, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner,MdWindow, 
 import { FaBoxOpen, FaClipboardList, FaSearch, FaEye, FaHome, FaRegMoneyBillAlt, FaTimes, FaCalendarAlt } from 'react-icons/fa';
 import { IoMdCheckmarkCircle, IoMdCloseCircle ,IoMdLogOut } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useRef } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiImageAdd } from "react-icons/bi";
@@ -31,6 +32,8 @@ const AddItems = () => {
 
     const toggleDropdown1 = () => setIsOpen(!isOpen);
 
+    const location = useLocation();
+    const category = location.state?.category
     const handleOptionClick1 = (option) => {
         setSelectedOption1(option);
         setIsOpen(false);
@@ -361,7 +364,7 @@ const AddItems = () => {
 
 
                 <div className=" rounded-lg p-5 mb-4 flex justify-between items-center" style={{ backgroundColor: '#1F1D2B' }}>
-                    <h2 className="text-xl font-semibold text-white">Add Items</h2>
+                    <h2 className="text-xl font-semibold text-white">Add Items {category}</h2>
                     <div className="flex items-center space-x-3">
                         <button
                             onClick={() => setSelected("Veg")}
