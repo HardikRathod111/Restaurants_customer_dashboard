@@ -772,7 +772,7 @@ const AddItems = () => {
         type='button'
         onClick={addStep}
     >
-        Add Step {steps.length + 1} {/* Display the next step number */}
+        Add Step : {steps.length + 1} {/* Display the next step number */}
     </button>
     <button
         className="border border-gray-600 bg-gray-600 rounded-md px-8 py-3"
