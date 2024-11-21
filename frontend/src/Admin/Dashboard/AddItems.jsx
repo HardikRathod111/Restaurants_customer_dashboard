@@ -5,6 +5,7 @@ import { MdDashboard, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner,MdWindow, 
 import { FaBoxOpen, FaClipboardList, FaSearch, FaEye, FaHome, FaRegMoneyBillAlt, FaTimes, FaCalendarAlt } from 'react-icons/fa';
 import { IoMdCheckmarkCircle, IoMdCloseCircle ,IoMdLogOut } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useRef } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiImageAdd } from "react-icons/bi";
@@ -34,6 +35,7 @@ const AddItems = () => {
 
     const toggleDropdown1 = () => setIsOpen(!isOpen);
 
+<<<<<<< HEAD:frontend/src/Admin/Dashboard/AddItems.jsx
        const [steps, setSteps] = useState([
         // Initial empty steps or data structure
         { title: '', name: '', detail: '', rate: '' },
@@ -65,6 +67,10 @@ const AddItems = () => {
         return step.title && step.name && step.detail && step.rate;
     };
 
+=======
+    const location = useLocation();
+    const category = location.state?.category
+>>>>>>> 3af7f3b8bedf18485b2ecc2ba91a7381dfbd6de9:frontend/src/Dashboard/AddItems.jsx
     const handleOptionClick1 = (option) => {
         setSelectedOption1(option);
         setIsOpen(false);
@@ -396,7 +402,7 @@ const AddItems = () => {
 
 
                 <div className=" rounded-lg p-5 mb-4 flex justify-between items-center" style={{ backgroundColor: '#1F1D2B' }}>
-                    <h2 className="text-xl font-semibold text-white">Add Items</h2>
+                    <h2 className="text-xl font-semibold text-white">Add Items {category}</h2>
                     <div className="flex items-center space-x-3">
                         <button
                             onClick={() => setSelected("Veg")}
