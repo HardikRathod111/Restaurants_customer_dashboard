@@ -60,7 +60,7 @@ export default function ItemDetails() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center p-4">
-        <img src="/placeholder.svg?height=120&width=240" alt="Maharaja Burger" className="w-60 h-30 ml-0" />
+  <img src="./assets/images/pngwing 14-2.png" alt="Maharaja Burger" className="w-60 h-30 ml-0" />
 
         {/* Veg/Non-Veg Toggle and Customization */}
         <div className="w-full flex items-center justify-between mb-3">
