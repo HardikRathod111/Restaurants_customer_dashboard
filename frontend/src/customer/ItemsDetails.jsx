@@ -60,7 +60,7 @@ export default function ItemDetails() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center p-4">
-  <img src="./assets/images/pngwing 14-2.png" alt="Maharaja Burger" className="w-60 h-30 ml-0" />
+        <img src="/placeholder.svg?height=120&width=240" alt="Maharaja Burger" className="w-60 h-30 ml-0" />
 
         {/* Veg/Non-Veg Toggle and Customization */}
         <div className="w-full flex items-center justify-between mb-3">
@@ -134,9 +134,9 @@ export default function ItemDetails() {
       </div>
 
       {/* Add to Cart Button */}
-             <div className="bottom-0 left-0 right-0 p-4 bg-gray-800">
-               <button className="w-full py-1 rounded-lg bg-yellow-600 hover:bg-yellow-700"> Add To Cart </button> 
-               </div>
+       <div className="bottom-0 left-0 right-0 p-4 bg-gray-800"> 
+        <button className="w-full py-1 rounded-lg bg-yellow-600 hover:bg-yellow-700"> Add To Cart </button> 
+        </div>
 
 
       {/* Customization Dialog */}
