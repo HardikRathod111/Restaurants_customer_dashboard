@@ -558,7 +558,7 @@ const Managemenu = () => {
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                                     <button
                                         onClick={() => handleCategoryClick('All')}
-                                        className={`bg-gray-800 text-white p-2 rounded-md flex items-center bg-yellow-600`}
+                                        className={` text-white p-2 rounded-md flex items-center bg-yellow-600`}
                                     >
                                         <img
                                             src="./assets/images/pngwing 14-2.png"
