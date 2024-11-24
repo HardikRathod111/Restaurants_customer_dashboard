@@ -21,6 +21,7 @@ import Managemenu from './Admin/Dashboard/Managemenu';
 import Edititem from './Admin/Dashboard/BurgerEditDetailsBox';
 import AddItems from './Admin/Dashboard/AddItems';
 import ItemDetails from './customer/ItemsDetails';
+import CartPage from './customer/CartPage';
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
         <Route path='/additems' element={<AddItems/>}/>
         <Route path='/edititem' element={<Edititem/>}/>
         <Route path='/itemsdetails' element={<ItemDetails/>}/>
+        <Route path='/cartpage' element={<CartPage/>}/>
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
         <Route path="/editprofile" element={isAuthenticated ? <Editprofile /> : <Navigate to="/login" />} />
