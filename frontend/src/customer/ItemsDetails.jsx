@@ -150,6 +150,88 @@ export default function ItemDetails() {
           Add To Cart
         </button>
       </div>
+        {/* Customization Dialog */}
+      {isCustomizationOpen && (
+        <div className="fixed inset-0 bg-black/80 flex items-end justify-center">
+          <div className="bg-gray-900 w-[375px] rounded-t-xl p-6">
+            <h2 className="text-lg font-semibold mb-2">Customise as per your taste</h2>
+            <div className="space-y-6">
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-medium text-base">
+                    {currentStep === 1 ? 'Crust' : currentStep === 2 ? 'Size' : 'Toppings'}
+                  </h3>
+                  <span className="text-sm text-gray-400">Step {currentStep}/3</span>
+                </div>
+                <div className="space-y-3">
+                  {currentStep === 1 && crustOptions.map((option) => (
+                    <label
+                      key={option.name}
+                      className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg cursor-pointer border border-gray-700"
+                    >
+                      <span className="text-sm">{option.name}</span>
+                      <input
+                        type="radio"
+                        name="crust"
+                        defaultChecked={option.selected}
+                        className="w-4 h-4 accent-yellow-600"
+                      />
+                    </label>
+                  ))}
+                  {currentStep === 2 && sizeOptions.map((option) => (
+                    <label
+                      key={option.name}
+                      className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg cursor-pointer border border-gray-700"
+                    >
+                      <span className="text-sm">{option.name}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm">₹ {option.price}</span>
+                        <input
+                          type="radio"
+                          name="size"
+                          defaultChecked={option.selected}
+                          className="w-4 h-4 accent-yellow-600"
+                        />
+                      </div>
+                    </label>
+                  ))}
+                  {currentStep === 3 && toppingsOptions.map((option) => (
+                    <label
+                      key={option.name}
+                      className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg cursor-pointer border border-gray-700"
+                    >
+                      <span className="text-sm">{option.name}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm">+ ₹ {option.price}</span>
+                        <input
+                          type="radio"
+                          name="toppings"
+                          defaultChecked={option.selected}
+                          className="w-4 h-4 accent-yellow-600"
+                        />
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="flex gap-4 pt-4">
+                <button
+                  onClick={handleBack}
+                  className="flex-1 py-3 text-sm font-medium bg-gray-800 rounded-lg hover:bg-gray-700"
+                >
+                  Back
+                </button>
+                <button
+                  onClick={handleContinue}
+                  className="flex-1 py-3 bg-yellow-600 rounded-lg text-sm font-medium hover:bg-yellow-700"
+                >
+                  {currentStep === 3 ? 'Add To Cart' : 'Continue'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
