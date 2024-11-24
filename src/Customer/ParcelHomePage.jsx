@@ -215,6 +215,7 @@ const ParcelHomePage = () => {
           ))}
         </div>
       </div>
+      
 
       {/* Trending Menu */}
       <div className="w-[375px] px-4">
