@@ -27,6 +27,7 @@ import ParcelHomePage from './Customer/ParcelHomePage';
 import ParcelCategory from './Customer/ParcelCategory';
 import TrendingMenu from './Customer/TrendingMenu';
 import AddMoreItems from './Customer/AddMoreItems';
+import PaymentMethod from './Customer/Paymentmethod';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
         <Route path='/parcel-category' element={<ParcelCategory/>}/>
         <Route path='/trending-menu' element={<TrendingMenu/>}/>
         <Route path='/addmoreitems' element={<AddMoreItems/>}/>
+        <Route path='/paymentmethod' element={<PaymentMethod/>}/>
 
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
