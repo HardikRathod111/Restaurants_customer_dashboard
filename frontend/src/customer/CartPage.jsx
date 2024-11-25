@@ -115,7 +115,7 @@ export default function CartPage() {
         </div>
 
         {/* Price Breakdown */}
-        <div className="mt-10 space-y-2">
+        <div className="mt-10 pt-14 space-y-2">
           <div className="flex justify-between text-slate-400">
             <span>Total ({items.length} Items)</span>
             <span>₹ {totalPrice.toFixed(2)}</span>
@@ -136,17 +136,17 @@ export default function CartPage() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="fixed bottom-5 left-0 right-0 bg-slate-900 border-t border-slate-800 p-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 p-4">
         <div className="flex items-center justify-between">
           <div className="text-sm text-slate-500">
             {items.length} Items Added
             <br />
             <span className="text-white font-medium">₹ {totalPrice.toFixed(2)}</span>
           </div>
-          <button className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 flex items-center rounded-md">
+          <a href="/addmoreitems" className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 flex items-center rounded-md">
             Place Order
             <FaCaretRight className="w-5 h-5 ml-2" />
-          </button>
+          </a>
         </div>
       </div>
     </div>

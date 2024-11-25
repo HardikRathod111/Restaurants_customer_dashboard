@@ -114,10 +114,10 @@ const AddItems = () => {
                     <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-24 rounded-full mb-2" />
                 </div>
                 <nav className="flex flex-col space-y-4">
-                    <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
+                    <a href='/dashboard' className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700">
                         <MdDashboard className="mr-2" style={{ color: "#CA923D" }} />
                         Dashboard
-                    </button>
+                    </a>
                     <div>
                         <button
                             className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -148,7 +148,7 @@ const AddItems = () => {
                     </button>
                     <button className="flex items-center p-3 rounded-md text-gray-300 hover:bg-gray-700" onClick={toggleManageHistory}>
                         <FaClipboardList className="mr-2" style={{ color: "#CA923D" }} />
-                        Payment History
+                        PaymentHistory
                         <MdExpandMore className={`ml-auto transform ${manageHistoryOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {manageHistoryOpen && (

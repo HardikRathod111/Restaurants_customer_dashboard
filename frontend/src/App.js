@@ -26,6 +26,7 @@ import ParcelLogin from './Customer/Login';
 import ParcelHomePage from './Customer/ParcelHomePage';
 import ParcelCategory from './Customer/ParcelCategory';
 import TrendingMenu from './Customer/TrendingMenu';
+import AddMoreItems from './Customer/AddMoreItems';
 
 
 function App() {
@@ -57,6 +58,8 @@ function App() {
         <Route path='/parcel-homepage' element={<ParcelHomePage/>}/>
         <Route path='/parcel-category' element={<ParcelCategory/>}/>
         <Route path='/trending-menu' element={<TrendingMenu/>}/>
+        <Route path='/addmoreitems' element={<AddMoreItems/>}/>
+
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
         <Route path="/editprofile" element={isAuthenticated ? <Editprofile /> : <Navigate to="/login" />} />
