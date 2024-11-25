@@ -16,7 +16,7 @@ const TrendingMenu = () => {
     <div className="text-white min-h-screen w-[375px]">
       {/* Header */}
      
-    <div className=" flex items-center justify-between px-4 py-5 w-[375px] bg-[#1F1D2B] px-4 py-3 flex">
+    <div className=" flex items-center justify-between px-4 py-5 w-[375px] bg-[#1F1D2B] ">
         <a href="/parcel-homepage" className="text-white text-lg">
         <MdOutlineKeyboardArrowLeft style={{fontSize:'25px'}} />
 
