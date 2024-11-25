@@ -20,6 +20,12 @@ import DeletePrompt from './Admin/Dashboard/DeletePrompt';
 import Managemenu from './Admin/Dashboard/Managemenu';
 import Edititem from './Admin/Dashboard/BurgerEditDetailsBox';
 import AddItems from './Admin/Dashboard/AddItems';
+import CartPage from './Customer/CartPage';
+import ItemDetails from './Customer/ItemsDetails';
+import ParcelLogin from './Customer/Login';
+import ParcelHomePage from './Customer/ParcelHomePage';
+import ParcelCategory from './Customer/ParcelCategory';
+import TrendingMenu from './Customer/TrendingMenu';
 
 
 function App() {
@@ -45,6 +51,12 @@ function App() {
             <Route path='/managemenu' element={<Managemenu/>}/>
         <Route path='/additems' element={<AddItems/>}/>
         <Route path='/edititem' element={<Edititem/>}/>
+        <Route path='/itemsdetails' element={<ItemDetails/>}/>
+        <Route path='/cartpage' element={<CartPage/>}/>
+         <Route path='/parcel-login' element={<ParcelLogin/>}/>
+        <Route path='/parcel-homepage' element={<ParcelHomePage/>}/>
+        <Route path='/parcel-category' element={<ParcelCategory/>}/>
+        <Route path='/trending-menu' element={<TrendingMenu/>}/>
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
         <Route path="/editprofile" element={isAuthenticated ? <Editprofile /> : <Navigate to="/login" />} />
