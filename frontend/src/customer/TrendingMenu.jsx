@@ -24,7 +24,7 @@ const TrendingMenu = () => {
         <h1 className="text-lg font-bold">Trending Menu</h1>
         <div className="w-6 h-6"></div> {/* Empty space for alignment */}
       </div>
-      <div className="flex items-center justify-between px-4 py-2 w-[375px] bg-[#0B0F1F] px-4 py-3 flex">
+      <div className="flex items-center justify-between px-4 py-2 w-[375px] bg-[#0B0F1F] ">
         <h1 className="text-lg font-bold">Trending Menu</h1>
         <h1 className="text-lg font-bold"></h1>
         <div className="w-6 h-6"></div> {/* Empty space for alignment */}
