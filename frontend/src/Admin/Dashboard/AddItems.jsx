@@ -1,50 +1,51 @@
-
+import axios from 'axios';
 
 import React, { useState } from 'react';
-import { MdDashboard, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner,MdWindow, MdLogout, MdExpandMore } from 'react-icons/md';
-import { FaBoxOpen, FaClipboardList, FaSearch, FaEye, FaHome, FaRegMoneyBillAlt, FaTimes, FaCalendarAlt } from 'react-icons/fa';
-import { IoMdCheckmarkCircle, IoMdCloseCircle ,IoMdLogOut } from 'react-icons/io';
+import { MdOutlineRestaurantMenu, MdOutlineQrCodeScanner,MdWindow, MdExpandMore } from 'react-icons/md';
+import { FaBoxOpen, FaClipboardList, FaSearch, FaHome} from 'react-icons/fa';
+import { IoMdLogOut } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { useRef } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiImageAdd } from "react-icons/bi";
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
+import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
 
 const AddItems = () => {
     const [manageOrderOpen, setManageOrderOpen] = useState(false);
     const [manageHistoryOpen, setManageHistoryOpen] = useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("request");
-    const [selectedOrder, setSelectedOrder] = useState(null); // For selected order details
-    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
     const [selected, setSelected] = useState("Veg");
     const [showForm, setShowForm] = useState(false);
-    const [selectedOption, setSelectedOption] = useState("Month");
-    const [isDateModalOpen, setIsDateModalOpen] = useState(false);
     const [customizations, setCustomizations] = useState([]);
-    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
-    const openDateModal = () => setIsDateModalOpen(true);
-    const closeDateModal = () => setIsDateModalOpen(false);
     const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
-    const [selectedOption1, setSelectedOption1] = useState("Month");
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggleDropdown1 = () => setIsOpen(!isOpen);
-
     const location = useLocation();
     const category = location.state?.category
-    const handleOptionClick1 = (option) => {
-        setSelectedOption1(option);
-        setIsOpen(false);
+    const [steps, setSteps] = useState([
+        { title: '', name: '', detail: '', rate: '' },
+    ]);
+    const [formData, setFormData] = useState([
+        { title: '' },
+    ]);
+    const addStep = () => {
+        setSteps([
+            ...steps,
+            { title: '', name: '', detail: '', rate: '' }, // Add an empty step
+        ]);
     };
-    const handleOptionClick = (option) => {
-        setSelectedOption(option);
-        setIsDropdownOpen(false);
-        if (option === "Custom Date") {
-            openDateModal();
-        }
+
+
+    const handleChange = (e, index, key) => {
+        const { value } = e.target;
+        setFormData((prev) => {
+            const updatedFormData = [...prev]; // Create a copy of the array
+            updatedFormData[index][key] = value; // Update the specific field
+            return updatedFormData;
+        });
+    };
+    
+    const isStepFilled = (step) => {
+        step.title.trim() && step.name.trim() && step.detail.trim() && step.rate.trim();
     };
 
     const [previewImage, setPreviewImage] = useState(null);
@@ -66,50 +67,10 @@ const AddItems = () => {
         setPaymentHistoryOpen(!PaymentHistoryOpen);
     }; 
 
-
-
-    const handleViewBill = (order) => {
-        setSelectedOrder(order); // Set the selected order details
-        setShowModal(true); // Open the modal
-    };
-
-    const closeModal = () => {
-        setShowModal(false); // Close the modal
-        setSelectedOrder(null); // Reset selected order
-    };
-
-    // Function to add a new customization
-    const addCustomization = () => {
-        setCustomizations([
-            ...customizations,
-            { name: '', detail: '', rate: '' },
-        ]);
-    };
-
     // Function to remove a customization
     const removeCustomization = (index) => {
         const updatedCustomizations = customizations.filter((_, i) => i !== index);
         setCustomizations(updatedCustomizations);
-    };
-
-
-    // Create a ref for the date input
-    const dateInputRef = useRef(null);
-    const dateInputRef1 = useRef(null);
-
-
-    // Function to focus on the date input when the icon is clicked
-    const handleIconClick = () => {
-        if (dateInputRef.current) {
-            dateInputRef.current.showPicker(); // For browsers that support showPicker()
-            dateInputRef.current.focus();       // For general focus
-        }
-    };
-    const handleIconClick1 = () => {
-        if (dateInputRef1.current) {
-            dateInputRef1.current.showPicker(); // For browsers that support showPicker()
-            dateInputRef1.current.focus();       // For general focus
-        }
     };
 
     const getTabLabel = () => {
@@ -125,13 +86,52 @@ const AddItems = () => {
         }
     };
     const [open, setOpen] = useState(false)
-    const orders = [
-        { id: 1, customer: "Davis Lipshutz", item: "Rice", date: "10/02/2024", time: "3:45 PM", phone: "98568 86214", quantity: "500 G.M", tblno: "1", total: "₹ 500", payment: 'Online' },
-        { id: 2, customer: "Marcus Dorwart", item: "Biryani Rice", date: "11/02/2024", time: "2:45 PM", phone: "96668 22214", quantity: "100 G.M", tblno: "2", total: "₹ 500", payment: 'Cash' },
-    ];
+
     const handlenavigateprofile = ()=> {
         navigate('/Profilepage');
     }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault(); // Prevent form from refreshing the page
+    
+        try {
+            // Collect form data
+            const formData = {
+                itemName: document.getElementById('item-name').value,
+                ingredients: document.getElementById('item-ingredients').value,
+                price: document.getElementById('item-price').value,
+                discount: document.getElementById('item-discount').value,
+                type: document.getElementById('item-type').value,
+                spiceLevel: document.querySelector('input[name="spice-level"]:checked')?.value,
+                customizations: steps, // Assuming `steps` holds customization data
+            };
+    
+            // Handle file upload separately if needed
+            const fileInput = document.getElementById('file-upload');
+            const formDataWithFile = new FormData();
+            formDataWithFile.append('image', fileInput.files[0]);
+    
+            // Combine file data with other form data
+            Object.keys(formData).forEach((key) => {
+                formDataWithFile.append(key, JSON.stringify(formData[key]));
+            });
+    
+            // Send data to the backend
+            const response = await axios.post('http://localhost:8080/api/items', formDataWithFile, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+    
+            // Handle success
+            console.log('Item added successfully:', response.data);
+            alert('Item added successfully!');
+        } catch (error) {
+            console.error('Error adding item:', error);
+            alert('Failed to add item. Please try again.');
+        }
+    };
+    
 
     return (
         <div className="flex min-h-screen text-white font-sans" style={{ backgroundColor: "#0B0F1F" }}>
@@ -200,7 +200,7 @@ const AddItems = () => {
             <IoMdLogOut className="mr-2" />
             Log Out
           </button>
-        </aside>
+            </aside>
             {/* Main Content */}
             <main className="flex-1 lg:ml-[200px] md:ml-0 sm:w-svw p-6 bg-gray-900">
                 {/* Header */}
@@ -514,217 +514,256 @@ const AddItems = () => {
 
 
                 {/* Toggle form visibility */}
-                <label>
-                    <input type="checkbox" onChange={() => setShowForm(!showForm)} className='mr-2' />
-                    Customization
-                </label>
+            <div>
+            {/* Toggle form visibility */}
+            <label>
+                <input type="checkbox" onChange={() => setShowForm(!showForm)} className='mr-2' />
+                Customization
+            </label>
 
-                {/* Conditionally render the image if the form is not visible */}
-                {!showForm && (
-                    <div className="flex justify-center">
-                        <img
-                            src="/assets/images/Group 1116602033.png" // Replace with the actual image URL
-                            alt="Illustration"
-                            className="w-full max-w-xs mt-8"
-                        />
-                    </div>
-                )}
+            {/* Conditionally render the image if the form is not visible */}
+            {!showForm && (
+                <div className="flex justify-center">
+                    <img
+                        src="/assets/images/Group 1116602033.png" // Replace with the actual image URL
+                        alt="Illustration"
+                        className="w-full max-w-xs mt-8"
+                    />
+                </div>
+            )}
 
-
-                {/* Form container */}
-                {showForm && (
-                    <div style={{ marginTop: "10px", backgroundColor: "#1A1C23", padding: "20px", borderRadius: "10px" }}>
-                        <h2 style={{ marginBottom: "10px", fontSize: "20px" }}>Step 1</h2>
-                        <div >
-                            <label
-                                htmlFor="customization-title"
-                                style={{ display: "block", color: "#fff" }}
-                            >
-                                Customization Title
-                            </label>
-                            <input
-                                id="customization-title"
-                                type="text"
-                                placeholder="Enter Customization Title"
-                                style={{
-                                    padding: "10px",
-                                    marginRight: "10px",
-                                    width: "30%",
-                                    borderRadius: "5px",
-                                    backgroundColor: "#343644",
-                                    color: "#fff",
-                                    marginBottom: "15px",
-                                }}
-                            />
-                            <label style={{ marginRight: "10px", color: "#fff" }}>
-                                <input type="radio" name="selection" /> Multiple Selection
-                            </label>
-                            <label style={{ color: "#fff" }}>
-                                <input type="radio" name="selection" /> Single Selection
-                            </label>
-                            <button
-                                style={{
-                                    marginTop: "10px",
-                                    backgroundColor: "#FFB74D",
-                                    color: "#000",
-                                    padding: "10px 20px",
-                                    borderRadius: "5px",
-                                }}
-                                className='lg:ml-20 xl:ml-[290px]'
-                            >
-                                + Add Customization
-                            </button>
-
-                            <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
-                                <div style={{ marginRight: "10px", width: "30%" }}>
-                                    <label
-                                        htmlFor="customization-name-1"
-                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
-                                    >
-                                        Customization Name
-                                    </label>
-                                    <input
-                                        id="customization-name-1"
-                                        type="text"
-                                        placeholder="Enter Customization Name"
-                                        style={{
-                                            padding: "10px",
-                                            width: "100%",
-                                            borderRadius: "5px",
-                                            backgroundColor: "#343644",
-                                            color: "#fff",
-                                        }}
-                                    />
-                                </div>
-                                <div style={{ marginRight: "10px", width: "30%" }}>
-                                    <label
-                                        htmlFor="customization-detail-1"
-                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
-                                    >
-                                        Customization Detail
-                                    </label>
-                                    <input
-                                        id="customization-detail-1"
-                                        type="text"
-                                        placeholder="Enter Customization Detail"
-                                        style={{
-                                            padding: "10px",
-                                            width: "100%",
-                                            borderRadius: "5px",
-                                            backgroundColor: "#343644",
-                                            color: "#fff",
-                                        }}
-                                    />
-                                </div>
-                                <div style={{ marginRight: "10px", width: "30%" }}>
-                                    <label
-                                        htmlFor="extra-rate-1"
-                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
-                                    >
-                                        Extra Rate
-                                    </label>
-                                    <input
-                                        id="extra-rate-1"
-                                        type="text"
-                                        placeholder="Enter Extra Rate"
-                                        style={{
-                                            padding: "10px",
-                                            width: "100%",
-                                            borderRadius: "5px",
-                                            backgroundColor: "#343644",
-                                            color: "#fff",
-                                        }}
-                                    />
-                                </div>
-                                <button
-                                    style={{
-                                        backgroundColor: "red",
-                                        color: "white",
-                                        borderRadius: "5px",
-                                        padding: "10px",
-                                        marginTop:'20px',
-                                    }}
+            {/* Form container */}
+            {showForm && (
+                <div style={{ marginTop: "10px", backgroundColor: "#1A1C23", padding: "20px", borderRadius: "10px" }}>
+                    <div>
+                        {steps.map((step, index) => (
+                            <div key={index}>
+                                <h2 style={{ fontSize: "23px", color: "#fff" }}>Step {index + 1}</h2>
+                                <label
+                                    htmlFor={`customization-title-${index}`}
+                                    style={{ display: "block", color: "#fff" }}
                                 >
-                                    🗑
-                                </button>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
-                                <div style={{ marginRight: "10px", width: "30%" }}>
-                                    <label
-                                        htmlFor="customization-name-2"
-                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
-                                    >
-                                        Customization Name
-                                    </label>
-                                    <input
-                                        id="customization-name-2"
-                                        type="text"
-                                        placeholder="Enter Customization Name"
-                                        style={{
-                                            padding: "10px",
-                                            width: "100%",
-                                            borderRadius: "5px",
-                                            backgroundColor: "#343644",
-                                            color: "#fff",
-                                        }}
-                                    />
-                                </div>
-                                <div style={{ marginRight: "10px", width: "30%" }}>
-                                    <label
-                                        htmlFor="customization-detail-2"
-                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
-                                    >
-                                        Customization Detail
-                                    </label>
-                                    <input
-                                        id="customization-detail-2"
-                                        type="text"
-                                        placeholder="Enter Customization Detail"
-                                        style={{
-                                            padding: "10px",
-                                            width: "100%",
-                                            borderRadius: "5px",
-                                            backgroundColor: "#343644",
-                                            color: "#fff",
-                                        }}
-                                    />
-                                </div>
-                                <div style={{ marginRight: "10px", width: "30%" }}>
-                                    <label
-                                        htmlFor="extra-rate-2"
-                                        style={{ display: "block", color: "#fff", marginBottom: "5px" }}
-                                    >
-                                        Extra Rate
-                                    </label>
-                                    <input
-                                        id="extra-rate-2"
-                                        type="text"
-                                        placeholder="Enter Extra Rate"
-                                        style={{
-                                            padding: "10px",
-                                            width: "100%",
-                                            borderRadius: "5px",
-                                            backgroundColor: "#343644",
-                                            color: "#fff",
-                                        }}
-                                    />
-                                </div>
-                                <button
+                                    Customization Title
+                                </label>
+                                <input
+                                    id={`customization-title-${index}`}
+                                    type="text"
+                                    value={formData.title}
+                                    placeholder="Enter Customization Title"
+                                    onChange={(e) => handleChange(e, index, 'title')}
                                     style={{
-                                        backgroundColor: "red",
-                                        color: "white",
-                                        borderRadius: "5px",
                                         padding: "10px",
-                                        marginTop:'20px',
+                                        marginRight: "10px",
+                                        width: "30%",
+                                        borderRadius: "5px",
+                                        backgroundColor: "#343644",
+                                        color: "#fff",
+                                        marginBottom: "15px",
                                     }}
-                                >
-                                    🗑
-                                </button>
+                                />
+                                <label style={{ marginRight: "10px", color: "#fff" }}>
+                                <input
+                                    type="radio"
+                                    name={`selection-${index}`}
+                                    value="single"
+                                    onChange={(e) => handleChange(e, index, 'selection')}
+                                /> Single Selection
+                                </label>
+                                <label style={{ color: "#fff" }}>
+                                    <input type="radio"
+                                        name={`selection-${index}`}
+                                        value="multiple"
+                                        onChange={(e) => handleChange(e, index, 'selection')}
+                                    /> Multiple Selection
+                                </label>
+                                    <button className='ml-80'
+                        style={{
+                            marginTop: "10px",
+                            backgroundColor: "#FFB74D",
+                            color: "#000",
+                            padding: "10px 20px",
+                            borderRadius: "5px",
+                        }}
+                        onClick={addStep}
+                        disabled={!steps.every(isStepFilled)}
+                    >
+                        + Add Customization
+                    </button>
+
+                                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                                    <div style={{ marginRight: "10px", width: "30%" }}>
+                                        <label htmlFor={`customization-name-${index}`} style={{ display: "block", color: "#fff", marginBottom: "5px" }}>
+                                            Customization Name
+                                        </label>
+                                        <input
+                                            id={`customization-name-${index}`}
+                                            type="text"
+                                            value={formData.name}
+                                            placeholder="Enter Customization Name"
+                                            onChange={(e) => handleChange(e, index, 'name')}
+                                            style={{
+                                                padding: "10px",
+                                                width: "100%",
+                                                borderRadius: "5px",
+                                                backgroundColor: "#343644",
+                                                color: "#fff",
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{ marginRight: "10px", width: "30%" }}>
+                                        <label htmlFor={`customization-detail-${index}`} style={{ display: "block", color: "#fff", marginBottom: "5px" }}>
+                                            Customization Detail
+                                        </label>
+                                        <input
+                                            id={`customization-detail-${index}`}
+                                            type="text"
+                                            value={formData.detail}
+                                            placeholder="Enter Customization Detail"
+                                            onChange={(e) => handleChange(e, index, 'detail')}
+                                            style={{
+                                                padding: "10px",
+                                                width: "100%",
+                                                borderRadius: "5px",
+                                                backgroundColor: "#343644",
+                                                color: "#fff",
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{ marginRight: "10px", width: "30%" }}>
+                                        <label htmlFor={`extra-rate-${index}`} style={{ display: "block", color: "#fff", marginBottom: "5px" }}>
+                                            Extra Rate
+                                        </label>
+                                        <input
+                                            id={`extra-rate-${index}`}
+                                            type="text"
+                                            value={formData.rate}
+                                            placeholder="Enter Extra Rate"
+                                            onChange={(e) => handleChange(e, index, 'rate')}
+                                            style={{
+                                                padding: "10px",
+                                                width: "100%",
+                                                borderRadius: "5px",
+                                                backgroundColor: "#343644",
+                                                color: "#fff",
+                                            }}
+                                        />
+                                    </div>
+                                        
+                                     {index = 1 && (
+                                    <button className='ml-3 mt-8'
+                                        style={{
+                                            backgroundColor: "red",
+                                            color: "white",
+                                            borderRadius: "5px",
+                                            padding: "10px",
+                                        }}
+                                        onClick={() => setSteps(steps.filter((_, i) => i !== index))}
+                                    >
+                                        🗑
+                                    </button>
+                                )}
+
+                                </div>
+
+                                 <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                                    <div style={{ marginRight: "10px", width: "30%" }}>
+                                        <label htmlFor={`customization-name-${index}`} style={{ display: "block", color: "#fff", marginBottom: "5px" }}>
+                                            Customization Name
+                                        </label>
+                                        <input
+                                            id={`customization-name-${index}`}
+                                            type="text"
+                                            value={formData.name}
+                                            placeholder="Enter Customization Name"
+                                            onChange={(e) => handleChange(e, index, 'name')}
+                                            style={{
+                                                padding: "10px",
+                                                width: "100%",
+                                                borderRadius: "5px",
+                                                backgroundColor: "#343644",
+                                                color: "#fff",
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{ marginRight: "10px", width: "30%" }}>
+                                        <label htmlFor={`customization-detail-${index}`} style={{ display: "block", color: "#fff", marginBottom: "5px" }}>
+                                            Customization Detail
+                                        </label>
+                                        <input
+                                            id={`customization-detail-${index}`}
+                                            type="text"
+                                            value={formData.detail}
+                                            placeholder="Enter Customization Detail"
+                                            onChange={(e) => handleChange(e, index, 'detail')}
+                                            style={{
+                                                padding: "10px",
+                                                width: "100%",
+                                                borderRadius: "5px",
+                                                backgroundColor: "#343644",
+                                                color: "#fff",
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{ marginRight: "10px", width: "30%" }}>
+                                        <label htmlFor={`extra-rate-${index}`} style={{ display: "block", color: "#fff", marginBottom: "5px" }}>
+                                            Extra Rate
+                                        </label>
+                                        <input
+                                            id={`extra-rate-${index}`}
+                                            type="text"
+                                            value={formData.rate}
+                                            placeholder="Enter Extra Rate"
+                                            onChange={(e) => handleChange(e, index, 'rate')}
+                                            style={{
+                                                padding: "10px",
+                                                width: "100%",
+                                                borderRadius: "5px",
+                                                backgroundColor: "#343644",
+                                                color: "#fff",
+                                            }}
+                                        />
+                                    </div>
+                                        
+                                     {index = 1 && (
+                                    <button className='ml-3 mt-8'
+                                        style={{
+                                            backgroundColor: "red",
+                                            color: "white",
+                                            borderRadius: "5px",
+                                            padding: "10px",
+                                        }}
+                                        onClick={() => setSteps(steps.filter((_, i) => i !== index))}
+                                    >
+                                        🗑
+                                    </button>
+                                )}
+                                </div>                               
                             </div>
-                        </div>
+                        ))}
                     </div>
-                )}
+
+
+                  <div className='space-x-3 font-medium text-lg'>
+    <button
+        className="border border-yellow-600 bg-yellow-600 rounded-md px-3 py-3"
+        type='button'
+        onClick={addStep}
+    >
+        Add Step {steps.length + 1} {/* Display the next step number */}
+    </button>
+    <button
+        className="border border-gray-600 bg-gray-600 rounded-md px-8 py-3"
+        type='button'
+        onClick={handleSubmit} // Assuming `saveSteps` is the function to handle saving
+        disabled={steps.length < 3 || !steps.every(isStepFilled)} // Enable Save only when 3 steps are filled
+    >
+        Save
+    </button>
+</div>
+
+                </div>
+            )}
+        </div>
 
 
 
