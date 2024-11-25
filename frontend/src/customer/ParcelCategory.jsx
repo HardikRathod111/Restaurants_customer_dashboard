@@ -26,7 +26,7 @@ const ParcelCategory = () => {
   return (
     <div className="flex flex-col items-center bg-[#1F1D2B] min-h-screen text-white">
       {/* Header */}
-      <div className=" flex items-center justify-between px-4 py-5 w-[375px] bg-[#1F1D2B] px-4 py-3 flex">
+      <div className=" items-center justify-between px-4 py-5 w-[375px] bg-[#1F1D2B]  flex">
         <a href="/parcel-homepage" className="text-white text-lg">
         <MdOutlineKeyboardArrowLeft style={{fontSize:'25px'}} />
 
@@ -34,7 +34,7 @@ const ParcelCategory = () => {
         <h1 className="text-lg font-bold">Categories</h1>
         <div className="w-6 h-6"></div> {/* Empty space for alignment */}
       </div>
-      <div className="flex items-center justify-between px-4 py-2 w-[375px] bg-[#0B0F1F] px-4 py-3 flex">
+      <div className="flex items-center justify-between px-4 py-2 w-[375px] bg-[#0B0F1F]">
         <h1 className="text-lg font-bold">Categories</h1>
         <h1 className="text-lg font-bold"></h1>
         <div className="w-6 h-6">100</div> {/* Empty space for alignment */}
