@@ -24,9 +24,9 @@ const AddItems = () => {
     const [steps, setSteps] = useState([
         { title: '', name: '', detail: '', rate: '' },
     ]);
-    const [formData, setFormData] = useState([
-        { title: '' },
-    ]);
+    const [formData, setFormData] = useState(
+        { title: '', }
+    );
     const addStep = () => {
         setSteps([
             ...steps,
@@ -35,14 +35,16 @@ const AddItems = () => {
     };
 
 
-    const handleChange = (e, index, key) => {
+    const handleChange = (e,index, key) => {
         const { value } = e.target;
-        setFormData((prev) => {
+        
+        setSteps((prev) => {
             const updatedFormData = [...prev]; // Create a copy of the array
             updatedFormData[index][key] = value; // Update the specific field
             return updatedFormData;
         });
     };
+
     
     const isStepFilled = (step) => {
         step.title.trim() && step.name.trim() && step.detail.trim() && step.rate.trim();
@@ -53,11 +55,8 @@ const AddItems = () => {
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setPreviewImage(reader.result);
-            };
-            reader.readAsDataURL(file);
+            setImageFile(file); // Store the file in state
+            setPreviewImage(URL.createObjectURL(file)); // Create a preview URL for the image
         }
     };
 
@@ -91,46 +90,57 @@ const AddItems = () => {
         navigate('/Profilepage');
     }
 
+    const [imageFile, setImageFile] = useState(null);
+
+
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent form from refreshing the page
+
+        const formData = {
+            itemName: document.getElementById('item-name').value,
+            ingredients: document.getElementById('item-ingredients').value,
+            price: document.getElementById('item-price').value,
+            discount: document.getElementById('item-discount').value,
+            type: document.getElementById('item-type').value,
+            spiceLevel: document.querySelector('input[name="spice-level"]:checked')?.value,
+            customizations: steps, // Assuming `steps` holds customization data
+        };
+    
+        // Handle image file separately
+        const fileInput = document.getElementById('file-upload');
+        const imageFile = fileInput?.files[0];
+    
+        if (imageFile) {
+            formData.image = imageFile; // Add image to formData
+        }
     
         try {
-            // Collect form data
-            const formData = {
-                itemName: document.getElementById('item-name').value,
-                ingredients: document.getElementById('item-ingredients').value,
-                price: document.getElementById('item-price').value,
-                discount: document.getElementById('item-discount').value,
-                type: document.getElementById('item-type').value,
-                spiceLevel: document.querySelector('input[name="spice-level"]:checked')?.value,
-                customizations: steps, // Assuming `steps` holds customization data
-            };
-    
-            // Handle file upload separately if needed
-            const fileInput = document.getElementById('file-upload');
+            // Handle form submission
             const formDataWithFile = new FormData();
-            formDataWithFile.append('image', fileInput.files[0]);
-    
-            // Combine file data with other form data
-            Object.keys(formData).forEach((key) => {
-                formDataWithFile.append(key, JSON.stringify(formData[key]));
-            });
-    
-            // Send data to the backend
-            const response = await axios.post('http://localhost:8080/api/items', formDataWithFile, {
+            
+            
+            // Append non-file fields to FormData
+            for (const key in formData) {
+                formDataWithFile.append(key, formData[key]);
+            }
+            console.log(formDataWithFile);
+            for (let [key, value] of formDataWithFile.entries()) {
+                console.log(key, value); // This will print each key-value pair inside the FormData
+            }
+            // Send form data including image to backend
+            const response = await axios.post('http://localhost:8080/api/v1/manageorder/add', formDataWithFile, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
     
-            // Handle success
             console.log('Item added successfully:', response.data);
             alert('Item added successfully!');
         } catch (error) {
             console.error('Error adding item:', error);
             alert('Failed to add item. Please try again.');
         }
-    };
+    }
     
 
     return (
@@ -445,22 +455,20 @@ const AddItems = () => {
                                         htmlFor="file-upload"
                                         className="cursor-pointer text-yellow-500"
                                     >
-                                        {previewImage ? (
+                                        {imageFile ? (
                                             <img
-                                                src={previewImage}
+                                                src={URL.createObjectURL(imageFile)}
                                                 alt="Preview"
                                                 className="mx-auto h-32 w-auto object-cover rounded-md"
                                             />
                                         ) : (
-                                            <>
-                                            <p className='text-blue-400'>
-                                                <BiImageAdd className='text-gray-400 text-5xl ml-20'/>
-                                            Upload Image <span className='text-white'>or drag and drop </span> <br />
+                                            <p className="text-blue-400">
+                                                Upload Image <span className="text-white">or drag and drop</span>
+                                                <br />
                                                 <span className="text-sm text-gray-400">
                                                     PNG, JPG, GIF up to 10MB
                                                 </span>
-                                                </p>
-                                            </>
+                                            </p>
                                         )}
                                     </label>
                                 </div>
@@ -548,9 +556,9 @@ const AddItems = () => {
                                 <input
                                     id={`customization-title-${index}`}
                                     type="text"
-                                    value={formData.title}
+                                    value={step.title}
                                     placeholder="Enter Customization Title"
-                                    onChange={(e) => handleChange(e, index, 'title')}
+                                    onChange={(e) => handleChange(e, index,'title')}
                                     style={{
                                         padding: "10px",
                                         marginRight: "10px",
@@ -598,7 +606,7 @@ const AddItems = () => {
                                         <input
                                             id={`customization-name-${index}`}
                                             type="text"
-                                            value={formData.name}
+                                            value={step.name}
                                             placeholder="Enter Customization Name"
                                             onChange={(e) => handleChange(e, index, 'name')}
                                             style={{
@@ -617,7 +625,7 @@ const AddItems = () => {
                                         <input
                                             id={`customization-detail-${index}`}
                                             type="text"
-                                            value={formData.detail}
+                                            value={step.detail}
                                             placeholder="Enter Customization Detail"
                                             onChange={(e) => handleChange(e, index, 'detail')}
                                             style={{
@@ -636,7 +644,7 @@ const AddItems = () => {
                                         <input
                                             id={`extra-rate-${index}`}
                                             type="text"
-                                            value={formData.rate}
+                                            value={step.rate}
                                             placeholder="Enter Extra Rate"
                                             onChange={(e) => handleChange(e, index, 'rate')}
                                             style={{
@@ -649,7 +657,6 @@ const AddItems = () => {
                                         />
                                     </div>
                                         
-                                     {index = 1 && (
                                     <button className='ml-3 mt-8'
                                         style={{
                                             backgroundColor: "red",
@@ -657,12 +664,9 @@ const AddItems = () => {
                                             borderRadius: "5px",
                                             padding: "10px",
                                         }}
-                                        onClick={() => setSteps(steps.filter((_, i) => i !== index))}
                                     >
                                         🗑
                                     </button>
-                                )}
-
                                 </div>
 
                                  <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
@@ -673,7 +677,7 @@ const AddItems = () => {
                                         <input
                                             id={`customization-name-${index}`}
                                             type="text"
-                                            value={formData.name}
+                                            value={step.name}
                                             placeholder="Enter Customization Name"
                                             onChange={(e) => handleChange(e, index, 'name')}
                                             style={{
@@ -692,7 +696,7 @@ const AddItems = () => {
                                         <input
                                             id={`customization-detail-${index}`}
                                             type="text"
-                                            value={formData.detail}
+                                            value={step.detail}
                                             placeholder="Enter Customization Detail"
                                             onChange={(e) => handleChange(e, index, 'detail')}
                                             style={{
@@ -711,7 +715,7 @@ const AddItems = () => {
                                         <input
                                             id={`extra-rate-${index}`}
                                             type="text"
-                                            value={formData.rate}
+                                            value={step.rate}
                                             placeholder="Enter Extra Rate"
                                             onChange={(e) => handleChange(e, index, 'rate')}
                                             style={{
@@ -724,7 +728,6 @@ const AddItems = () => {
                                         />
                                     </div>
                                         
-                                     {index = 1 && (
                                     <button className='ml-3 mt-8'
                                         style={{
                                             backgroundColor: "red",
@@ -732,11 +735,9 @@ const AddItems = () => {
                                             borderRadius: "5px",
                                             padding: "10px",
                                         }}
-                                        onClick={() => setSteps(steps.filter((_, i) => i !== index))}
                                     >
                                         🗑
                                     </button>
-                                )}
                                 </div>                               
                             </div>
                         ))}
@@ -755,7 +756,7 @@ const AddItems = () => {
         className="border border-gray-600 bg-gray-600 rounded-md px-8 py-3"
         type='button'
         onClick={handleSubmit} // Assuming `saveSteps` is the function to handle saving
-        disabled={steps.length < 3 || !steps.every(isStepFilled)} // Enable Save only when 3 steps are filled
+        // disabled={steps.length < 3 || !steps.every(isStepFilled)} // Enable Save only when 3 steps are filled
     >
         Save
     </button>

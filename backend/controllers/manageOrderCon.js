@@ -14,8 +14,8 @@ const addItem = async (req, res) => {
             type,
             spiceLevel,
             customizations: JSON.parse(customizations),
-            image: req.file?.path,
-        };
+            imageUrl: req.file?.path,
+            };
 
         // Save to DB (Example with Mongoose)
         // await Item.create(newItem);

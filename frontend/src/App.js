@@ -20,12 +20,12 @@ import DeletePrompt from './Admin/Dashboard/DeletePrompt';
 import Managemenu from './Admin/Dashboard/Managemenu';
 import Edititem from './Admin/Dashboard/BurgerEditDetailsBox';
 import AddItems from './Admin/Dashboard/AddItems';
-import CartPage from './Customer/CartPage';
-import ItemDetails from './Customer/ItemsDetails';
-import ParcelLogin from './Customer/Login';
-import ParcelHomePage from './Customer/ParcelHomePage';
-import ParcelCategory from './Customer/ParcelCategory';
-import TrendingMenu from './Customer/TrendingMenu';
+import CartPage from './customer/CartPage';
+import ItemDetails from './customer/ItemsDetails';
+import ParcelLogin from './customer/Login';
+import ParcelHomePage from './customer/ParcelHomePage';
+import ParcelCategory from './customer/ParcelCategory';
+import TrendingMenu from './customer/TrendingMenu';
 
 
 function App() {

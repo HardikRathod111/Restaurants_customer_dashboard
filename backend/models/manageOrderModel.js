@@ -22,7 +22,7 @@ const CustomizationSchema = new mongoose.Schema({
 
 // Define Item Schema
 const ItemSchema = new mongoose.Schema({
-  name: {
+  itemName: {
     type: String,
     required: true,
   },
