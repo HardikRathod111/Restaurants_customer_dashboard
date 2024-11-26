@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Forgotpassword from './Pages/Forgotpassword';
-import Otp from './Pages/Otp';
-import Register from './Pages/Register';
-import Resetpassword from './Pages/Resetpassword';
-import Login from './Pages/Login';
-import ProfilePage from './Dashboard/ProfilePage';
-import ChangePasswordPage from './Dashboard/ChangePasswordPage';
-import TermsAndConditions from './Dashboard/TermsAndConditions';
-import ParcelOrder from './Dashboard/ParcelOrder';
-import Dashboard from './Dashboard/Dashboard';
-import Editprofile from './Dashboard/Editprofile';
-import QrCode from './Dashboard/QrCode';
-import Createqrcode from './Dashboard/Createqrcode';
-import OnsiteOrder from './Dashboard/OnsiteOrder';
-import DeletePrompt from './Dashboard/DeletePrompt';
-import Managemenu from './Dashboard/Managemenu';
-import AddCategories from './Dashboard/AddCategories';
-import Edititem from './Dashboard/BurgerEditDetailsBox';
-import AddItems from './Dashboard/AddItems';
-import PaymentParcel from './Dashboard/PaymentParcel';
-import PaymentOnsite from './Dashboard/PaymentOnsite';
+import Forgotpassword from './Admin/Pages/Forgotpassword';
+import Otp from './Admin/Pages/Otp';
+import Register from './Admin/Pages/Register';
+import Resetpassword from './Admin/Pages/Resetpassword';
+import Login from './Admin/Pages/Login';
+import ProfilePage from './Admin/Dashboard/ProfilePage';
+import ChangePasswordPage from './Admin/Dashboard/ChangePasswordPage';
+import TermsAndConditions from './Admin/Dashboard/TermsAndConditions';
+import ParcelOrder from './Admin/Dashboard/ParcelOrder';
+import Dashboard from './Admin/Dashboard/Dashboard';
+import Editprofile from './Admin/Dashboard/Editprofile';
+import QrCode from './Admin/Dashboard/QrCode';
+import Createqrcode from './Admin/Dashboard/Createqrcode';
+import OnsiteOrder from './Admin/Dashboard/OnsiteOrder';
+import PaymentParcel from './Admin/Dashboard/PaymentParcel';
+import PaymentOnsite from './Admin/Dashboard/PaymentOnsite';
+import DeletePrompt from './Admin/Dashboard/DeletePrompt';
+import Managemenu from './Admin/Dashboard/Managemenu';
+import Edititem from './Admin/Dashboard/BurgerEditDetailsBox';
+import AddItems from './Admin/Dashboard/AddItems';
+import CartPage from './customer/CartPage';
+import ItemDetails from './customer/ItemsDetails';
+import ParcelLogin from './customer/Login';
+import ParcelHomePage from './customer/ParcelHomePage';
+import ParcelCategory from './customer/ParcelCategory';
+import TrendingMenu from './customer/TrendingMenu';
+import AddMoreItems from './customer/AddMoreItems';
+import PaymentMethod from './customer/Paymentmethod';
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -40,12 +48,19 @@ function App() {
         <Route path="/resetpassword" element={<Resetpassword />} />
         <Route path="/" element={<Register />} />
         <Route path='/deleteprompt' element={<DeletePrompt/>}/>
-        <Route path='/managemenu' element={<Managemenu/>}/>
+            <Route path="/paymentparcel" element={< PaymentParcel/>} />
+            <Route path="/paymentonsite" element={< PaymentOnsite/>} />
+            <Route path='/managemenu' element={<Managemenu/>}/>
         <Route path='/additems' element={<AddItems/>}/>
-        <Route path='/addcategories' element={<AddCategories/>}/>
         <Route path='/edititem' element={<Edititem/>}/>
-        <Route path="/paymentparcel" element={< PaymentParcel/>} />
-        <Route path="/paymentonsite" element={< PaymentOnsite/>} /> 
+        <Route path='/itemsdetails' element={<ItemDetails/>}/>
+        <Route path='/cartpage' element={<CartPage/>}/>
+         <Route path='/parcel-login' element={<ParcelLogin/>}/>
+        <Route path='/parcel-homepage' element={<ParcelHomePage/>}/>
+        <Route path='/parcel-category' element={<ParcelCategory/>}/>
+        <Route path='/trending-menu' element={<TrendingMenu/>}/>
+        <Route path='/addmoreitems' element={<AddMoreItems/>}/>
+        <Route path='/paymentmethod' element={<PaymentMethod/>}/>
 
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
