@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import {FaQrcode, FaHome, FaList, FaMoneyBillWave, FaSignOutAlt, FaEllipsisV,FaBoxOpen, FaUser, FaSearch, FaClipboardList} from 'react-icons/fa';
 import {MdWindow, MdAddBox, MdAddToPhotos, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore,MdImage} from 'react-icons/md';
@@ -218,7 +219,7 @@ const Managemenu = () => {
     const handleAddCategory = async () => {
         const formData = new FormData();
         formData.append('categoryName', categoryName);
-        formData.append('image', selectedImageFile); // Make sure `selectedImageFile` is a valid file object
+        formData.append('image', selectedImageFile); // Make sure selectedImageFile is a valid file object
     
         try {
             const response = await fetch('http://localhost:8080/api/v1/category/createCategory', {
@@ -227,7 +228,7 @@ const Managemenu = () => {
             });
     
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`${response.status}`);
             }
     
             const result = await response.json();
@@ -558,7 +559,7 @@ const Managemenu = () => {
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                                     <button
                                         onClick={() => handleCategoryClick('All')}
-                                        className={` text-white p-2 rounded-md flex items-center bg-yellow-600`}
+                                        className="bg-gray-800 text-white p-2 rounded-md flex items-center bg-yellow-600"
                                     >
                                         <img
                                             src="./assets/images/pngwing 14-2.png"
@@ -574,7 +575,7 @@ const Managemenu = () => {
                                         className={`bg-gray-800 text-white p-2 rounded-md flex items-center ${selectedCategory === category.name ? 'bg-yellow-600' : ''}`}
                                     >
                                         <img
-                                            src={`http://localhost:8080/${category.image}`}
+                                            src={`http://localhost:8080/${category.image}`} 
                                             alt={category.categoryName}
                                             className="w-10 h-10 mr-2 bg-gray-900"
                                         />
