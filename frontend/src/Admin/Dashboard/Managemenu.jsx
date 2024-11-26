@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> f67d06d35eb50586b28fc9bc855ec648655fbfa4
 import React, { useEffect, useState } from 'react';
 import {FaQrcode, FaHome, FaList, FaMoneyBillWave, FaSignOutAlt, FaEllipsisV,FaBoxOpen, FaUser, FaSearch, FaClipboardList} from 'react-icons/fa';
 import {MdWindow, MdAddBox, MdAddToPhotos, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore,MdImage} from 'react-icons/md';
@@ -219,7 +222,11 @@ const Managemenu = () => {
     const handleAddCategory = async () => {
         const formData = new FormData();
         formData.append('categoryName', categoryName);
+<<<<<<< HEAD
         formData.append('image', selectedImageFile); // Make sure selectedImageFile is a valid file object
+=======
+        formData.append('image', selectedImageFile); // Make sure `selectedImageFile` is a valid file object
+>>>>>>> f67d06d35eb50586b28fc9bc855ec648655fbfa4
     
         try {
             const response = await fetch('http://localhost:8080/api/v1/category/createCategory', {
@@ -228,7 +235,11 @@ const Managemenu = () => {
             });
     
             if (!response.ok) {
+<<<<<<< HEAD
                 throw new Error(`${response.status}`);
+=======
+                throw new Error(`HTTP error! status: ${response.status}`);
+>>>>>>> f67d06d35eb50586b28fc9bc855ec648655fbfa4
             }
     
             const result = await response.json();
@@ -559,7 +570,11 @@ const Managemenu = () => {
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                                     <button
                                         onClick={() => handleCategoryClick('All')}
+<<<<<<< HEAD
                                         className="bg-gray-800 text-white p-2 rounded-md flex items-center bg-yellow-600"
+=======
+                                        className={` text-white p-2 rounded-md flex items-center bg-yellow-600`}
+>>>>>>> f67d06d35eb50586b28fc9bc855ec648655fbfa4
                                     >
                                         <img
                                             src="./assets/images/pngwing 14-2.png"
@@ -575,7 +590,11 @@ const Managemenu = () => {
                                         className={`bg-gray-800 text-white p-2 rounded-md flex items-center ${selectedCategory === category.name ? 'bg-yellow-600' : ''}`}
                                     >
                                         <img
+<<<<<<< HEAD
                                             src={`http://localhost:8080/${category.image}`} 
+=======
+                                            src={`http://localhost:8080/${category.image}`}
+>>>>>>> f67d06d35eb50586b28fc9bc855ec648655fbfa4
                                             alt={category.categoryName}
                                             className="w-10 h-10 mr-2 bg-gray-900"
                                         />
@@ -809,4 +828,8 @@ const Managemenu = () => {
     );
 };
 
+<<<<<<< HEAD
 export default Managemenu;
+=======
+export default Managemenu;
+>>>>>>> f67d06d35eb50586b28fc9bc855ec648655fbfa4

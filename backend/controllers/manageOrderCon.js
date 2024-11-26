@@ -1,5 +1,6 @@
 const manageorder = require("../models/manageOrderModel");
 
+<<<<<<< HEAD
 
 const addItem = async (req, res) => {
     try {
@@ -26,6 +27,8 @@ const addItem = async (req, res) => {
     }
   };
 
+=======
+>>>>>>> f67d06d35eb50586b28fc9bc855ec648655fbfa4
 const createitemcontroller = async(req,res) => {
     
 };
@@ -48,4 +51,8 @@ const deleteitemscontroller = async(req,res) => {
 }
 
 
+<<<<<<< HEAD
 module.exports = {createitemcontroller, getallitemscontroller, getsingleitemscontroller, updataitemscontroller,deleteitemscontroller, addItem};
+=======
+module.exports = {createitemcontroller, getallitemscontroller, getsingleitemscontroller, updataitemscontroller,deleteitemscontroller};
+>>>>>>> f67d06d35eb50586b28fc9bc855ec648655fbfa4

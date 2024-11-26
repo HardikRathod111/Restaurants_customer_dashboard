@@ -438,9 +438,13 @@ const ParcelOrder = () => {
                   {/* Modal for viewing bill */}
                {showModal && (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
+<<<<<<< HEAD
     <div className="bg-[#252836] text-white p-6 rounded-lg max-w-sm
     
     w-full shadow-lg">
+=======
+    <div className="bg-[#252836] text-white p-6 rounded-lg max-w-sm h-screen w-full shadow-lg">
+>>>>>>> f67d06d35eb50586b28fc9bc855ec648655fbfa4
       {/* Header Section */}
       <div className="flex justify-between items-center border-b border-gray-700 pb-4">
         <h2 className="text-lg font-semibold">Parcel Payment Bill</h2>
