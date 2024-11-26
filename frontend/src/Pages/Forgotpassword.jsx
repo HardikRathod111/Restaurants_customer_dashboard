@@ -1,6 +1,39 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const ForgotPassword = () => {
+  const [emailOrPhone, setEmailOrPhone] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const Navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/adminedit/get-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: emailOrPhone }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setMessage(data.message);
+        setError('');
+        localStorage.setItem('email', emailOrPhone);
+        Navigate('/otp');
+      } else {
+        setError(data.message);
+        setMessage('');
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      setError('An error occurred while requesting OTP.');
+    }
+  };
   return (
     <div
       className="flex min-h-screen bg-cover bg-center"
@@ -11,23 +44,27 @@ const ForgotPassword = () => {
         <div className="p-8 rounded-md shadow-md max-w-md w-full m-4" style={{ backgroundColor: '#333748' }}>
           <h2 className="text-2xl font-semibold text-white mb-6">Forgot Password</h2>
 
-          <form method="POST">
+          <form method="POST" onSubmit={handleSubmit}>
             <label className="block text-sm text-white mb-1">Email or Phone</label>
             <input
-              type="text"
+              type="email"
               name="emailOrPhone"
-              placeholder="+91 98652 32699"
+              value={emailOrPhone}
+              onChange={(e) => setEmailOrPhone(e.target.value)}
+              placeholder="harry@gmail.com"
+              required
               className="w-full px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 mb-6"
               style={{ backgroundColor: '#2D303E', border: "1px solid #ABBBC240" }}
             />
 
             <button type="submit"
               className=" w-full py-2 px-40  bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-md transition duration-200"
-              style={{ backgroundColor: '#CA923D' }}
-            >
+              style={{ backgroundColor: '#CA923D' }}>
               Get OTP
             </button>
           </form>
+          {message && <p className="text-green-400 mt-4">{message}</p>}
+          {error && <p className="text-red-400 mt-4">{error}</p>}
         </div>
       </div>
 

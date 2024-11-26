@@ -9,10 +9,119 @@ const transporter = nodemailer.createTransport({
   service: 'Gmail', // Or your email service
   auth: {
       user: 'harahrathod1432@gmail.com',
-      pass: 'nsymdceluqwacark',
+      pass: 'jimrawsdgnfdsjsw',
   },
 });
 
+
+const sendOtpController = async (req, res) => {
+  const { email } = req.body;
+
+  // Validate the email input
+  if (!email) {
+    return res.status(400).json({ success: false, message: 'Email is required.' });
+  }
+
+  try {
+    // Find the user by email
+    const user = await adminrest.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    // Generate a secure OTP (6 digits)
+    const otp = crypto.randomInt(100000, 999999).toString();
+
+    // Set OTP and its expiration time (e.g., 10 minutes)
+    // user.resetOtp = otp;
+    user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+    user.resetOtp = otp;
+    await user.save();
+
+    // Prepare the email options
+    const mailOptions = {
+      from: 'harahrathod1432@gmail.com',
+      to: user.email,
+      subject: 'Your OTP for Password Reset',
+      text: `Your OTP is ${otp}. It is valid for 10 minutes.\n\nIf you did not request this, please ignore this email.`,
+    };
+
+    // Send the OTP email
+    await transporter.sendMail(mailOptions);
+
+    console.log(`OTP sent to ${user.email}: ${otp}`);
+
+    // Respond to the client
+    return res.status(200).json({
+      success: true,
+      message: 'OTP has been sent to your email address.',
+      
+    });
+  } catch (error) {
+    console.error("Error in sendOtpController:", error);
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+};
+
+const verifyOtpController = async (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ success: false, message: "Email and OTP are required." });
+  }
+
+  try {
+    const user = await adminrest.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
+
+    if (user.resetOtp !== otp || Date.now() > user.otpExpires) {
+      return res.status(400).json({ success: false, message: "Invalid or expired OTP." });
+    }
+
+    // OTP is valid; clear OTP fields
+    user.resetOtp = undefined;
+    user.otpExpires = undefined;
+    await user.save();
+
+    return res.status(200).json({ success: true, message: "OTP verified successfully." });
+  } catch (error) {
+    console.error("Error in verifyOtpController:", error);
+    return res.status(500).json({ success: false, message: "Internal server error." });
+  }
+};
+const resetPassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  try {
+    // Find user by email
+    const user = await adminrest.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Check if the new password is provided
+    if (!newPassword) {
+      return res.status(400).json({ success: false, message: 'New password is required' });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the password
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.json({ success: true, message: 'Password reset successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
 const getadmineditcontroller = async (req, res) => {
     try {
         const adminId = req.user.id;  // Assuming `req.user` has the correct decoded token data
@@ -158,4 +267,4 @@ const deleteadminprofilecontroller = async(req,res) => {
     }
 }
 
-module.exports = {getadmineditcontroller, updateadmincontroller, updataadminpasswordcontroller,resetpasswordcontroller,deleteadminprofilecontroller};
+module.exports = {getadmineditcontroller,sendOtpController,verifyOtpController,resetPassword, updateadmincontroller, updataadminpasswordcontroller,resetpasswordcontroller,deleteadminprofilecontroller};
