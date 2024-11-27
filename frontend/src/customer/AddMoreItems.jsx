@@ -1,20 +1,20 @@
-<<<<<<< HEAD
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import { FaChevronLeft, FaCaretRight } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
 import { IoIosCloseCircle } from "react-icons/io";
+// Remove the Next.js import
+// import { useRouter } from 'next/navigation';
 
 export default function AddMoreItems() {
-
+  // Remove the router initialization
+  // const router = useRouter();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState('Online');
-  const [isTimerPopupOpen, setIsTimerPopupOpen] = useState(false); // For cash payment timer popup
-  const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false); // For payment success popup
-  const [isCashPaymentPopupOpen, setIsCashPaymentPopupOpen] = useState(false); // For final cash payment popup
+  const [isTimerPopupOpen, setIsTimerPopupOpen] = useState(false);
+  const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
+  const [isCashPaymentPopupOpen, setIsCashPaymentPopupOpen] = useState(false);
   const [isBillDetailsPopupOpen, setIsBillDetailsPopupOpen] = useState(false);
-  const [timer, setTimer] = useState(5); // Countdown timer state
+  const [timer, setTimer] = useState(5);
 
   const togglePopup = () => {
     setIsPopupOpen((prev) => !prev);
@@ -29,16 +29,17 @@ export default function AddMoreItems() {
       setIsPopupOpen(false);
       setIsTimerPopupOpen(true);
     } else {
-      alert('Proceeding with Online Payment!');
+      // Navigate to the payment method page for online payment
+      // Use window.location for navigation instead of Next.js router
+      window.location.href = '/paymentmethod';
     }
   };
 
   const handleDoneClick = () => {
-    setIsSuccessPopupOpen(false); // Close success popup
-    setIsCashPaymentPopupOpen(true); // Open cash payment popup
+    setIsSuccessPopupOpen(false);
+    setIsCashPaymentPopupOpen(true);
   };
 
-  // Countdown Timer Logic
   useEffect(() => {
     let interval;
     if (isTimerPopupOpen) {
@@ -47,7 +48,6 @@ export default function AddMoreItems() {
       }, 1000);
     }
 
-    // When timer reaches 0, close the timer popup and open the success popup
     if (timer === 0 && isTimerPopupOpen) {
       setIsTimerPopupOpen(false);
       setIsSuccessPopupOpen(true);
@@ -56,16 +56,14 @@ export default function AddMoreItems() {
     return () => clearInterval(interval);
   }, [timer, isTimerPopupOpen]);
 
-
   useEffect(() => {
     if (isCashPaymentPopupOpen) {
-      // Automatically switch to the Bill Details popup after 3 seconds
       const timer = setTimeout(() => {
         setIsCashPaymentPopupOpen(false);
         setIsBillDetailsPopupOpen(true);
       }, 3000);
 
-      return () => clearTimeout(timer); // Clean up the timer
+      return () => clearTimeout(timer);
     }
   }, [isCashPaymentPopupOpen]);
 
@@ -125,7 +123,6 @@ export default function AddMoreItems() {
       </div>
 
       {/* Popup */}
-      {/* Popup */}
       {isPopupOpen && (
         <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
           <div className="bg-[#1A1B23] w-[300px] rounded-lg p-6">
@@ -146,17 +143,19 @@ export default function AddMoreItems() {
               {/* Online Payment */}
               <div
                 onClick={() => handlePaymentSelection('Online')}
-                className={`w-[120px] h-[120px] flex flex-col justify-center items-center rounded-lg cursor-pointer transition ${selectedPayment === 'Online'
-                  ? 'border-2 border-[#C68A15] bg-gray-800'
-                  : 'bg-gray-800 border border-transparent'
-                  }`}
+                className={`w-[120px] h-[120px] flex flex-col justify-center items-center rounded-lg cursor-pointer transition ${
+                  selectedPayment === 'Online'
+                    ? 'border-2 border-[#C68A15] bg-gray-800'
+                    : 'bg-gray-800 border border-transparent'
+                }`}
               >
                 <div
                   style={{ marginLeft: "75px" }}
-                  className={`w-4 h-4 rounded-full border-2 ${selectedPayment === 'Online'
-                    ? 'border-[#C68A15] bg-[#C68A15]'
-                    : 'border-gray-500'
-                    }`}
+                  className={`w-4 h-4 rounded-full border-2 ${
+                    selectedPayment === 'Online'
+                      ? 'border-[#C68A15] bg-[#C68A15]'
+                      : 'border-gray-500'
+                  }`}
                 />
                 <img
                   src="./assets/images/28.png"
@@ -164,23 +163,24 @@ export default function AddMoreItems() {
                   className="w-10 h-10 mb-2 mt-2"
                 />
                 <p className="text-sm text-white">Online</p>
-
               </div>
 
               {/* Cash Payment */}
               <div
                 onClick={() => handlePaymentSelection('Cash')}
-                className={`w-[120px] h-[120px] flex flex-col justify-center items-center rounded-lg cursor-pointer transition ${selectedPayment === 'Cash'
-                  ? 'border-2 border-[#C68A15] bg-gray-800'
-                  : 'bg-gray-800 border border-transparent'
-                  }`}
+                className={`w-[120px] h-[120px] flex flex-col justify-center items-center rounded-lg cursor-pointer transition ${
+                  selectedPayment === 'Cash'
+                    ? 'border-2 border-[#C68A15] bg-gray-800'
+                    : 'bg-gray-800 border border-transparent'
+                }`}
               >
                 <div
                   style={{ marginLeft: "75px" }}
-                  className={`w-4 h-4 rounded-full border-2 mt-2 ${selectedPayment === 'Cash'
-                    ? 'border-[#C68A15] bg-[#C68A15]'
-                    : 'border-gray-500'
-                    }`}
+                  className={`w-4 h-4 rounded-full border-2 mt-2 ${
+                    selectedPayment === 'Cash'
+                      ? 'border-[#C68A15] bg-[#C68A15]'
+                      : 'border-gray-500'
+                  }`}
                 />
                 <img
                   src="./assets/images/29.png"
@@ -188,11 +188,8 @@ export default function AddMoreItems() {
                   className="w-10 h-10 mb-2 mt-2"
                 />
                 <p className="text-sm text-white">Cash</p>
-
               </div>
             </div>
-
-
 
             {/* Pay Button */}
             <button className="bg-[#C68A15] text-white py-2 w-full rounded-full text-sm font-medium" onClick={handlePayClick}>
@@ -239,7 +236,6 @@ export default function AddMoreItems() {
         </div>
       )}
 
-
       {/* Cash Payment Final Popup */}
       {isCashPaymentPopupOpen && (
         <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
@@ -267,7 +263,6 @@ export default function AddMoreItems() {
           </div>
         </div>
       )}
-
 
       {/* Bill Details Popup */}
       {isBillDetailsPopupOpen && (
@@ -300,33 +295,32 @@ export default function AddMoreItems() {
             {/* Horizontal Line */}
             <hr className="border-t-[1px] border-gray-500 mb-4" />
 
-       {/* Items List */}
-<div className="text-sm mb-4">
-  <div className="flex justify-between font-semibold">
-    <span className="flex-1">Items Names</span>
-    <span className="w-8 text-center">Qty</span>
-    <span className="flex-1 text-right">Amount</span>
-  </div>
-  {/* Sample Items */}
-  {[
-    ['Jeera Rice', 2, '290.00'],
-    ['Veg Manhwa', 1, '119.00'],
-    ['Dal Tadka', 1, '215.00'],
-    ['Butter Tandoor', 1, '45.00'],
-    ['Garlic Naan', 5, '300.00'],
-    ['Veg Sweet Corn', 1, '119.00'],
-    ['Plain Papad', 2, '160.00'],
-    ['Baked Veg With', 1, '270.00'],
-    ['Biryani Rice', 2, '315.00'],
-  ].map(([name, qty, amount], idx) => (
-    <div className="flex justify-between" key={idx}>
-      <span className="flex-1">{name}</span>
-      <span className="w-8 text-center">{qty}</span>
-      <span className="flex-1 text-right">{amount}</span>
-    </div>
-  ))}
-</div>
-
+            {/* Items List */}
+            <div className="text-sm mb-4">
+              <div className="flex justify-between font-semibold">
+                <span className="flex-1">Items Names</span>
+                <span className="w-8 text-center">Qty</span>
+                <span className="flex-1 text-right">Amount</span>
+              </div>
+              {/* Sample Items */}
+              {[
+                ['Jeera Rice', 2, '290.00'],
+                ['Veg Manhwa', 1, '119.00'],
+                ['Dal Tadka', 1, '215.00'],
+                ['Butter Tandoor', 1, '45.00'],
+                ['Garlic Naan', 5, '300.00'],
+                ['Veg Sweet Corn', 1, '119.00'],
+                ['Plain Papad', 2, '160.00'],
+                ['Baked Veg With', 1, '270.00'],
+                ['Biryani Rice', 2, '315.00'],
+              ].map(([name, qty, amount], idx) => (
+                <div className="flex justify-between" key={idx}>
+                  <span className="flex-1">{name}</span>
+                  <span className="w-8 text-center">{qty}</span>
+                  <span className="flex-1 text-right">{amount}</span>
+                </div>
+              ))}
+            </div>
 
             {/* Horizontal Line */}
             <hr className="border-t-[1px] border-gray-500 mb-4" />
@@ -366,132 +360,7 @@ export default function AddMoreItems() {
           </div>
         </div>
       )}
-
-
     </div>
   );
 }
-=======
-'use client';
 
-import React, { useState } from 'react';
-import { FaChevronLeft, FaCaretRight } from 'react-icons/fa';
-import { IoClose } from 'react-icons/io5';
-
-export default function AddMoreItems() {
-  const [showPopup, setShowPopup] = useState(false);
-
-  const togglePopup = () => {
-    setShowPopup(!showPopup);
-  };
-
-  return (
-    <div className="bg-[#0A0B14] min-h-screen w-[375px] text-white relative">
-      {/* Header */}
-      <div className="flex items-center p-4 border-b border-slate-800">
-        <a href="/cartpage" className="p-2">
-          <FaChevronLeft className="w-6 h-6" />
-        </a>
-        <h1 className="text-lg ml-28 font-medium">Cart</h1>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex flex-col items-center px-6 pt-12 pb-32">
-        {/* Illustration */}
-        <div className="w-[240px] h-[240px] relative pb-3">
-          <img
-            src="./assets/images/21532513_6461715 1.png"
-            alt="Person eating at table illustration"
-            width={240}
-            height={240}
-            className="object-contain"
-          />
-        </div>
-
-        {/* Text */}
-        <p className="text-center text-gray-300 text-sm mb-2">
-          If you want to order another item, you
-          <br />
-          can order this button.
-        </p>
-        <p className="text-center text-gray-300 text-sm mb-6">
-          If you want to order another item, you
-          <br /> can order this button.
-        </p>
-
-        {/* Add More Button */}
-        <button className="bg-[#C68A15] text-white py-3 px-8 rounded-full text-sm font-medium">
-          Add More Items
-        </button>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="fixed bottom-0 left-0 w-[375px] bg-[#1A1B23] p-4 flex items-center justify-between">
-        <div>
-          <p className="text-sm text-gray-400">5 Items Added</p>
-          <p className="text-lg font-semibold">₹ 2,050</p>
-        </div>
-        <button
-          className="bg-[#C68A15] text-white py-3 px-6 rounded-full text-sm font-medium flex items-center"
-          onClick={togglePopup}
-        >
-          Place Order
-          <FaCaretRight size={20} className="ml-1" />
-        </button>
-      </div>
-
-      {/* Payment Popup */}
-      {showPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-[#1A1B23] w-[300px] rounded-lg p-6">
-            {/* Header */}
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-medium">Select Payment</h2>
-              <button
-                className="text-white text-2xl"
-                onClick={togglePopup}
-              >
-                <IoClose />
-              </button>
-            </div>
-
-            {/* Payment Options */}
-            <div className="flex justify-between items-center mb-6">
-              {/* Online Option */}
-              <div className="flex flex-col items-center">
-                <div className="bg-[#23242E] w-16 h-16 rounded-lg flex items-center justify-center">
-                  <img
-                    src="./assets/icons/online-icon.png"
-                    alt="Online Payment"
-                    className="w-8 h-8"
-                  />
-                </div>
-                <p className="text-sm mt-2">Online</p>
-              </div>
-              {/* Cash Option */}
-              <div className="flex flex-col items-center">
-                <div className="bg-[#23242E] w-16 h-16 rounded-lg flex items-center justify-center border-2 border-[#C68A15]">
-                  <img
-                    src="./assets/icons/cash-icon.png"
-                    alt="Cash Payment"
-                    className="w-8 h-8"
-                  />
-                </div>
-                <p className="text-sm mt-2">Cash</p>
-              </div>
-            </div>
-
-            {/* Pay Button */}
-            <button
-              className="bg-[#C68A15] text-white py-3 w-full rounded-full text-sm font-medium"
-              onClick={togglePopup}
-            >
-              Pay
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
->>>>>>> f67d06d35eb50586b28fc9bc855ec648655fbfa4
