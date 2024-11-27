@@ -1,7 +1,9 @@
 'use client'
 
+import { GoDotFill } from "react-icons/go";
 
-export default function Kitchen() {
+
+export default function Deliver() {
   return (
     <div className="h-screen bg-slate-900 text-white p-4">
       <header className="flex justify-between items-center mb-6">
@@ -54,12 +56,13 @@ export default function Kitchen() {
               <label className="text-sm text-white block">Customization:</label>
               <p className="text-sm text-gray-400">(1)100% Wheat Crust,(2)Large,(3) Jalapeno</p>
             </div>
-            <a 
-               href="/deliver" 
-               className="w-full bg-amber-500 hover:bg-amber-600 text-black py-2 rounded-md mt-2 text-center block"
-             >
-               Accept Order
-             </a>
+            <div className="flex justify-between">
+                <p className="text-yellow-500 mt-3 flex"> 
+                <GoDotFill className="mt-1 text-lg" /> in progress</p>
+            <button className="w-36 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md mt-2">
+              Deliverd
+            </button>
+            </div>
           </div>
         </div>
 
@@ -97,12 +100,13 @@ export default function Kitchen() {
               <label className="text-sm text-white block">Customization:</label>
               <p className="text-sm text-gray-400 block">(1) 100% Wheat Crust, (2) Small, (3) Jalapeno</p>
             </div>
-            <a 
-               href="/deliver" 
-               className="w-full bg-amber-500 hover:bg-amber-600 text-black py-2 rounded-md mt-2 text-center block"
-             >
-               Accept Order
-             </a>
+             <div className="flex justify-between">
+                <p className="text-yellow-500 mt-3 flex"> 
+                <GoDotFill className="mt-1 text-lg" /> in progress</p>
+            <button className="w-36 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md mt-2">
+              Deliverd
+            </button>
+            </div>
           </div>
         </div>
 
@@ -144,12 +148,13 @@ export default function Kitchen() {
               <label className="text-sm text-white block">Customization:</label>
               <p className="text-sm text-gray-400">(1) 100% Wheat Crust, (2) Small, (3) Jalapeno</p>
             </div>
-            <a 
-               href="/deliver" 
-               className="w-full bg-amber-500 hover:bg-amber-600 text-black py-2 rounded-md mt-2 text-center block"
-             >
-               Accept Order
-             </a>
+             <div className="flex justify-between">
+                <p className="text-yellow-500 mt-3 flex"> 
+                <GoDotFill className="mt-1 text-lg" /> in progress</p>
+            <button className="w-36 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md mt-2">
+              Deliverd
+            </button>
+            </div>
           </div>
         </div>
 
@@ -191,12 +196,13 @@ export default function Kitchen() {
               <label className="text-sm text-white block">Customization:</label>
               <p className="text-sm text-gray-400">(1) 100% Wheat Crust, (2) Small, (3) Jalapeno</p>
             </div>
-            <a 
-               href="/deliver" 
-               className="w-full bg-amber-500 hover:bg-amber-600 text-black py-2 rounded-md mt-2 text-center block"
-             >
-               Accept Order
-             </a>
+            <div className="flex justify-between">
+                <p className="text-yellow-500 mt-3 flex"> 
+                <GoDotFill className="mt-1 text-lg" /> in progress</p>
+            <button className="w-36 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md mt-2">
+              Deliverd
+            </button>
+            </div>
           </div>
         </div>
       </div>

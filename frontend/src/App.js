@@ -29,6 +29,7 @@ import AddMoreItems from './Customer/Payment/AddMoreItems';
 import PaymentMethod from './Customer/Payment/Paymentmethod';
 import Kitchen from './Admin/Manageorder/Kitchen/Kitchen';
 import ParcelOrder from './Admin/Manageorder/Parcelorder/ParcelOrder';
+import Deliver from './Admin/Manageorder/Kitchen/Deliver';
 
 
 
@@ -65,6 +66,7 @@ function App() {
         <Route path='/addmoreitems' element={<AddMoreItems/>}/>
         <Route path='/paymentmethod' element={<PaymentMethod/>}/>
         <Route path='/kitchen' element={<Kitchen/>}/>
+        <Route path='/deliver' element={<Deliver/>}/>
 
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />
