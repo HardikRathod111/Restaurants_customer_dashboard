@@ -13,6 +13,8 @@ const storage = multer.diskStorage({
 
 // File filter for image validation
 const fileFilter = (req, file, cb) => {
+    console.log("fkrslsk",file);
+    
     if (file.mimetype.startsWith('image/')) {
         cb(null, true);
     } else {

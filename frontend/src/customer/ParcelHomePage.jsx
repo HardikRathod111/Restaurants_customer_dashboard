@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 const ParcelHomePage = () => {
@@ -7,8 +8,6 @@ const ParcelHomePage = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState("Veg");
   const [showSearchInput, setShowSearchInput] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
 
   const handleCategoryView = () => {
     navigate('/parcel-category');
@@ -17,55 +16,79 @@ const ParcelHomePage = () => {
   const handleTrendingClick = () => {
     navigate('/trending-menu');
   }
-
-  const foodItems = [
-    {
-      name: "Hamburger Cheeseburger",
-      price: "₹6.29",
-      description: "Order Per Day :- 120",
-      image: "/assets/images/5.png",
-    },
-    {
-      name: "New York Style Pizza",
-      price: "₹6.29",
-      description: "Order Per Day :- 180",
-      image: "/assets/images/6.png",
-    },
-    {
-      name: "Noodles",
-      price: "₹6.29",
-      description: "Order Per Day :- 120",
-      image: "/assets/images/7.png",
-    },
-    {
-      name: "Italian Pasta",
-      price: "₹6.29",
-      description: "Order Per Day :- 80",
-      image: "/assets/images/8.png",
-    },
-    {
-      name: "Pasta",
-      price: "₹6.29",
-      description: "Order Per Day :- 50",
-      image: "/assets/images/9.png",
-    },
-  ];
  
   const toggleSearchInput = () => {
     setShowSearchInput(!showSearchInput);
   };
 
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); 
 
-  // Filter items based on the search query
-  const filteredItems = foodItems.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const fetchCategories = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/api/v1/category/getCategory');
+        
+        // Check if the response is ok
+        if (!response.ok) {
+            throw new Error('Failed to fetch categories');
+        }
 
-   // Handle Search Input Change
-   const handleSearchChange = (event) => {
-    const query = event.target.value;
+        const data = await response.json();
+        setCategories(data);  // Set categories in state
+    } catch (error) {
+        setError(error.message);  // Set error message in state
+    } finally {
+        setLoading(false);  // Set loading to false after fetching
+    }
+  };
+
+  // Use useEffect to call fetchCategories when the component is mounted
+  useEffect(() => {
+      fetchCategories();
+  }, []);  
+
+  const [items, setItems] = useState([]); // State to hold items
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/v1/manageorder/getAllItems');
+        console.log(response.data); // Log the response to verify the structure
+        // Assuming the items are at response.data directly
+        if (Array.isArray(response.data)) {
+          setItems(response.data);
+        } else if (response.data.items && Array.isArray(response.data.items)) {
+          setItems(response.data.items);
+        } else {
+          setError('No items found');
+        }
+      } catch (err) {
+        console.error('Error fetching items:', err);
+        setError('Error fetching items');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItems(); // Call the function to fetch items
+  }, []);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
     setSearchQuery(query);
 
+    // Filter items based on the search query
+    if (query.trim() !== '') {
+      const filteredResults = items.filter((item) =>
+        item.itemName.toLowerCase().includes(query.toLowerCase()) // Match the name of the item
+      );
+      setSearchResults(filteredResults);
+    } else {
+      setSearchResults([]); // If search query is empty, clear results
+    }
   };
 
   return (
@@ -125,7 +148,7 @@ const ParcelHomePage = () => {
 
         {/* Search Input */}
       {showSearchInput && (
-        <div className="w-[375px] px-4 py-2 bg-[#1F1D2B] flex flex-col">
+        <div className="w-[375px] h-svh overscroll-contain absolute top-16 z-10 px-4 py-2 bg-[#1F1D2B] flex flex-col">
           <input
             type="text"
             placeholder="Search for items..."
@@ -135,21 +158,36 @@ const ParcelHomePage = () => {
           />
           {/* Search Results */}
           <div className="mt-2">
-            {searchResults.length > 0 ? (
-              searchResults.map((result, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between items-center bg-[#2D303E] rounded-lg p-2 mb-2"
-                >
-                  <span className="text-sm font-medium">{result.name}</span>
-                  <span className="text-sm font-semibold text-green-500">
-                    {result.price}
-                  </span>
+          {searchResults.length > 0 ? (
+            searchResults.map((result, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between bg-[#252836] rounded-lg p-4"
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="bg-[#2D303E] w-16 h-16 rounded-lg flex items-center justify-center">
+                    <img
+                      src={result.imageUrl}
+                      alt={result.itemName}
+                      className="object-cover w-full h-full rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-white">{result.itemName}</h3>
+                    <p className="text-xs text-gray-400">{result.spiceLevel}</p>
+                    <p className="text-sm font-semibold text-green-500">
+                      {result.price}
+                    </p>
+                  </div>
                 </div>
-              ))
-            ) : searchQuery.trim() ? (
-              <p className="text-sm text-gray-400">No results found</p>
-            ) : null}
+                <button className="bg-[#CA923D] text-xs text-white px-4 py-2 rounded-lg font-bold">
+                  Order Now
+                </button>
+              </div>
+            ))
+          ) : searchQuery.trim() ? (
+            <p className="text-sm text-gray-400">No results found</p>
+          ) : null}
           </div>
         </div>
       )}
@@ -194,23 +232,16 @@ const ParcelHomePage = () => {
           <h2 className="text-sm font-semibold">Categories</h2>
           <button className="text-xs text-[#5678E9]" onClick={handleCategoryView}>View All</button>
         </div>
-        <div className="flex space-x-4 ">
-          {[
-            { name: "All", image: "/assets/images/4.png" },
-            { name: "French Fries", image: "/assets/images/3.png" },
-            { name: "Burger", image: "/assets/images/4.png" },
-            { name: "Sandwich", image: "/assets/images/2.png" },
-            { name: "Drinks", image: "/assets/images/1.png" },
-          ].map((category, index) => (
+        <div className="flex overflow-x-hidden space-x-4 ">
+        {categories.map((category, index) => (
             <div key={index} className="flex flex-col items-center space-y-2">
               <div className="bg-gray-700 w-14 h-14 rounded-lg flex items-center justify-center">
                 <img
-                  src={category.image}
-                  alt={category.name}
-                 
+                  src={`http://localhost:8080/${category.image}`}
+                  alt={category.categoryName}
                 />
               </div>
-              <p className="text-xs text-gray-400">{category.name}</p>
+              <p className="text-xs text-gray-400">{category.categoryName}</p>
             </div>
           ))}
         </div>
@@ -225,36 +256,36 @@ const ParcelHomePage = () => {
         </div>
           {/* Food Items */}
       <div className="space-y-4">
-        {filteredItems.length > 0 ? (
-          filteredItems.map((item, index) => (
+      {items.length > 0 ? (
+        items.map((item, index) => (
             <div
-              key={index}
-              className="flex items-center justify-between bg-[#252836] rounded-lg p-4"
-            >
-              <div className="flex items-center space-x-4">
-                <div className="bg-[#2D303E] w-16 h-16 rounded-lg flex items-center justify-center">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="object-cover w-full h-full rounded-lg"
-                  />
+                key={index}
+                className="flex items-center justify-between bg-[#252836] rounded-lg p-4"
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="bg-[#2D303E] w-16 h-16 rounded-lg flex items-center justify-center">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.itemName}
+                      className="object-cover w-full h-full rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-white">{item.itemName}</h3>
+                    <p className="text-xs text-gray-400">{item.spiceLevel}</p>
+                    <p className="text-sm font-semibold text-green-500">
+                      {item.price}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-medium text-white">{item.name}</h3>
-                  <p className="text-xs text-gray-400">{item.description}</p>
-                  <p className="text-sm font-semibold text-green-500">
-                    {item.price}
-                  </p>
-                </div>
+                <button className="bg-[#CA923D] text-xs text-white px-4 py-2 rounded-lg font-bold">
+                  Order Now
+                </button>
               </div>
-              <button className="bg-[#CA923D] text-xs text-white px-4 py-2 rounded-lg font-bold">
-                Order Now
-              </button>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500 text-center">No items found</p>
-        )}
+            ))
+          ) : (
+            <p className="text-gray-500 text-center">No items found</p>
+          )}
       </div>
 
       </div>

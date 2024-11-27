@@ -116,25 +116,29 @@ const AddItems = () => {
     
         try {
             // Handle form submission
-            const formDataWithFile = new FormData();
+            // const formDataWithFile = new FormData();
             
             
-            // Append non-file fields to FormData
-            for (const key in formData) {
-                formDataWithFile.append(key, formData[key]);
-            }
-            console.log(formDataWithFile);
-            for (let [key, value] of formDataWithFile.entries()) {
-                console.log(key, value); // This will print each key-value pair inside the FormData
-            }
-            // Send form data including image to backend
-            const response = await axios.post('http://localhost:8080/api/v1/manageorder/add', formDataWithFile, {
+            // // Append non-file fields to FormData
+            // for (const key in formData) {
+            //     formDataWithFile.append(key, formData[key]);
+            // }
+            // console.log(formDataWithFile.keys());
+            // let rec = null
+            // for (let [key, value] of formDataWithFile.entries()) {
+            //     console.log(key, value); // This will print each key-value pair inside the FormData
+            //     rec = {...rec, [key] : value}
+            // }
+            console.log("REC?>>>>", formData);
+            
+            // Send form data including  image to backend
+            const response = await axios.post('http://localhost:8080/api/v1/manageorder/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
     
-            console.log('Item added successfully:', response.data);
+            console.log('Item added successfull');
             alert('Item added successfully!');
         } catch (error) {
             console.error('Error adding item:', error);

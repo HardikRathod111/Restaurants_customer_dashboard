@@ -1,16 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import axios from 'axios';
 
 const ParcelLogin = () => {
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
 
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);  // Update the username state
+  };
+
+  // Handler for phone input change
+  const handlePhoneChange = (e) => {
+    setPhone(e.target.value);  // Update the phone state
+  };
+
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+  
+    const userData = {
+      name: username,
+      phone: phone,
+    };
+  
+    try {
+      // Send the request to the correct backend URL
+      const response = await axios.post('http://localhost:8080/api/v1/user/userSignup', userData);
+      console.log(response.data); 
+      navigate('/parcel-homepage');
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
+  };
   const navigate = useNavigate();
 
-const handleLogin = () => {
-
-  navigate('/parcel-homepage');
-
-}
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#0d0d23]">
       <div className="w-[375px] px-6 py-8  shadow-md">
@@ -36,6 +60,8 @@ const handleLogin = () => {
             <input
               type="text"
               id="username"
+              value={username}
+              onChange={handleUsernameChange}
               placeholder="Marcus George"
               className="w-full px-4 py-2 bg-[#26264d] text-white rounded-lg border border-gray-700 focus:ring-2 focus:ring-orange-500"
             />
@@ -51,6 +77,8 @@ const handleLogin = () => {
             <input
               type="text"
               id="phone"
+              value={phone}
+              onChange={handlePhoneChange}
               placeholder="91+"
               className="w-full px-4 py-2 bg-[#26264d] text-white rounded-lg border border-gray-700 focus:ring-2 focus:ring-orange-500"
             />
@@ -60,7 +88,7 @@ const handleLogin = () => {
           <button
             type="submit"
             className="w-full bg-orange-500 text-white py-2 bg-[#CA923D] rounded-lg text-lg font-medium hover:bg-orange-600"
-            onClick={handleLogin}
+            onClick={handleSignUp}
           >
             Next
           </button>

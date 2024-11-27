@@ -14,6 +14,7 @@ app.use(cors({
     origin: 'http://localhost:3000' // Replace with your frontend URL
 }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -23,6 +24,7 @@ app.use("/api/v1/adminedit",require('./routes/adminedit'));
 app.use("/api/v1/resturant",require('./routes/createnewresturantroutes'));
 app.use("/api/v1/manageorder", require('./routes/manageOrder'));
 app.use('/api/v1/category', require('./routes/categoryRoutes'));
+app.use('/api/v1/user', require('./routes/CustomerRoutes'));
 
 
 app.get('/',(req,res)=>{

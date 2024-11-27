@@ -62,6 +62,7 @@ const Managemenu = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);       // To handle loading state
     const [error, setError] = useState(null);  // Initial empty state for categories
+    const [addCat, setAddCat] = useState(false);
     const fetchCategories = async () => {
         try {
             const response = await fetch('http://localhost:8080/api/v1/category/getCategory');
@@ -82,8 +83,15 @@ const Managemenu = () => {
 
     // Use useEffect to call fetchCategories when the component is mounted
     useEffect(() => {
-        fetchCategories();
-    }, []);  
+        if(addCat){
+            fetchCategories();
+            setAddCat(false);
+        }
+    }, [addCat]); 
+
+    useEffect(() => {
+            fetchCategories(); 
+    }, []); 
 
     const [selectedCategory, setSelectedCategory] = useState('All');
     
@@ -183,7 +191,7 @@ const Managemenu = () => {
             isVeg: true,
         },
         {
-            id: 1,
+            id: 10,
             name: 'Ham Cheeseburger',
             description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
             price: '₹290',
@@ -231,6 +239,8 @@ const Managemenu = () => {
             }
     
             const result = await response.json();
+            setAddCat(true);
+            handleClosePopup();
             console.log('Category added successfully:', result);
         } catch (error) {
             console.error('Error adding category:', error);
