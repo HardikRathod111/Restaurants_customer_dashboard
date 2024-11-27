@@ -28,6 +28,7 @@ import ParcelCategory from './Customer/ParcelCategory';
 import TrendingMenu from './Customer/TrendingMenu';
 import AddMoreItems from './Customer/AddMoreItems';
 import PaymentMethod from './Customer/Paymentmethod';
+import Kitchen from './Admin/Dashboard/Kitchen';
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
             <Route path='/managemenu' element={<Managemenu/>}/>
         <Route path='/additems' element={<AddItems/>}/>
         <Route path='/edititem' element={<Edititem/>}/>
+          {/* //customer files */}
         <Route path='/itemsdetails' element={<ItemDetails/>}/>
         <Route path='/cartpage' element={<CartPage/>}/>
          <Route path='/parcel-login' element={<ParcelLogin/>}/>
@@ -61,6 +63,7 @@ function App() {
         <Route path='/trending-menu' element={<TrendingMenu/>}/>
         <Route path='/addmoreitems' element={<AddMoreItems/>}/>
         <Route path='/paymentmethod' element={<PaymentMethod/>}/>
+        <Route path='/kitchen' element={<Kitchen/>}/>
 
         {/* Protected routes (Only accessible if authenticated) */}
         <Route path="/onsiteorder" element={isAuthenticated ? <OnsiteOrder /> : <Navigate to="/login" />} />

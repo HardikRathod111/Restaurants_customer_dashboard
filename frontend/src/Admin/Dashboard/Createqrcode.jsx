@@ -102,6 +102,9 @@ const Createqrcode = () => {
                         <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                             Onsite Order
                         </a>
+                         <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                        Kitchen
+                        </a>
                     </div>
                 )}
             </div>
@@ -211,6 +214,9 @@ const Createqrcode = () => {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
+                       <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                        Kitchen
+                        </a>
                   </div>
               )}
           </div>

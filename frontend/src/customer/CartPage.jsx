@@ -62,9 +62,7 @@ export default function CartPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-slate-800 rounded-md flex items-center justify-center">
-                  <span role="img" aria-label="burger" className="text-xl">
-                    🍔
-                  </span>
+                   <img src="./assets/images/5.png"/>
                 </div>
                 <div>
                   <h3 className="font-medium">{item.name}</h3>
@@ -73,14 +71,14 @@ export default function CartPage() {
                       onClick={() => decrementQuantity(item.id)}
                       className="text-black bg-yellow-600 p-1 rounded-full flex items-center justify-center"
                     >
-                      <Minus className="w-4 h-4" />
+                      <Minus className="w-3 h-3" />
                     </button>
                     <span className="font-medium">{item.quantity}</span>
                     <button
                       onClick={() => incrementQuantity(item.id)}
                       className="text-black bg-yellow-600 p-1 rounded-full flex items-center justify-center"
                     >
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-3 h-3" />
                     </button>
                   </div>
                 </div>

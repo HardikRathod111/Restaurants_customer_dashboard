@@ -270,6 +270,9 @@ const Managemenu = () => {
                         <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                             Onsite Order
                         </a>
+                         <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                        Kitchen
+                        </a>
                     </div>
                 )}
             </div>
@@ -379,6 +382,9 @@ const Managemenu = () => {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
+                       <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                        Kitchen
+                        </a>
                   </div>
               )}
           </div>
@@ -559,7 +565,7 @@ const Managemenu = () => {
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                                     <button
                                         onClick={() => handleCategoryClick('All')}
-                                        className="bg-gray-800 text-white p-2 rounded-md flex items-center bg-yellow-600"
+                                        className=" text-white p-2 rounded-md flex items-center bg-yellow-600"
                                     >
                                         <img
                                             src="./assets/images/pngwing 14-2.png"
