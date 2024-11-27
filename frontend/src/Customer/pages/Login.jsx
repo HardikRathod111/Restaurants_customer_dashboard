@@ -59,7 +59,7 @@ const handleLogin = () => {
           {/* Next Button */}
           <button
             type="submit"
-            className="w-full bg-orange-500 text-white py-2 bg-[#CA923D] rounded-lg text-lg font-medium hover:bg-orange-600"
+            className="w-full bg-yellow-600 text-white py-2 rounded-lg text-lg font-medium hover:bg-orange-600"
             onClick={handleLogin}
           >
             Next

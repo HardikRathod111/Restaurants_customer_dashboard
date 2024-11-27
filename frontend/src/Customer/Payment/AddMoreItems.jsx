@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { FaChevronLeft, FaCaretRight } from 'react-icons/fa';
-import { IoClose } from 'react-icons/io5';
 import { IoIosCloseCircle } from "react-icons/io";
 // Remove the Next.js import
 // import { useRouter } from 'next/navigation';
