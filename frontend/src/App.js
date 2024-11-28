@@ -57,7 +57,7 @@ function App() {
         <Route path='/additems' element={<AddItems/>}/>
         <Route path='/edititem' element={<Edititem/>}/>
           {/* //customer files */}
-        <Route path='/itemsdetails' element={<ItemDetails/>}/>
+        <Route path='/itemsdetails/:id' element={<ItemDetails/>}/>
         <Route path='/cartpage' element={<CartPage/>}/>
          <Route path='/parcel-login' element={<ParcelLogin/>}/>
         <Route path='/parcel-homepage' element={<ParcelHomePage/>}/>

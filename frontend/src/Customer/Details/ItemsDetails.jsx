@@ -1,62 +1,164 @@
 'use client'
-
-import { useState } from 'react'
+import React from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronLeft, Minus, Plus } from 'lucide-react'
-import { useNavigate } from 'react-router-dom' // Import useNavigate for redirection
+import { useNavigate, useParams } from 'react-router-dom' // Import useNavigate for redirection
+import axios from 'axios'
 
 export default function ItemDetails() {
-  const [quantity, setQuantity] = useState(2)
+  const [quantity, setQuantity] = useState(1);
   const [isVeg, setIsVeg] = useState(true)
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
+  const [selectedOptions, setSelectedOptions] = useState({}); // Store selected options for each step
 
   const navigate = useNavigate() // Initialize navigate
+  const { id } = useParams(); // Extract the item ID from the URL
+  const [item, setItem] = useState(null);
 
-  // Customization options
-  const crustOptions = [
-    { name: "100% Wheat Crust", selected: true },
-    { name: "Cheese Burst", selected: false },
-    { name: "Fresh Pan Pizza", selected: false },
-    { name: "Classic Hand Tossed", selected: false },
-  ]
-
-  const sizeOptions = [
-    { name: "Medium", price: 200, selected: true },
-    { name: "Large", price: 700, selected: false },
-    { name: "Regular", price: 300, selected: false },
-  ]
-
-  const toppingsOptions = [
-    { name: "Jalapeno", price: 200, selected: true },
-    { name: "Onion", price: 700, selected: false },
-    { name: "Black Olive", price: 300, selected: false },
-  ]
-
-  const increment = () => setQuantity(prevQuantity => prevQuantity + 1)
-  const decrement = () => setQuantity(prevQuantity => (prevQuantity > 0 ? prevQuantity - 1 : 0))
   const toggleVeg = () => setIsVeg(prevIsVeg => !prevIsVeg)
 
-  const handleContinue = () => {
-    if (currentStep < 3) {
-      setCurrentStep(prevStep => prevStep + 1)
-    } else {
-      setIsCustomizationOpen(false)
-      setCurrentStep(1)
-    }
-  }
-
   const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep(prevStep => prevStep - 1)
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleContinue = () => {
+    if (currentStep < item.customizations.length) {
+      setCurrentStep(currentStep + 1);
     } else {
-      setIsCustomizationOpen(false)
+      // When all steps are complete, you can handle the final action (like adding to cart)
+      alert('Customization complete, click on add to cart!');
+      setIsCustomizationOpen(false);
     }
+  };
+
+
+  const handleOptionSelect = (step, option) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [step]: option,
+    }));
+  };
+
+  const [error, setError] = useState(null); // To handle errors
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchItemDetails = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/v1/manageorder/items/${id}`
+        ); // Replace with your API URL
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        setItem(data); // Store the fetched item data in state
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false); // Stop the loading spinner
+      }
+    };
+    fetchItemDetails();
+  }, [id]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setError('No token found. Please login.');
+          return;
+        }
+
+        const response = await axios.get('http://localhost:8080/api/v1/user/getUser', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(response.data);  // Store user data
+      } catch (error) {
+        setError('Error fetching user data');
+        console.error(error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+  
+
+  const handleAddToCart = async () => {
+    const customizations = Object.values(selectedOptions);
+    const cartData = {
+      userId: user._id, // Assuming the user is logged in and you have their ID
+      items: [
+        {
+          itemId: item._id,
+          itemName:item.itemName, // Item ID from the item data
+          quantity,
+          customizations: customizations.map(option => ({
+            title: option.name,  // Mapping 'name' to 'title'
+            option: option.detail, // Mapping 'detail' to 'option'
+            extraRate: option.extraRate, // Keep extraRate as it is
+          })), // Selected customizations
+        },
+      ],
+    };
+    console.log("cart", cartData)
+  
+    try {
+      const response = await axios.post('http://localhost:8080/api/v1/addCart/createOrder', cartData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (response.status === 201) {
+        console.log('Order placed successfully:', response.data);
+  
+        // Navigate to cart page
+        navigate('/cartpage');}
+        else {
+        const error = await response.json();
+        console.error("Error placing order:", error);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
+  
+
+  const increment = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  const decrement = () => {
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1);
+    }
+  };
+
+
+  // Handle loading state
+  if (loading) {
+    return <p>Loading item details...</p>;
   }
 
-  const handleAddToCart = () => {
-    // Redirect to the cart page
-    navigate('/cartpage')
+  // Handle error state
+  if (error) {
+    return <p className="text-red-500">Failed to load item details: {error}</p>;
   }
+
+  // Render item details only if `item` is available
+  if (!item) {
+    return <p className="text-gray-500">No item details available.</p>;
+  }
+
+  // Split the ingredients string into an array
+  const ingredientsList = item.ingredients.split(',').map(ingredient => ingredient.trim());
 
   return (
     <div className="min-h-screen bg-gray-900 text-white w-[375px] mx-auto relative">
@@ -68,7 +170,7 @@ export default function ItemDetails() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center p-4">
-        <img src="./assets/images/pngwing 14-2.png" alt="Maharaja Burger" className="w-60 h-30 ml-0" />
+        <img src={item.imageUrl} alt={item.itemName} className="w-60 h-30 ml-0" />
 
         {/* Veg/Non-Veg Toggle and Customization */}
         <div className="w-full flex items-center justify-between mb-3">
@@ -96,9 +198,9 @@ export default function ItemDetails() {
 
         {/* Title and Price */}
         <div className="w-full">
-          <h2 className="text-xl font-bold mb-2">Maharaja Burger</h2>
+          <h2 className="text-xl font-bold mb-2">{item.itemName}</h2>
           <div className="flex items-center justify-between mb-4">
-            <span className="text-xl font-bold text-yellow-400">₹ 500</span>
+            <span className="text-xl font-bold text-yellow-400">{item.price}</span>
             <div className="flex items-center space-x-2">
               <button
                 className="w-8 h-8 flex items-center justify-center bg-yellow-600 rounded-full text-white hover:bg-yellow-700"
@@ -123,9 +225,7 @@ export default function ItemDetails() {
         <div className="w-full mb-4">
           <h3 className="font-semibold mb-1 text-sm">Details</h3>
           <p className="text-xs text-gray-400">
-            Ginger Garlic Noodle Soup With Bok Choy is nutritious, comforting,
-            and flu-fighting twenty-minute recipe made with vegetarian
-            broth, noodles, mushrooms, and baby bok choy.
+            {item.spiceLevel}, {item.ingredients}
           </p>
         </div>
 
@@ -133,16 +233,15 @@ export default function ItemDetails() {
         <div className="w-full">
           <h3 className="font-semibold mb-1 text-sm">Ingredients</h3>
           <ul className="text-xs text-gray-400 list-disc list-inside">
-            <li>1. Tbsp olive oil</li>
-            <li>2. Shallots (diced)</li>
-            <li>3. Bunch green onion (chopped, green & white divided)</li>
-            <li>4. Cloves garlic (minced)</li>
+          {ingredientsList.map((ingredient, index) => (
+          <li key={index}>{ingredient}</li>
+          ))}
           </ul>
         </div>
       </div>
 
       {/* Add to Cart Button */}
-      <div className="bottom-0 left-0 right-0 p-4 bg-gray-800">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-gray-800">
         <button
           className="w-full py-1 rounded-lg bg-yellow-600 hover:bg-yellow-700"
           onClick={handleAddToCart} // Attach handler
@@ -159,58 +258,27 @@ export default function ItemDetails() {
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-medium text-base">
-                    {currentStep === 1 ? 'Crust' : currentStep === 2 ? 'Size' : 'Toppings'}
-                  </h3>
+                  {item.customizations[currentStep - 1]?.title}                  </h3>
                   <span className="text-sm text-gray-400">Step {currentStep}/3</span>
                 </div>
                 <div className="space-y-3">
-                  {currentStep === 1 && crustOptions.map((option) => (
+                {item.customizations[currentStep - 1]?.options.map((option, index) => (
                     <label
-                      key={option.name}
-                      className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg cursor-pointer border border-gray-700"
-                    >
-                      <span className="text-sm">{option.name}</span>
+                    key={option.name}
+                    className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg cursor-pointer border border-gray-700"
+                  >
+                    <span className="text-sm">{option.name}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm">₹ {option.extraRate}</span>
                       <input
                         type="radio"
-                        name="crust"
-                        defaultChecked={option.selected}
+                        name={`option-${currentStep}`}
+                        checked={selectedOptions[currentStep]?.name === option.name}
+                        onChange={() => handleOptionSelect(currentStep, option)}
                         className="w-4 h-4 accent-yellow-600"
                       />
-                    </label>
-                  ))}
-                  {currentStep === 2 && sizeOptions.map((option) => (
-                    <label
-                      key={option.name}
-                      className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg cursor-pointer border border-gray-700"
-                    >
-                      <span className="text-sm">{option.name}</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm">₹ {option.price}</span>
-                        <input
-                          type="radio"
-                          name="size"
-                          defaultChecked={option.selected}
-                          className="w-4 h-4 accent-yellow-600"
-                        />
-                      </div>
-                    </label>
-                  ))}
-                  {currentStep === 3 && toppingsOptions.map((option) => (
-                    <label
-                      key={option.name}
-                      className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg cursor-pointer border border-gray-700"
-                    >
-                      <span className="text-sm">{option.name}</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm">+ ₹ {option.price}</span>
-                        <input
-                          type="radio"
-                          name="toppings"
-                          defaultChecked={option.selected}
-                          className="w-4 h-4 accent-yellow-600"
-                        />
-                      </div>
-                    </label>
+                    </div>
+                  </label>
                   ))}
                 </div>
               </div>
@@ -225,8 +293,7 @@ export default function ItemDetails() {
                   onClick={handleContinue}
                   className="flex-1 py-3 bg-yellow-600 rounded-lg text-sm font-medium hover:bg-yellow-700"
                 >
-                  {currentStep === 3 ? 'Add To Cart' : 'Continue'}
-                </button>
+                {currentStep === item.customizations.length ? 'Continue' : 'Continue'}                </button>
               </div>
             </div>
           </div>

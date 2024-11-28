@@ -5,6 +5,7 @@ import axios from 'axios';
 const ParcelLogin = () => {
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
+  const [error, setError] = useState("");
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);  // Update the username state
@@ -18,19 +19,25 @@ const ParcelLogin = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-  
+
     const userData = {
       name: username,
       phone: phone,
     };
-  
+
     try {
-      // Send the request to the correct backend URL
+      // Send signup request to backend
       const response = await axios.post('http://localhost:8080/api/v1/user/userSignup', userData);
-      console.log(response.data); 
+      console.log(response.data);  // Log the signup response
+
+      // Save JWT token in localStorage
+      localStorage.setItem('token', response.data.token);
+
+      // Redirect to homepage
       navigate('/parcel-homepage');
     } catch (error) {
       console.error('Error signing up:', error);
+      setError('Error signing up, please try again.');
     }
   };
   const navigate = useNavigate();

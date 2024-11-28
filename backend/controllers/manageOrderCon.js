@@ -37,9 +37,19 @@ const addItem = async (req, res) => {
     }
   };
   
-const createitemcontroller = async(req,res) => {
-    
-};
+const getItem = async(req , res) => {
+  const { id } = req.params;
+ 
+  try {
+    const item = await manageorder.findById(id); // Replace with your database logic
+    if (!item) {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+}
 
 
 const getAllItemCon = async(req,res) => {
@@ -63,5 +73,5 @@ const deleteitemscontroller = async(req,res) => {
     
 }
 
-module.exports = {createitemcontroller, getAllItemCon, getsingleitemscontroller, updataitemscontroller,deleteitemscontroller, addItem};
+module.exports = { getAllItemCon, getsingleitemscontroller, updataitemscontroller,deleteitemscontroller, addItem, getItem};
 

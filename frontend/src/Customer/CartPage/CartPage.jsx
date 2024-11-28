@@ -1,15 +1,34 @@
 "use client";
 
 import { FaChevronLeft, FaTrash, FaCaretRight } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Minus, Plus } from "lucide-react";
+import axios from "axios";
 
 export default function CartPage() {
-  const [items, setItems] = useState([
-    { id: 1, name: "Beef Burger", price: 500, quantity: 2 },
-    { id: 2, name: "Beef Burger", price: 500, quantity: 2 },
-  ]);
+  const [items, setItems] = useState([]); // Cart items
   const [cookingRequest, setCookingRequest] = useState("");
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(""); // Error state
+
+  useEffect(() => {
+    // Fetch the order details when the component mounts
+    const fetchOrderData = async () => {
+      try {
+        // Assuming the user ID is available via a global context or props
+        const userId = "someUserId"; // Replace with actual logic to get the user ID
+
+        const response = await axios.get(`http://localhost:8080/api/v1/addCart/getOrder/${userId}`);
+        if (response.status === 200) {
+          setItems(response.data.order.items || []); // Ensure items is always an array
+        }
+      } catch (error) {
+        console.error('Error fetching order:', error);
+      }
+    };
+
+    fetchOrderData();
+  }, []); // This effect runs once on component mount
 
   const incrementQuantity = (id) => {
     setItems((prevItems) =>
@@ -33,14 +52,18 @@ export default function CartPage() {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
-  const totalPrice = items.reduce(
+  const totalPrice = items?.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
-  );
+  ) || 0; // Default to 0 if items is undefined or empty
+
   const cgst = totalPrice * 0.025;
   const sgst = totalPrice * 0.025;
   const payableAmount = totalPrice + cgst + sgst;
+  
+  if (loading) return <p className="text-center mt-4">Loading...</p>;
 
+  if (error) return <p className="text-center mt-4 text-red-500">{error}</p>;
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col">
       {/* Header */}

@@ -6,7 +6,7 @@ const CustomizationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  selectionType: {
+  selection: {
     type: String,
     enum: ["Multiple Selection", "Single Selection"],
     required: true,
@@ -51,6 +51,18 @@ const ItemSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
     required: true, // Path to uploaded image
+  },
+  availability: {
+    type: String,
+    required: false, // Marked as not mandatory
+    enum: ['available', 'unavailable'], // Ensure it can only have these two values
+    default: 'available' // Default value
+  },
+  itemType: {
+    type: String,
+    required: true, // Ensure the type is always provided
+    enum: ['veg', 'nonveg'], // Allowed values
+    default: 'veg', // Default to 'veg'
   },
   customizations: [CustomizationSchema], // Embed customizations
 });

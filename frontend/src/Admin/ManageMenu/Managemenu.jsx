@@ -7,6 +7,7 @@ import BurgerEditDetailsBox from "./BurgerEditDetailsBox";
 import { useNavigate } from 'react-router-dom';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react';
+import axios from 'axios';
 
 
 const Managemenu = () => {
@@ -246,6 +247,32 @@ const Managemenu = () => {
             console.error('Error adding category:', error);
         }
     };
+
+    const [items, setItems] = useState([]); // State to hold items
+
+    useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/v1/manageorder/getAllItems');
+        console.log(response.data); // Log the response to verify the structure
+        // Assuming the items are at response.data directly
+        if (Array.isArray(response.data)) {
+          setItems(response.data);
+        } else if (response.data.items && Array.isArray(response.data.items)) {
+          setItems(response.data.items);
+        } else {
+          setError('No items found');
+        }
+      } catch (err) {
+        console.error('Error fetching items:', err);
+        setError('Error fetching items');
+      } finally {
+        setLoading(false);
+        }
+        };
+
+        fetchItems(); // Call the function to fetch items
+    }, []);
     
     return (
         <div className="flex min-h-screen bg-gray-900 text-white font-sans">
@@ -607,27 +634,28 @@ const Managemenu = () => {
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-                        {menuItems.map((item) => (
-                            <div key={item.id} className="bg-gray-800 w-full  rounded-lg p-4 text-gray-300 relative">
+                    {items.length > 0 ? (
+                        items.map((item, index) => (
+                            <div key={item._id} className="bg-gray-800 w-full  rounded-lg p-4 text-gray-300 relative">
                                 <div className='bg-gray-700 w-full h-36 flex items-center justify-center rounded-lg'>
-                                <img src={item.imageUrl} alt={item.name} className="w-40 ml-1 h-28  object-cover rounded-md mb-2" />
+                                <img src={item.imageUrl} alt={item.itemName} className="w-40 ml-1 h-28  object-cover rounded-md mb-2" />
                                 </div>
 
                                 {/* Discount Label */}
                                 {item.discount && (
                                     <div className="absolute top-0 left-2 bg-yellow-500 text-white text-sm px-1 py-1 rounded-md">
-                                        {item.discount}
+                                        {item.discount} %
                                     </div>
                                 )}
 
                                 <button
-                                    onClick={() => toggleDotsMenu(item.id)}
+                                    onClick={() => toggleDotsMenu(item._id)}
                                     className="absolute top-6 right-6 text-gray-400 hover:text-gray-200"
                                 >
                                     <FaEllipsisV />
                                 </button>
 
-                                {dotsMenuOpen === item.id && (
+                                {dotsMenuOpen === item._id && (
                                     <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28">
                                         <button
                                             onClick={handleOpenEdit}
@@ -795,8 +823,8 @@ const Managemenu = () => {
                                     </div>
                                 )}
 
-                                <h3 className="text-base font-semibold">{item.name}</h3>
-                                <p className="text-sm mt-1">{item.description}</p>
+                                <h3 className="text-base font-semibold">{item.itemName}</h3>
+                                <p className="text-sm mt-1">{item.spiceLevel}</p>
                                 <div className="mt-4 flex justify-between items-center">
                                     <span className="text-xl font-bold text-white-400">{item.price}</span>
                                     {/* Veg/Non-Veg Icon */}
@@ -810,7 +838,10 @@ const Managemenu = () => {
                                     </div>
                                 </div>
                             </div>
-                        ))} 
+                        ))
+                    ) : (
+                        <p className="text-gray-500 text-center">No items found</p>
+                    )}
                     </div>
                 </section>
             </main>

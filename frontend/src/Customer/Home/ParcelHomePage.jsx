@@ -278,7 +278,9 @@ const ParcelHomePage = () => {
                     </p>
                   </div>
                 </div>
-                <button className="bg-[#CA923D] text-xs text-white px-4 py-2 rounded-lg font-bold">
+                <button className="bg-[#CA923D] text-xs text-white px-4 py-2 rounded-lg font-bold"
+                        onClick={() => navigate(`/itemsdetails/${item._id}`)} // Pass the item's ID in the URL
+                >
                   Order Now
                 </button>
               </div>
