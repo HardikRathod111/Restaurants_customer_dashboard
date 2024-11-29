@@ -8,7 +8,7 @@ const CustomizationSchema = new mongoose.Schema({
   },
   selection: {
     type: String,
-    enum: ["Multiple Selection", "Single Selection"],
+    enum: ["multiple", "single"],
     required: true,
   },
   options: [

@@ -59,7 +59,7 @@ function App() {
           {/* //customer files */}
         <Route path='/itemsdetails/:id' element={<ItemDetails/>}/>
         <Route path='/cartpage' element={<CartPage/>}/>
-         <Route path='/parcel-login' element={<ParcelLogin/>}/>
+        <Route path='/parcel-login' element={<ParcelLogin/>}/>
         <Route path='/parcel-homepage' element={<ParcelHomePage/>}/>
         <Route path='/parcel-category' element={<ParcelCategory/>}/>
         <Route path='/trending-menu' element={<TrendingMenu/>}/>

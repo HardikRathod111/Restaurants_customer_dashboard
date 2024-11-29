@@ -4,31 +4,68 @@ import { FaChevronLeft, FaTrash, FaCaretRight } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import axios from "axios";
+import { useUser } from '../UserContext';
+import { IoIosCloseCircle } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
-export default function CartPage() {
+export default function CartPage({ cartItems }) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [items, setItems] = useState([]); // Cart items
   const [cookingRequest, setCookingRequest] = useState("");
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(""); // Loading state
   const [error, setError] = useState(""); // Error state
+  const { user } = useUser();
+  const Navigate = useNavigate();
+  const [selectedPayment, setSelectedPayment] = useState('Online');
+  const [isTimerPopupOpen, setIsTimerPopupOpen] = useState(false);
+
+
+  const togglePopup = () => {
+    setIsPopupOpen((prev) => !prev);
+  };
+
+  const handlePaymentSelection = (method) => {
+    setSelectedPayment(method);
+  };
+
+  const handlePayClick = () => {
+    if (selectedPayment === 'Cash') {
+      setIsPopupOpen(false);
+      setIsTimerPopupOpen(true);
+    } else {
+      // Navigate to the payment method page for online payment
+      // Use window.location for navigation instead of Next.js router
+      window.location.href = '/paymentmethod';
+    }
+  };
 
   useEffect(() => {
-    // Fetch the order details when the component mounts
-    const fetchOrderData = async () => {
-      try {
-        // Assuming the user ID is available via a global context or props
-        const userId = "someUserId"; // Replace with actual logic to get the user ID
 
-        const response = await axios.get(`http://localhost:8080/api/v1/addCart/getOrder/${userId}`);
+    console.log("useEffect", user);
+    
+    const fetchOrderData = async () => {
+      console.log("fetch");
+      
+      try {
+        setLoading(true); // Set loading to true when starting fetch
+        const response = await axios.get(`http://localhost:8080/api/v1/addCart/getOrder/${user._id}`);
+
+        console.log("API Response:", response)
+
         if (response.status === 200) {
-          setItems(response.data.order.items || []); // Ensure items is always an array
+          const fetchedItems = response.data.order || [];
+          setItems(fetchedItems);
         }
       } catch (error) {
-        console.error('Error fetching order:', error);
+        setError("Error fetching order. Please try again later.");
+        console.error("Error fetching order:", error);
+      } finally {
+        setLoading(false); // Set loading to false when done
       }
     };
 
-    fetchOrderData();
-  }, []); // This effect runs once on component mount
+    if (user?._id) fetchOrderData(); // Ensure user._id is available before making API call
+  }, []); // Fetch when the user context changes
 
   const incrementQuantity = (id) => {
     setItems((prevItems) =>
@@ -48,19 +85,25 @@ export default function CartPage() {
     );
   };
 
+  const handleNavigateHome = () => {
+    Navigate('/parcel-homepage');
+  }
+
   const removeItem = (id) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
-
-  const totalPrice = items?.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+  console.log("Cart Items Structure:", items);
+  const totalPrice = items.reduce(
+    (acc, item) => acc + item.itemId.price * item.quantity, // `item.price` and `item.quantity` exist
     0
-  ) || 0; // Default to 0 if items is undefined or empty
+  );// Default to 0 if items is undefined or empty
+  console.log(totalPrice);
+  
 
   const cgst = totalPrice * 0.025;
   const sgst = totalPrice * 0.025;
   const payableAmount = totalPrice + cgst + sgst;
-  
+
   if (loading) return <p className="text-center mt-4">Loading...</p>;
 
   if (error) return <p className="text-center mt-4 text-red-500">{error}</p>;
@@ -68,25 +111,31 @@ export default function CartPage() {
     <div className="min-h-screen bg-slate-950 text-white flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-slate-800">
-        <a href="/itemsdetails" className="p-2">
+        <a href="/parcel-homepage" className="p-2">
           <FaChevronLeft className="w-6 h-6" />
         </a>
         <h1 className="text-lg font-medium">Cart</h1>
-        <button className="text-sm text-yellow-500">+ Add Items</button>
+        <button className="text-sm text-yellow-500" onClick={handleNavigateHome}>+ Add Items</button>
       </div>
 
       {/* Cart Items */}
       <div className="flex-1 p-4 space-y-3 overflow-y-auto">
-        {items.map((item) => (
+      {items.length === 0 ? (
+          <p className="text-center mt-4">Your cart is empty.</p>
+        ) : (
+        items.map((item) => (
           <div
-            key={item.id}
+            key={item.itemId}
             className="bg-slate-900 border border-slate-800 p-3 rounded-lg"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-slate-800 rounded-md flex items-center justify-center">
                   <span role="img" aria-label="burger" className="text-xl">
-                    🍔
+                  <img
+                  src={`http://localhost:8080/${item.itemID}`}
+                  alt={item.itemId.itemName}
+                  />
                   </span>
                 </div>
                 <div>
@@ -110,7 +159,7 @@ export default function CartPage() {
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-green-500 font-medium">
-                  ₹ {item.price * item.quantity}
+                  ₹ {item.itemId.price * item.quantity}
                 </span>
                 <button
                   onClick={() => removeItem(item.id)}
@@ -121,8 +170,8 @@ export default function CartPage() {
               </div>
             </div>
           </div>
-        ))}
-
+        ))
+      )}
         {/* Cooking Request */}
              <div className="mt-10">
           <p className="text-sm text-white mb-2">
@@ -164,7 +213,7 @@ export default function CartPage() {
           <div className="text-sm text-slate-500">
             {items.length} Items Added
             <br />
-            <span className="text-white font-medium">₹ {totalPrice.toFixed(2)}</span>
+            <span className="text-white font-medium">₹ {payableAmount.toFixed(2)}</span>
           </div>
           <a href="/addmoreitems" className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 flex items-center rounded-md">
             Place Order
@@ -172,6 +221,84 @@ export default function CartPage() {
           </a>
         </div>
       </div>
+
+      {/* Popup */}
+      {isPopupOpen && (
+        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
+          <div className="bg-[#1A1B23] w-[300px] rounded-lg p-6">
+            {/* Popup Header */}
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-white">Select Payment</h3>
+              <button
+                className="text-gray-400 hover:text-white"
+                style={{ fontSize: '20px' }}
+                onClick={togglePopup}
+              >
+                <IoIosCloseCircle />
+              </button>
+            </div>
+
+            {/* Payment Options */}
+            <div className="flex justify-between items-center mb-6">
+              {/* Online Payment */}
+              <div
+                onClick={() => handlePaymentSelection('Online')}
+                className={`w-[120px] h-[120px] flex flex-col justify-center items-center rounded-lg cursor-pointer transition ${
+                  selectedPayment === 'Online'
+                    ? 'border-2 border-[#C68A15] bg-gray-800'
+                    : 'bg-gray-800 border border-transparent'
+                }`}
+              >
+                <div
+                  style={{ marginLeft: "75px" }}
+                  className={`w-4 h-4 rounded-full border-2 ${
+                    selectedPayment === 'Online'
+                      ? 'border-[#C68A15] bg-[#C68A15]'
+                      : 'border-gray-500'
+                  }`}
+                />
+                <img
+                  src="./assets/images/28.png"
+                  alt="Online"
+                  className="w-10 h-10 mb-2 mt-2"
+                />
+                <p className="text-sm text-white">Online</p>
+              </div>
+
+              {/* Cash Payment */}
+              <div
+                onClick={() => handlePaymentSelection('Cash')}
+                className={`w-[120px] h-[120px] flex flex-col justify-center items-center rounded-lg cursor-pointer transition ${
+                  selectedPayment === 'Cash'
+                    ? 'border-2 border-[#C68A15] bg-gray-800'
+                    : 'bg-gray-800 border border-transparent'
+                }`}
+              >
+                <div
+                  style={{ marginLeft: "75px" }}
+                  className={`w-4 h-4 rounded-full border-2 mt-2 ${
+                    selectedPayment === 'Cash'
+                      ? 'border-[#C68A15] bg-[#C68A15]'
+                      : 'border-gray-500'
+                  }`}
+                />
+                <img
+                  src="./assets/images/29.png"
+                  alt="Cash"
+                  className="w-10 h-10 mb-2 mt-2"
+                />
+                <p className="text-sm text-white">Cash</p>
+              </div>
+            </div>
+
+            {/* Pay Button */}
+            <button className="bg-[#C68A15] text-white py-2 w-full rounded-full text-sm font-medium" onClick={handlePayClick}>
+              Pay
+            </button>
+          </div>
+        </div>
+      )}
     </div>
+    
   );
 }

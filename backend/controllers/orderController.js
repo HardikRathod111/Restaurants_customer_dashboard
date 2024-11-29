@@ -58,35 +58,30 @@ const createOrder = async (req, res) => {
     await newOrder.save();
 
     res.status(201).json({ message: 'Order placed successfully', order: newOrder });
-    // navigate('/cartpage');
   } catch (error) {
     console.error('Error placing order:', error);
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
 
-const getOrder = async(req , res) => {
+const getOrder = async (req, res) => {
   try {
-    // Extract user ID from the request (assuming user authentication is implemented)
-    const userId = req.user?.id; // Replace this with your actual user identification logic
+    const {id} = req.params; 
+    const userId = id;// Extract ID from URL
 
-    // Fetch the latest order for the user
-    const order = await Order.findOne({ user: userId }).sort({ createdAt: -1 });
+    console.log("User ID received in getOrder:", userId);
+    const order = await Order.find({ userId });
 
-    // Handle cases where no order exists
     if (!order) {
       return res.status(404).json({ message: "No orders found for this user." });
     }
 
-    // Respond with the order details
-    res.status(200).json({
-      message: "Order fetched successfully.",
-      order,
-    });
+    res.status(200).json({ message: "Order fetched successfully.", order });
   } catch (error) {
     console.error("Error fetching order:", error);
-    res.status(500).json({ message: "An error occurred while fetching the order.", error });
+    res.status(500).json({ message: "Error fetching order.", error });
   }
-}
+};
+
 
 module.exports = { createOrder,getOrder };

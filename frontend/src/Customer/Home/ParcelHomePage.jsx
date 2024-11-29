@@ -91,6 +91,10 @@ const ParcelHomePage = () => {
     }
   };
 
+  const navigateCart = () => {
+    navigate('/cartpage');
+  }
+
   return (
     <div className="flex flex-col items-center bg-[#0B0F1F] min-h-screen text-white">
       {/* Header */}
@@ -126,7 +130,7 @@ const ParcelHomePage = () => {
           </button>
 
           {/* Cart Icon */}
-          <button>
+          <button onClick={navigateCart}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5 text-white"

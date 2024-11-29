@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdOutlineRestaurantMenu, MdOutlineQrCodeScanner,MdWindow, MdExpandMore } from 'react-icons/md';
 import { FaBoxOpen, FaClipboardList, FaSearch, FaHome} from 'react-icons/fa';
 import { IoMdLogOut } from 'react-icons/io';
@@ -18,38 +18,98 @@ const AddItems = () => {
     const navigate = useNavigate();
     const [selected, setSelected] = useState("Veg");
     const [showForm, setShowForm] = useState(false);
-    const [customizations, setCustomizations] = useState([]);
+    const [customizations, setCustomizations] = useState([{name:'', rate:'', detail:''}]);
     const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
     const location = useLocation();
     const category = location.state?.category
     const [steps, setSteps] = useState([
-        { title: '', name: '', detail: '', rate: '' },
+        { title: '',
+        selection:'',
+        options : [{name:'', detail:'', rate:'20'}] 
+        }
     ]);
-    const [formData, setFormData] = useState(
-        { title: '', }
-    );
     const addStep = () => {
-        setSteps([
-            ...steps,
-            { title: '', name: '', detail: '', rate: '' }, // Add an empty step
-        ]);
-    };
 
-
-    const handleChange = (e,index, key) => {
-        const { value } = e.target;
-        
         setSteps((prev) => {
-            const updatedFormData = [...prev]; // Create a copy of the array
-            updatedFormData[index][key] = value; // Update the specific field
-            return updatedFormData;
-        });
+                const updatedFormData = [...prev,  { title: '',
+                    selection:'',
+                    options : [{name:'', detail:'', rate:''}] 
+                    }]; //to Create a copy of the array
+                console.log("update", updatedFormData);
+                    
+                return updatedFormData;
+            });
+
     };
 
     
-    const isStepFilled = (step) => {
-        step.title.trim() && step.name.trim() && step.detail.trim() && step.rate.trim();
+    const addCustomization = (index) => {
+        const updatedFormData = [...steps];
+            updatedFormData[index].options = [...updatedFormData[index].options, {name:'', detail:'', rate:''}]// console.log("MAIN", updatedFormData);
+            
+            console.log("upfatr", updatedFormData);
+        setSteps(updatedFormData);
     };
+
+    const handleChange = (index, field, value) => {
+        setSteps((prevSteps) =>
+            prevSteps.map((step, i) =>
+                i === index ? { ...step, [field]: value } : step
+            )
+        );
+    };
+    
+    const handleStepCustomiseChange = (stepIndex, customiseIndex, field, value) => {
+        setSteps((prevSteps) =>
+            prevSteps.map((step, i) =>
+                i === stepIndex
+                    ? {
+                          ...step,
+                          options: step.options.map((customise, j) =>
+                              j === customiseIndex
+                                  ? { ...customise, [field]: value }
+                                  : customise
+                          )
+                      }
+                    : step
+            )
+        );
+    };
+    
+    const handleCustoChange = (e,index, key) => {
+        const { value } = e.target;
+        
+        setCustomizations((prev) => {
+            const updatedFormData = [...prev]; // Create a copy of the array
+            updatedFormData[index][key] = value; // Update the specific field
+            console.log("up", updatedFormData);
+            
+            return updatedFormData;
+        });
+
+        // setSteps((prev) => {
+        //     const updatedFormData = [...prev]; //to Create a copy of the array
+        //     console.log("update", updatedFormData[index]["options"]);
+            
+        //     updatedFormData[index]["options"] = customizations; // Update the specific field
+        //     console.log("step", updatedFormData);
+            
+        //     return updatedFormData;
+        // });
+    };
+    
+    // useEffect(()=>{
+    //     // setSteps((prev) => {
+    //     //         const updatedFormData = [...prev]; // Create a copy of the array
+    //     //         updatedFormData[index][key] = cus; // Update the specific field
+    //     //         console.log("step", updatedFormData);
+                
+    //     //         return updatedFormData;
+    //     //     });
+    // },[customizations])
+    // const isStepFilled = (step) => {
+    //     step.title.trim() && step.name.trim() && step.detail.trim() && step.rate.trim();
+    // };
 
     const [previewImage, setPreviewImage] = useState(null);
 
@@ -97,6 +157,10 @@ const AddItems = () => {
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent form from refreshing the page
 
+        // const allSteps = {
+            
+        // }
+
         const formData = {
             itemName: document.getElementById('item-name').value,
             ingredients: document.getElementById('item-ingredients').value,
@@ -105,6 +169,7 @@ const AddItems = () => {
             type: document.getElementById('item-type').value,
             spiceLevel: document.querySelector('input[name="spice-level"]:checked')?.value,
             customizations: steps, // Assuming `steps` holds customization data
+            itemType : selected
         };
     
         // Handle image file separately
@@ -563,7 +628,7 @@ const AddItems = () => {
                                     type="text"
                                     value={step.title}
                                     placeholder="Enter Customization Title"
-                                    onChange={(e) => handleChange(e, index,'title')}
+                                    onChange={(e) => handleChange(index, 'title', e.target.value)}
                                     style={{
                                         padding: "10px",
                                         marginRight: "10px",
@@ -579,14 +644,14 @@ const AddItems = () => {
                                     type="radio"
                                     name={`selection-${index}`}
                                     value="single"
-                                    onChange={(e) => handleChange(e, index, 'selection')}
+                                    onChange={(e) => handleChange(index, 'selection', e.target.value)}
                                 /> Single Selection
                                 </label>
                                 <label style={{ color: "#fff" }}>
                                     <input type="radio"
                                         name={`selection-${index}`}
                                         value="multiple"
-                                        onChange={(e) => handleChange(e, index, 'selection')}
+                                        onChange={(e) => handleChange(index, 'selection', e.target.value)}
                                     /> Multiple Selection
                                 </label>
                                     <button className='ml-80'
@@ -597,12 +662,98 @@ const AddItems = () => {
                             padding: "10px 20px",
                             borderRadius: "5px",
                         }}
-                        onClick={addStep}
-                        disabled={!steps.every(isStepFilled)}
+                        onClick={() =>addCustomization(index)}
+                        // disabled={!steps.every(isStepFilled)}
                     >
                         + Add Customization
                     </button>
 
+                        {
+                            step.options.length > 0 && step.options.map((cust, customiseIndex) =>{
+                                return(
+                                    <>
+                                        <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                                    <div style={{ marginRight: "10px", width: "30%" }}>
+                                        <label htmlFor={`customization-name-${index}`} style={{ display: "block", color: "#fff", marginBottom: "5px" }}>
+                                            Customization Name
+                                        </label>
+                                        <input
+                                            id={`customization-name-${index}`}
+                                            type="text"
+                                            value={cust.name}
+                                            placeholder="Enter Customization Name"
+                                            onChange={(e) =>
+                                                handleStepCustomiseChange(index, customiseIndex, 'name', e.target.value)
+                                            }
+                                            style={{
+                                                padding: "10px",
+                                                width: "100%",
+                                                borderRadius: "5px",
+                                                backgroundColor: "#343644",
+                                                color: "#fff",
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{ marginRight: "10px", width: "30%" }}>
+                                        <label htmlFor={`customization-detail-${index}`} style={{ display: "block", color: "#fff", marginBottom: "5px" }}>
+                                            Customization Detail
+                                        </label>
+                                        <input
+                                            id={`customization-detail-${index}`}
+                                            type="text"
+                                            value={cust.detail}
+                                            placeholder="Enter Customization Detail"
+                                            onChange={(e) =>
+                                                handleStepCustomiseChange(index, customiseIndex, 'detail', e.target.value)
+                                            }
+                                            style={{
+                                                padding: "10px",
+                                                width: "100%",
+                                                borderRadius: "5px",
+                                                backgroundColor: "#343644",
+                                                color: "#fff",
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{ marginRight: "10px", width: "30%" }}>
+                                        <label htmlFor={`extra-rate-${index}`} style={{ display: "block", color: "#fff", marginBottom: "5px" }}>
+                                            Extra Rate
+                                        </label>
+                                        <input
+                                            id={`extra-rate-${index}`}
+                                            type="text"
+                                            value={cust.rate}
+                                            placeholder="Enter Extra Rate"
+                                            onChange={(e) =>
+                                                handleStepCustomiseChange(index, customiseIndex, 'rate', e.target.value)
+                                            }
+                                            style={{
+                                                padding: "10px",
+                                                width: "100%",
+                                                borderRadius: "5px",
+                                                backgroundColor: "#343644",
+                                                color: "#fff",
+                                            }}
+                                        />
+                                    </div>
+                                        
+                                    <button className='ml-3 mt-8'
+                                        style={{
+                                            backgroundColor: "red",
+                                            color: "white",
+                                            borderRadius: "5px",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        🗑
+                                    </button>
+                                </div>
+                                    </>
+                                )
+
+                            })
+                        }
+{/* 
                                 <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
                                     <div style={{ marginRight: "10px", width: "30%" }}>
                                         <label htmlFor={`customization-name-${index}`} style={{ display: "block", color: "#fff", marginBottom: "5px" }}>
@@ -743,7 +894,7 @@ const AddItems = () => {
                                     >
                                         🗑
                                     </button>
-                                </div>                               
+                                </div>                                */}
                             </div>
                         ))}
                     </div>
@@ -753,7 +904,7 @@ const AddItems = () => {
     <button
         className="border border-yellow-600 bg-yellow-600 rounded-md px-3 py-3"
         type='button'
-        onClick={addStep}
+        onClick={() =>addStep()}
     >
         Add Step {steps.length + 1} {/* Display the next step number */}
     </button>

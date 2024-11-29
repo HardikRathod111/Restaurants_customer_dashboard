@@ -1,9 +1,10 @@
 'use client'
 import React from 'react'
-import { useEffect, useState } from 'react'
+import {createContext, useContext, useEffect, useState } from 'react'
 import { ChevronLeft, Minus, Plus } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom' // Import useNavigate for redirection
 import axios from 'axios'
+import { useUser } from '../UserContext';
 
 export default function ItemDetails() {
   const [quantity, setQuantity] = useState(1);
@@ -62,7 +63,7 @@ export default function ItemDetails() {
     };
     fetchItemDetails();
   }, [id]);
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useUser();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -97,7 +98,7 @@ export default function ItemDetails() {
       items: [
         {
           itemId: item._id,
-          itemName:item.itemName, // Item ID from the item data
+          item:item.itemName, // Item ID from the item data
           quantity,
           customizations: customizations.map(option => ({
             title: option.name,  // Mapping 'name' to 'title'

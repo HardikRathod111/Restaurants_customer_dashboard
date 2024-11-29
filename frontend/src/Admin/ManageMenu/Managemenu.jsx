@@ -828,11 +828,11 @@ const Managemenu = () => {
                                 <div className="mt-4 flex justify-between items-center">
                                     <span className="text-xl font-bold text-white-400">{item.price}</span>
                                     {/* Veg/Non-Veg Icon */}
-                                    <div className={`relative mb-2 border-dotted border-2 rounded-full p-3 ${item.isVeg ? 'border-green-500' : 'border-red-500'}`}>
+                                    <div className={`relative mb-2 border-dotted border-2 rounded-full p-3 ${item.itemType == 'veg' ? 'border-green-500' : 'border-red-500'}`}>
                                         <span
-                                            className={`absolute bottom-3 right-3 transform translate-x-1/2 translate-y-1/2 rounded-full ${item.isVeg ? 'bg-green-500' : 'bg-red-500'}`}
+                                            className={`absolute bottom-3 right-3 transform translate-x-1/2 translate-y-1/2 rounded-full ${item.itemType == 'veg' ? 'bg-green-500' : 'bg-red-500'}`}
                                             style={{ width: '15px', height: '15px' }} // Icon size
-                                            title={item.isVeg ? 'Veg' : 'Non-Veg'}
+                                            title={item.itemType == 'veg' ? 'Veg' : 'Non-Veg'}
                                         />
                                         {/* Your other content here inside the border */}
                                     </div>

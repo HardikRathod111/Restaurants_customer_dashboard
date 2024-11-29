@@ -23,6 +23,7 @@ import {
   PieController
 } from 'chart.js'
 import { Bell, ChevronDown, CreditCard, Grid, LogOut, Search, ShoppingBag, BookOpen, Tag, X } from 'lucide-react'
+import axios from 'axios';
 
 ChartJS.register(
   CategoryScale, 
@@ -110,6 +111,27 @@ const handleLogout = () => {
   // Redirect user to login or home page after logout
   navigate("/login"); // Or any other page
 };
+const [adminData, setAdminData] = useState({});
+  useEffect(() => {
+    // Fetch admin data
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+  .then(response => {
+    if (response.data.success) {
+      setAdminData(response.data.data); // Set admin data to the state
+    }
+  })
+  .catch(error => {
+      console.error("Error fetching admin data:", error);
+  });
+  }, []);
+
     const toggleManageOrder = () => {
         setManageOrderOpen(!manageOrderOpen);
     };
@@ -144,6 +166,20 @@ const handleLogout = () => {
   const handlenavigateprofile = ()=> {
     navigate('/Profilepage');
   }
+  const [restaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/v1/resturant/getRestaurant');  // Ensure this matches the backend route
+        setRestaurants(response.data);  // Save the fetched data into the state
+      } catch (error) {
+        console.error('Error fetching restaurants', error);
+      }
+    };
+
+    fetchRestaurants();
+  }, []); 
 
   return (
    <div className="flex bg-gray-900 text-white font-sans">
@@ -226,7 +262,7 @@ const handleLogout = () => {
         <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
           Welcome Back 👋 
           <br />
-          <span className="text-gray-400 font-normal text-lg">Jd's Restro</span>
+          <span className="text-gray-400 font-normal text-lg">{restaurants.restaurantName}</span>
         </h2>
 
         <button id="toggleButton" className='lg:hidden' onClick={() => setOpen(true)}>
@@ -369,7 +405,7 @@ const handleLogout = () => {
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
-              <span className="text-white sm:hidden lg:flex">Musabbir Hossain</span>
+              <span className="text-white sm:hidden lg:flex">{adminData.firstname} {adminData.lastname}</span>
               <svg
                 className="w-4 h-4 text-gray-300"
                 fill="currentColor"
