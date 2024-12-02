@@ -142,6 +142,10 @@ export default function ItemDetails() {
     }
   };
 
+  const navigateHome = () => {
+    navigate('/parcel-homepage');
+  }
+
 
   // Handle loading state
   if (loading) {
@@ -165,13 +169,13 @@ export default function ItemDetails() {
     <div className="min-h-screen bg-gray-900 text-white w-[375px] mx-auto relative">
       {/* Header */}
       <div className="flex items-center p-4 bg-gray-800">
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="w-6 h-6" onClick={navigateHome}/>
         <h1 className="text-lg font-semibold mx-auto">Item Details</h1>
       </div>
 
       {/* Main Content */}
       <div className="flex flex-col items-center p-4">
-        <img src={item.imageUrl} alt={item.itemName} className="w-60 h-30 ml-0" />
+        <img src={`http://localhost:8080/${item.imageUrl}`}alt={item.itemName} className="w-60 h-30 ml-0" />
 
         {/* Veg/Non-Veg Toggle and Customization */}
         <div className="w-full flex items-center justify-between mb-3">
@@ -180,12 +184,9 @@ export default function ItemDetails() {
               className={`relative border-dotted border-2 rounded-full p-3 ${
                 isVeg ? 'border-green-500' : 'border-red-500'
               }`}
-              onClick={toggleVeg}
             >
               <span
-                className={`absolute bottom-3 right-3 transform translate-x-1/2 translate-y-1/2 w-[15px] h-[15px] rounded-full ${
-                  isVeg ? 'bg-green-500' : 'bg-red-500'
-                }`}
+                className={`absolute bottom-3 right-3 transform translate-x-1/2 translate-y-1/2 w-[15px] h-[15px] rounded-full ${item.itemType == 'veg' ? 'bg-green-500' : 'bg-red-500'}`}
               />
             </button>
             <button
@@ -259,7 +260,8 @@ export default function ItemDetails() {
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-medium text-base">
-                  {item.customizations[currentStep - 1]?.title}                  </h3>
+                  {item.customizations[currentStep - 1]?.title}
+                  </h3>
                   <span className="text-sm text-gray-400">Step {currentStep}/3</span>
                 </div>
                 <div className="space-y-3">

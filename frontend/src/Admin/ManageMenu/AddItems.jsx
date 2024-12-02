@@ -86,30 +86,7 @@ const AddItems = () => {
             
             return updatedFormData;
         });
-
-        // setSteps((prev) => {
-        //     const updatedFormData = [...prev]; //to Create a copy of the array
-        //     console.log("update", updatedFormData[index]["options"]);
-            
-        //     updatedFormData[index]["options"] = customizations; // Update the specific field
-        //     console.log("step", updatedFormData);
-            
-        //     return updatedFormData;
-        // });
     };
-    
-    // useEffect(()=>{
-    //     // setSteps((prev) => {
-    //     //         const updatedFormData = [...prev]; // Create a copy of the array
-    //     //         updatedFormData[index][key] = cus; // Update the specific field
-    //     //         console.log("step", updatedFormData);
-                
-    //     //         return updatedFormData;
-    //     //     });
-    // },[customizations])
-    // const isStepFilled = (step) => {
-    //     step.title.trim() && step.name.trim() && step.detail.trim() && step.rate.trim();
-    // };
 
     const [previewImage, setPreviewImage] = useState(null);
 
@@ -157,10 +134,6 @@ const AddItems = () => {
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent form from refreshing the page
 
-        // const allSteps = {
-            
-        // }
-
         const formData = {
             itemName: document.getElementById('item-name').value,
             ingredients: document.getElementById('item-ingredients').value,
@@ -168,9 +141,11 @@ const AddItems = () => {
             discount: document.getElementById('item-discount').value,
             type: document.getElementById('item-type').value,
             spiceLevel: document.querySelector('input[name="spice-level"]:checked')?.value,
+            itemType : selected,
             customizations: steps, // Assuming `steps` holds customization data
-            itemType : selected
+            
         };
+        
     
         // Handle image file separately
         const fileInput = document.getElementById('file-upload');
@@ -181,20 +156,6 @@ const AddItems = () => {
         }
     
         try {
-            // Handle form submission
-            // const formDataWithFile = new FormData();
-            
-            
-            // // Append non-file fields to FormData
-            // for (const key in formData) {
-            //     formDataWithFile.append(key, formData[key]);
-            // }
-            // console.log(formDataWithFile.keys());
-            // let rec = null
-            // for (let [key, value] of formDataWithFile.entries()) {
-            //     console.log(key, value); // This will print each key-value pair inside the FormData
-            //     rec = {...rec, [key] : value}
-            // }
             console.log("REC?>>>>", formData);
             
             // Send form data including  image to backend
@@ -203,9 +164,10 @@ const AddItems = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-    
+            
             console.log('Item added successfull');
             alert('Item added successfully!');
+            navigate('/managemenu');
         } catch (error) {
             console.error('Error adding item:', error);
             alert('Failed to add item. Please try again.');
@@ -448,27 +410,27 @@ const AddItems = () => {
                     <h2 className="text-xl font-semibold text-white">Add Items {category}</h2>
                     <div className="flex items-center space-x-3">
                         <button
-                            onClick={() => setSelected("Veg")}
+                            onClick={() => setSelected("veg")}
                             className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "Veg"
                                 ? "border-green-500 text-green-500"
                                 : "border-gray-500 text-gray-500"
                                 }`}
                         >
                             <span
-                                className={`w-3 h-3 rounded-lg ${selected === "Veg" ? "bg-green-500" : "bg-gray-500"
+                                className={`w-3 h-3 rounded-lg ${selected === "veg" ? "bg-green-500" : "bg-gray-500"
                                     }`}
                             ></span>
                             <span className="ml-2">Veg</span>
                         </button>
                         <button
-                            onClick={() => setSelected("Non Veg")}
+                            onClick={() => setSelected("nonveg")}
                             className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "Non Veg"
                                 ? "border-red-500 text-red-500"
                                 : "border-gray-500 text-gray-500"
                                 }`}
                         >
                             <span
-                                className={`w-3 h-3 rounded-full ${selected === "Non Veg" ? "bg-red-500" : "bg-gray-500"
+                                className={`w-3 h-3 rounded-full ${selected === "nonveg" ? "bg-red-500" : "bg-gray-500"
                                     }`}
                             ></span>
                             <span className="ml-2">Non Veg</span>

@@ -82,6 +82,22 @@ const getOrder = async (req, res) => {
     res.status(500).json({ message: "Error fetching order.", error });
   }
 };
+const deleteItem = async (req, res) => {
+  const { orderId } = req.params;
+  console.log(orderId);
+  
 
+  try {
+    const result = await Order.deleteOne({ _id: orderId });
 
-module.exports = { createOrder,getOrder };
+    if (result.deletedCount > 0) {
+      res.status(200).json({ success: true, message: "Order deleted successfully." });
+    } else {
+      res.status(404).json({ success: false, message: "Order not found." });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error.", error });
+  }
+}
+
+module.exports = { createOrder,getOrder, deleteItem };

@@ -171,7 +171,7 @@ const ParcelHomePage = () => {
                 <div className="flex items-center space-x-4">
                   <div className="bg-[#2D303E] w-16 h-16 rounded-lg flex items-center justify-center">
                     <img
-                      src={result.imageUrl}
+                      src={`http://localhost:8080/${result.imageUrl}`}
                       alt={result.itemName}
                       className="object-cover w-full h-full rounded-lg"
                     />
@@ -184,7 +184,9 @@ const ParcelHomePage = () => {
                     </p>
                   </div>
                 </div>
-                <button className="bg-[#CA923D] text-xs text-white px-4 py-2 rounded-lg font-bold">
+                <button className="bg-[#CA923D] text-xs text-white px-4 py-2 rounded-lg font-bold"
+                        onClick={() => navigate(`/itemsdetails/${result._id}`)} // Pass the item's ID in the URL
+                >
                   Order Now
                 </button>
               </div>
@@ -269,7 +271,7 @@ const ParcelHomePage = () => {
                 <div className="flex items-center space-x-4">
                   <div className="bg-[#2D303E] w-16 h-16 rounded-lg flex items-center justify-center">
                     <img
-                      src={item.imageUrl}
+                      src={`http://localhost:8080/${item.imageUrl}`}
                       alt={item.itemName}
                       className="object-cover w-full h-full rounded-lg"
                     />
