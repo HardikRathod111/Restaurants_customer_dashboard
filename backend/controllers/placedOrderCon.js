@@ -38,6 +38,16 @@ const createOrder = async (req, res) => {
         });
       }
   };
+
+  const getAllOrders = async (req, res) => {
+    try {
+      const orders = await PlacedOrder.find(); // Fetch all orders from the database
+      res.status(200).json(orders); // Send orders to the frontend
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching orders", error: error.message });
+    }
+  };
+  
   
 
-module.exports = { createOrder };
+module.exports = { createOrder, getAllOrders };

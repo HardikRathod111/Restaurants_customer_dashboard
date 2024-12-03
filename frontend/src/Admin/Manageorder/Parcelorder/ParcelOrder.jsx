@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdDashboard, MdOutlineRestaurantMenu, MdWindow, MdOutlineQrCodeScanner, MdLogout, MdExpandMore } from 'react-icons/md';
 import { FaBoxOpen, FaClipboardList, FaSearch,FaEye,FaHome  } from 'react-icons/fa';
 import { IoMdCheckmarkCircle,IoMdLogOut, IoMdCloseCircle } from 'react-icons/io';
@@ -21,9 +21,15 @@ const ParcelOrder = () => {
     const [open, setOpen] = useState(false)
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
     const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
+
     const togglePaymentHistory = () => {
       setPaymentHistoryOpen(!PaymentHistoryOpen);
     };    
+
+    // const handleRowClick = (order) => {
+    //   setSelectedOrder(order); // Set the selected order
+    //   setShowModal(true);      // Open the modal
+    // };
 
     const handleViewBill = (order) => {
         setSelectedOrder(order); // Set the selected order details
@@ -52,13 +58,32 @@ const ParcelOrder = () => {
     };
     
 
-    const orders = [
-        { id: 1, customer: "Davis Lipshutz", item: "Rice", date: "10/02/2024", time: "3:45 PM", phone: "98568 86214", quantity: "500 G.M", total: "₹ 500" },
-        { id: 2, customer: "Marcus Dorwart", item: "Biryani Rice", date: "11/02/2024", time: "2:45 PM", phone: "96668 22214", quantity: "100 G.M", total: "₹ 500" },
-    ];
+    // const orders = [
+    //     { id: 1, customer: "Davis Lipshutz", item: "Rice", date: "10/02/2024", time: "3:45 PM", phone: "98568 86214", quantity: "500 G.M", total: "₹ 500" },
+    //     { id: 2, customer: "Marcus Dorwart", item: "Biryani Rice", date: "11/02/2024", time: "2:45 PM", phone: "96668 22214", quantity: "100 G.M", total: "₹ 500" },
+    // ];
     const handlenavigateprofile = ()=> {
       navigate('/Profilepage');
     }
+
+    const [orders, setOrders] = useState([]);
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/order/getPlacedOrder");
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        console.log(data); // Logs the data
+        setOrders(data); // Set the data in the state
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    
+    useEffect(() => {
+      fetchOrders();
+    }, []);
+
+
     return (
       <div className="flex min-h-screen bg-gray-900 text-white font-sans">
         {/* Sidebar */}
@@ -182,7 +207,7 @@ const ParcelOrder = () => {
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </a>
-           <div>
+            <div>
               {/* Manage Order Dropdown */}
               <button
                   className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -233,8 +258,8 @@ const ParcelOrder = () => {
         </nav>
         <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
           <IoMdLogOut className="mr-2" />
-           Log Out
-         </button>
+          Log Out
+        </button>
 
                 </div>
               </div>
@@ -332,25 +357,51 @@ const ParcelOrder = () => {
                                       </tr>
                                   </thead>
                                   <tbody>
-                                      {orders.map(order => (
-                                          <tr key={order.id} className="border-b border-gray-700 hover:bg-gray-700">
-                                              <td className="px-6 py-4">{order.customer}</td>
-                                              <td className="px-6 py-4">{order.item}</td>
-                                              <td className="px-6 py-4">{order.date}</td>
-                                              <td className="px-6 py-4">{order.time}</td>
-                                              <td className="px-6 py-4">{order.phone}</td>
-                                              <td className="px-6 py-4">{order.quantity}</td>
-                                              <td className="px-6 py-4 text-green-500">{order.total}</td>
-                                              <td className="px-6 py-4 flex space-x-2">
-                                                  <button className="bg-green-500 p-2 rounded text-white">
-                                                      <IoMdCheckmarkCircle />
-                                                  </button>
-                                                  <button className="bg-red-500 p-2 rounded text-white">
-                                                      <IoMdCloseCircle />
-                                                  </button>
-                                              </td>
-                                          </tr>
-                                      ))}
+                                  {orders.map((order) => (
+                                      <tr
+                                        key={order._id}
+                                        className="border-b border-gray-700 hover:bg-gray-700"
+                                      >
+                                        {/* Customer Name */}
+                                        <td className="px-6 py-4">{order.userId.name}</td>
+
+                                        {/* Items Name - Combine all item names */}
+                                        <td className="px-6 py-4">
+                                          {order.items.map((item) => item.itemId.itemName).join(", ")}
+                                        </td>
+
+                                        {/* Order Date */}
+                                        <td className="px-6 py-4">
+                                          {new Date(order.orderDate).toLocaleDateString()}
+                                        </td>
+
+                                        {/* Order Time */}
+                                        <td className="px-6 py-4">
+                                          {new Date(order.orderDate).toLocaleTimeString()}
+                                        </td>
+
+                                        {/* Customer Phone */}
+                                        <td className="px-6 py-4">{order.userId.phone}</td>
+
+                                        {/* Total Quantity */}
+                                        <td className="px-6 py-4">
+                                          {order.items.reduce((sum, item) => sum + item.quantity, 0)}
+                                        </td>
+
+                                        {/* Total Bill */}
+                                        <td className="px-6 py-4">{order.totalAmount}</td>
+
+                                        {/* Status */}
+                                        <td className="px-6 py-4 flex space-x-2">
+                                            <button className="bg-green-500 p-2 rounded text-white">
+                                                <IoMdCheckmarkCircle />
+                                            </button>
+                                            <button className="bg-red-500 p-2 rounded text-white">
+                                                <IoMdCloseCircle />
+                                            </button>
+                                        </td>
+                                      </tr>
+                                    ))}
                                   </tbody>
                               </table>
                           </div>
@@ -372,24 +423,49 @@ const ParcelOrder = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {orders.map(order => (
-                                    <tr key={order.id} className="border-b border-gray-700 hover:bg-gray-700">
-                                        <td className="px-6 py-4">{order.customer}</td>
-                                        <td className="px-6 py-4">{order.item}</td>
-                                        <td className="px-6 py-4">{order.date}</td>
-                                        <td className="px-6 py-4">{order.time}</td>
-                                        <td className="px-6 py-4">{order.phone}</td>
-                                        <td className="px-6 py-4">{order.quantity}</td>
-                                        <td className="px-6 py-4 text-green-500">{order.total}</td>
-                                        <td className="px-6 py-4 flex space-x-2">
-                                            <button className=" p-2 rounded text-white" style={{backgroundColor:'#5678E9'}}
-                                            onClick={() => handleViewBill(order)}>
-                                            <FaEye />
-                                            </button>
-                                          
+                            {orders.map((order) => (
+                                      <tr
+                                        key={order._id}
+                                        className="border-b border-gray-700 hover:bg-gray-700"
+                                      >
+                                        {/* Customer Name */}
+                                        <td className="px-6 py-4">{order.userId.name}</td>
+
+                                        {/* Items Name - Combine all item names */}
+                                        <td className="px-6 py-4">
+                                          {order.items.map((item) => item.itemId.itemName).join(", ")}
                                         </td>
-                                    </tr>
-                                ))}
+
+                                        {/* Order Date */}
+                                        <td className="px-6 py-4">
+                                          {new Date(order.orderDate).toLocaleDateString()}
+                                        </td>
+
+                                        {/* Order Time */}
+                                        <td className="px-6 py-4">
+                                          {new Date(order.orderDate).toLocaleTimeString()}
+                                        </td>
+
+                                        {/* Customer Phone */}
+                                        <td className="px-6 py-4">{order.userId.phone}</td>
+
+                                        {/* Total Quantity */}
+                                        <td className="px-6 py-4">
+                                          {order.items.reduce((sum, item) => sum + item.quantity, 0)}
+                                        </td>
+
+                                        {/* Total Bill */}
+                                        <td className="px-6 py-4">{order.totalAmount}</td>
+
+                                        {/* Status */}
+                                        <td className="px-6 py-4 flex space-x-2">
+                                          <button className=" p-2 rounded text-white" style={{backgroundColor:'#5678E9'}}
+                                          onClick={() => handleViewBill(order)}>
+                                          <FaEye />
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>
@@ -411,23 +487,48 @@ const ParcelOrder = () => {
                               </tr>
                           </thead>
                           <tbody>
-                              {orders.map(order => (
-                                  <tr key={order.id} className="border-b border-gray-700 hover:bg-gray-700">
-                                      <td className="px-6 py-4">{order.customer}</td>
-                                      <td className="px-6 py-4">{order.item}</td>
-                                      <td className="px-6 py-4">{order.date}</td>
-                                      <td className="px-6 py-4">{order.time}</td>
-                                      <td className="px-6 py-4">{order.phone}</td>
-                                      <td className="px-6 py-4">{order.quantity}</td>
-                                      <td className="px-6 py-4 text-green-500">{order.total}</td>
-                                      <td className="px-6 py-4 flex space-x-2">
-                                          <button className=" p-2 rounded text-white" style={{backgroundColor:'#5678E9'}}
-                                            onClick={() => handleViewBill(order)}>
-                                          <FaEye />
-                                          </button>
-                                        
-                                      </td>
-                                  </tr>
+                          {orders.map((order) => (
+                                <tr
+                                  key={order._id}
+                                  className="border-b border-gray-700 hover:bg-gray-700"
+                                >
+                                  {/* Customer Name */}
+                                  <td className="px-6 py-4">{order.userId.name}</td>
+
+                                  {/* Items Name - Combine all item names */}
+                                  <td className="px-6 py-4">
+                                    {order.items.map((item) => item.itemId.itemName).join(", ")}
+                                  </td>
+
+                                  {/* Order Date */}
+                                  <td className="px-6 py-4">
+                                    {new Date(order.orderDate).toLocaleDateString()}
+                                  </td>
+
+                                  {/* Order Time */}
+                                  <td className="px-6 py-4">
+                                    {new Date(order.orderDate).toLocaleTimeString()}
+                                  </td>
+
+                                  {/* Customer Phone */}
+                                  <td className="px-6 py-4">{order.userId.phone}</td>
+
+                                  {/* Total Quantity */}
+                                  <td className="px-6 py-4">
+                                    {order.items.reduce((sum, item) => sum + item.quantity, 0)}
+                                  </td>
+
+                                  {/* Total Bill */}
+                                  <td className="px-6 py-4">{order.totalAmount}</td>
+
+                                  {/* Status */}
+                                  <td className="px-6 py-4 flex space-x-2">
+                                    <button className=" p-2 rounded text-white" style={{backgroundColor:'#5678E9'}}
+                                    onClick={() => handleViewBill(order)}>
+                                    <FaEye />
+                                    </button>
+                                  </td>
+                                </tr>
                               ))}
                           </tbody>
                       </table>
@@ -436,7 +537,7 @@ const ParcelOrder = () => {
                   </div>
 
                   {/* Modal for viewing bill */}
-               {showModal && (
+              {showModal && selectedOrder && (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
     <div className="bg-[#252836] text-white p-6 rounded-lg max-w-sm
     
@@ -452,16 +553,20 @@ const ParcelOrder = () => {
       {/* Bill Details Section */}
       <div className="mt-4 text-sm">
         <div className="flex justify-between mb-2">
-          <p><strong>Bill No:</strong> GRT1715</p>
-          <p><strong>Date:</strong> 24/01/2024</p>
+          <p><strong>Bill No:</strong>GRTHR{orders.findIndex(order => order._id === selectedOrder._id) !== -1 
+          ? orders.findIndex(order => order._id === selectedOrder._id) + 1 
+          : "N/A"}</p>
+          <p><strong>Date:</strong> {" "}
+          {new Date(selectedOrder.orderDate).toLocaleDateString()}</p>
         </div>
         <div className="flex justify-between mb-2">
-          <p><strong>Time:</strong> 7:00 PM</p>
-          <p><strong>Customer:</strong> 98266 66655</p>
+          <p><strong>Time:</strong> {" "}
+          {new Date(selectedOrder.orderDate).toLocaleTimeString()}</p>
+          <p><strong>Customer:</strong> {selectedOrder.userId.phone}</p>
         </div>
         <div className="flex justify-between mb-2">
-          <p><strong>Name:</strong> Chance Geidt</p>
-          <p><strong>Payment:</strong> <span className="text-green-500">Online</span></p>
+          <p><strong>Name:</strong> {selectedOrder.userId.name}</p>
+          <p><strong>Payment:</strong> <span className="text-green-500">{selectedOrder.paymentMethod}</span></p>
         </div>
       </div>
 
@@ -476,51 +581,15 @@ const ParcelOrder = () => {
 
         {/* Table Content */}
         <div className="text-sm">
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Jeera Rice</p>
-            <p className="min-w-[60px]">2</p>
-            <p className="min-w-[80px] text-right">290.00</p>
+        {selectedOrder.items.map((item, index) => (
+          <div key={index} className="flex justify-between mb-1">
+            <p className="min-w-[150px]">{item.itemId.itemName}</p>
+            <p className="min-w-[60px]">{item.quantity}</p>
+            <p className="min-w-[80px] text-right">
+              {item.totalPrice.toFixed(2)}
+            </p>
           </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Veg Manhwa So</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">119.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Dal Tadka</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">215.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Butter Tandoor</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">45.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Garlic Naan</p>
-            <p className="min-w-[60px]">5</p>
-            <p className="min-w-[80px] text-right">300.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Veg Sweet Corn</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">119.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Plain Papad</p>
-            <p className="min-w-[60px]">2</p>
-            <p className="min-w-[80px] text-right">160.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Baked Veg With</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">270.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Biryani Rice</p>
-            <p className="min-w-[60px]">2</p>
-            <p className="min-w-[80px] text-right">315.00</p>
-          </div>
+        ))}
         </div>
       </div>
 
@@ -528,15 +597,15 @@ const ParcelOrder = () => {
       <div className="mt-4 text-sm">
         <div className="flex justify-between mb-1 font-semibold">
           <p>Total Amount</p>
-          <p>₹ 1315.00</p>
+          <p> {selectedOrder.totalAmount.toFixed(2)}</p>
         </div>
         <div className="flex justify-between mb-1">
           <p>SGST 2.5%</p>
-          <p>₹ 32.88</p>
+          <p>₹ {(selectedOrder.totalAmount * 0.025).toFixed(2)}</p>
         </div>
         <div className="flex justify-between mb-1">
           <p>CGST 2.5%</p>
-          <p>₹ 32.88</p>
+          <p>₹ {(selectedOrder.totalAmount * 0.025).toFixed(2)}</p>
         </div>
       </div>
 
@@ -544,7 +613,7 @@ const ParcelOrder = () => {
       <div className="mt-4 border-t border-gray-700 pt-2 text-sm font-semibold">
         <div className="flex justify-between">
           <p>Grand Total Amount</p>
-          <p>₹ 1381.00</p>
+          <p>₹ {(selectedOrder.totalAmount + selectedOrder.totalAmount * 0.05).toFixed(2)}</p>
         </div>
       </div>
     </div>

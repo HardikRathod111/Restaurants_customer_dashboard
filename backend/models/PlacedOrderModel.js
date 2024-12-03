@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
       },
       items: [
         {
-          itemId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "MenuItem" },
+          itemId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Item" },
           quantity: { type: Number, required: true },
           totalPrice: { type: Number, required: true },
           customizations: [{ type: String }],
@@ -34,6 +34,20 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
+});
+
+orderSchema.pre(/^find/, function (next) {
+  this.populate([
+    {
+      path: "items.itemId", // Populate itemId in the items array
+      model: "Item",        // Reference the Item model
+    },
+    {
+      path: "userId",       // Populate userId
+      model: "User",        // Reference the User model
+    }
+  ]);
+  next();
 });
 
 module.exports = mongoose.model('PlacedOrder', orderSchema);
