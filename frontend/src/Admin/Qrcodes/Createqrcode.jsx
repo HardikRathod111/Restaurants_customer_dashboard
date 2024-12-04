@@ -1,61 +1,41 @@
 import React, { useState } from 'react';
 import { 
-  FaQrcode, FaHome, FaList, FaMoneyBillWave, FaSignOutAlt, FaEllipsisV, 
-  FaBoxOpen, FaUser, FaSearch, FaClipboardList 
+  FaHome, FaBoxOpen, FaSearch, FaClipboardList 
 } from 'react-icons/fa';
-import { MdWindow, MdAddBox , MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore } from 'react-icons/md';
+import { MdWindow, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore } from 'react-icons/md';
 import { IoMdLogOut } from 'react-icons/io';
-import { IoColorFilter } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
-import { QRCodeCanvas } from 'qrcode.react'; // Import QRCodeCanvas from qrcode.react
-import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
+import {QRCodeSVG} from 'qrcode.react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const Createqrcode = () => {
-  const [activeLink, setActiveLink] = useState('');
+  const location = useLocation();
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
   const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('request');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(null); // Fixed state for dropdown menu
 
-  const [link, setLink] = useState('');
-  const [qrName, setQrName] = useState('');
-  const [category, setCategory] = useState('Food & Drink');
-  const [additionalText, setAdditionalText] = useState('');
-  
-  // Color states
-  const [chooseColor, setChooseColor] = useState("#FFFFFF");
-  const [frameColor, setFrameColor] = useState("#FFFFFF");
-  const [qrColor, setQRColor] = useState("#FFFFFF");
+  const [qrCodeData, setQrCodeData] = useState(location.state?.qrCode || {}); // Access passed QR code data
+  const [category, setCategory] = useState(qrCodeData.contentCategory || 'Food & Drink');
+  const [link, setLink] =  useState(qrCodeData.link || '');
+  const [additionalText, setAdditionalText] =useState(qrCodeData.additionalText || '');
+  const [chooseColor, setChooseColor] = useState(qrCodeData.chooseColor || '#000000');
+  const [frameColor, setFrameColor] = useState(qrCodeData.frameColor || '#000000');
+  const [qrColor, setQRColor] =  useState(qrCodeData.qrColor || '#000000');
+  const [contentCategory, setContentCategory] = useState('Food & Drink'); // State for content category
+  const [qrName, setQRName] =  useState(qrCodeData.qrName || ''); // State for QR Name
+
+  const isEditing = Boolean(qrCodeData);
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
   const togglePaymentHistory = () => setPaymentHistoryOpen(!PaymentHistoryOpen);
-
   const navigate = useNavigate();
-    
   const [open, setOpen] = useState(false)
 
-  const handleLinkClick = (linkName) => {
-    setActiveLink(linkName);
-  };
-
-  const toggledropdown = (tableNumber) => {
-    setDropdownOpen(dropdownOpen === tableNumber ? null : tableNumber); // Updated dropdown toggle
-  };
-
-  const toggleCounterDropdown = (counterNumber) => {
-  setDropdownOpen(dropdownOpen === counterNumber ? null : counterNumber); // Toggle dropdown for the current table or counter
-  };
-
-//   const closeModal = () => {
-//     setShowModal(false); // Close the modal
-//     setSelectedOrder(null); // Reset selected order
-// };
-
-    const getTabLabel = () => {
+  const getTabLabel = () => {
     switch (activeTab) {
       case 'request':
         return 'Table';
@@ -69,6 +49,30 @@ const Createqrcode = () => {
   const handlenavigateprofile = ()=> {
     navigate('/Profilepage');
   }
+
+  const handleSubmit = async () => {
+    const qrData = { link, qrName, additionalText, chooseColor, frameColor, qrColor, contentCategory };
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/qrCode/createQrCode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(qrData),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        alert('QR Code created successfully!');
+        console.log(data);
+      } else {
+        console.error('Server error:', response.statusText);
+        alert('Failed to create QR Code.');
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      alert('Network error. Please check the backend connection.');
+    }
+  };
+  
 
   return (
     <div className="flex bg-gray-900 text-white font-sans">
@@ -193,7 +197,7 @@ const Createqrcode = () => {
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </a>
-           <div>
+          <div>
               {/* Manage Order Dropdown */}
               <button
                   className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -244,8 +248,8 @@ const Createqrcode = () => {
         </nav>
         <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
           <IoMdLogOut className="mr-2" />
-           Log Out
-         </button>
+            Log Out
+        </button>
 
                 </div>
               </div>
@@ -329,7 +333,9 @@ const Createqrcode = () => {
             <input
               type="text"
               className="bg-gray-700 p-3 rounded w-full text-gray-200 placeholder-gray-400"
-              placeholder="https://www.musthavemenus.com/category/restaurant-menu.html"
+              placeholder="https://www.example.com"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
             />
           </div>
 
@@ -341,11 +347,14 @@ const Createqrcode = () => {
                 type="text"
                 className="bg-gray-700 p-3 rounded w-full text-gray-200 placeholder-gray-400"
                 placeholder="Food & Drink"
+                value={qrName}
+                onChange={(e) => setQRName(e.target.value)}
               />
             </div>
             <div className="w-1/2">
               <label className="block text-sm mb-1">Select Content Category</label>
-              <select className="bg-gray-700 p-3 rounded w-full text-gray-200">
+              <select className="bg-gray-700 p-3 rounded w-full text-gray-200"  value={contentCategory}
+                onChange={(e) => setContentCategory(e.target.value)} >
                 <option>Food & Drink</option>
                 <option>Other</option>
               </select>
@@ -354,7 +363,7 @@ const Createqrcode = () => {
         </div>
 
         {/* Additional Text and Colors */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-4 gap-4 mb-6">
               <div>
                 <label className="block text-sm mb-1">Additional Text</label>
                 <input
@@ -407,21 +416,6 @@ const Createqrcode = () => {
                 </div>
               </div>
             </div>
-
-            {/* Display QR Code */}
-            {link && (
-              <div className="flex justify-center mb-6">
-                <QRCodeCanvas
-                  value={link}
-                  size={256}
-                  fgColor={qrColor}
-                  bgColor={chooseColor}
-                  level="H"
-                  style={{ borderRadius: '10px', padding: '10px', border: `4px solid ${frameColor}` }}
-                />
-              </div>
-            )}
-
              {/* Thematic Icons Section */}
         <div className="grid grid-cols-3 gap-1  mb-6">
           <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
@@ -459,13 +453,14 @@ const Createqrcode = () => {
 
         {/* Download Button */}
         <div className=" justify-center">
-            <div className="bg-[#2B2F3F] rounded-lg w-[250px] h-[200px] ml-[290px] p-1 flex justify-center items-center">
+          <div className="bg-[#2B2F3F] relative rounded-lg w-[250px] h-[200px] ml-[290px] p-1 flex justify-center items-center">
             <span className="text-xl">
-              <img src='./assets/images/qrcode_undefined_undefined_2.png' alt='logo' className='w-96'/>
+              <img src='./assets/images/qrcode_undefined_undefined_2.png' alt='logo' className='w-96' />
+              <QRCodeSVG className='absolute top-10 left-[90px] w-[75px]'  value={link}/>
             </span>
           </div>
-          <button className="bg-[#A870FF] text-white px-6 py-2 mt-5 ml-[340px] rounded-lg font-semibold shadow-md hover:bg-[#9142FF]">
-            Download QR
+          <button className="bg-[#A870FF] text-white px-6 py-2 mt-5 ml-[340px] rounded-lg font-semibold shadow-md hover:bg-[#9142FF]"  onClick={handleSubmit}>
+          {isEditing ? 'Update QR Code' : 'Create QR Code'}
           </button>
         </div>  
           </div>

@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
-  FaQrcode, FaHome, FaList, FaMoneyBillWave, FaSignOutAlt, FaEllipsisV, 
-  FaBoxOpen, FaUser, FaSearch, FaClipboardList 
+  FaEllipsisV, 
+  FaBoxOpen, FaSearch, FaClipboardList 
 } from 'react-icons/fa';
 import { MdWindow, MdAddBox , MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore } from 'react-icons/md';
 import { IoMdLogOut } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
+import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
+import axios from 'axios';
+import { QRCodeSVG } from 'qrcode.react';
+
 
 function QrCode() {
   const [activeLink, setActiveLink] = useState('');
@@ -16,8 +19,6 @@ function QrCode() {
   const [activeTab, setActiveTab] = useState('request');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null); // Fixed state for dropdown menu
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
   const togglePaymentHistory = () => setPaymentHistoryOpen(!PaymentHistoryOpen);
@@ -50,6 +51,46 @@ function QrCode() {
   const handlenavigateprofile = ()=> {
     navigate('/Profilepage');
   }
+  const [selectedQrCode, setSelectedQrCode] = useState(null);
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this QR code?");
+    if (!confirmDelete) return;
+  
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/qrCode/deleteQrCode/${id}`, {
+        method: 'DELETE',
+      });
+  
+      if (response.ok) {
+        alert('QR Code deleted successfully!');
+      } else {
+        alert('Failed to delete QR Code');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Network error. Please try again later.');
+    }
+  };
+  const handleEditClick = (qrCode) => {
+    setSelectedQrCode(qrCode);
+    navigate('/createqrcode', { state: { qrCode } }); // Pass data using the state
+  };
+
+  const [qrCodes, setQrCodes] = useState([]);
+
+  useEffect(() => {
+      const fetchQrCodes = async () => {
+          try {
+              const response = await axios.get('http://localhost:8080/api/v1/qrCode/getAllQrCodes');
+              setQrCodes(response.data);
+          } catch (error) {
+              console.error('Error fetching QR Codes:', error);
+          }
+      };
+
+      fetchQrCodes();
+  }, []);
 
   return (
     <div className="flex min-h-screen bg-gray-900 text-white font-sans">
@@ -303,53 +344,60 @@ function QrCode() {
             <div className="relative bg-gray-800 rounded-lg p-5 w-full">
               <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-semibold text-white">QR Codes</h1>
-               <a href='/createqrcode' className="bg-yellow-600 hover:bg-yellow-700 white font-semibold py-2 px-6 rounded-lg shadow-md flex items-center">
-                   <MdAddBox className="text-white mr-2" />
-                   Create QR Code
-                 </a>
+                <a href='/createqrcode' className="bg-yellow-600 hover:bg-yellow-700 white font-semibold py-2 px-6 rounded-lg shadow-md flex items-center">
+                    <MdAddBox className="text-white mr-2" />
+                    Create QR Code
+                </a>
               </div>
 
               <div className="grid grid-cols-3 xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-6 w-full">
-                {[1, 2, 3, 4, 5, 6].map((tableNumber) => (
-                  <div key={tableNumber} className="bg-gray-700 rounded-lg  flex h-[250px] flex-col items-center relative w-full">
-                    
-                    {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
-                    <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
-                      <h2 className="text-lg font-semibold text-white">{`Table No - ${tableNumber}`}</h2>
-                      <div
-                        className="text-gray-400 cursor-pointer"
-                        onClick={() => toggledropdown(tableNumber)}
-                      >
-                        <FaEllipsisV />
-                      </div>
-                    </div>
+  {qrCodes && qrCodes.length > 0 ? (
+    qrCodes.map((qrCode) => (
+      <div key={qrCode._id} className="bg-gray-700 rounded-lg flex h-[250px] flex-col items-center relative w-full">
+        {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
+        <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
+          <h2 className="text-lg font-semibold text-white">{`Table No - ${qrCode.qrName}`}</h2>
+          <div
+            className="text-gray-400 cursor-pointer"
+            onClick={() => toggledropdown(qrCode._id)}
+            aria-label={`More options for table ${qrCode.qrName}`}
+          >
+            <FaEllipsisV />
+          </div>
+        </div>
 
-                    {/* Dropdown Menu */}
-                    {dropdownOpen === tableNumber && (
-                      <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28">
-                        <a href='/createqrcode'
-                          className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
-                          onClick={() => alert(`Editing Table ${tableNumber}`)}
-                        >
-                          Edit
-                        </a>
-                        <a href='/deleteprompt'
-                          className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
-                          onClick={() => alert(`Deleting Table ${tableNumber}`)}
-                        >
-                          Delete
-                        </a>
-                      </div>
-                    )}
+        {/* Dropdown Menu */}
+        {dropdownOpen === qrCode._id && (
+          <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28 z-10">
+            <a
+              href='/createqrcode'
+              className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
+              onClick={() => handleEditClick(qrCode)}
+            >
+              Edit
+            </a>
+            <a
+              href='/deleteprompt'
+              className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
+              onClick={() => handleDelete(qrCode._id)}
+            >
+              Delete
+            </a>
+          </div>
+        )}
 
-                    {/* QR Code Box with Full Width Dark Background */}
-                    <div className="bg-gray-900 rounded-lg w-44 h-40 mt-6 flex justify-center items-center">
-                      <img src="./assets/images/Group 1000006213.png" alt={`QR Code for Table ${tableNumber}`} className="w-[120px] h-auto max-w-xs mx-auto"/>
-                    </div>
+        {/* QR Code Box with Full Width Dark Background */}
+        <div className="bg-gray-900 relative rounded-lg w-44 h-40 mt-6 flex justify-center items-center">
+          
+          <QRCodeSVG className='absolute top-4 left-[40px] w-[100px]'  value={qrCode.link}/>
+        </div>
+      </div>
+    ))
+  ) : (
+    <p>No QR Codes available</p> // Fallback message if no qrCodes are found
+  )}
+</div>
 
-                  </div>
-                ))}
-              </div>
             </div>
           </section>
         )}
@@ -387,7 +435,7 @@ function QrCode() {
                 >
                   Edit
                 </a>
-                <a href='/deleteprompt'
+                <a 
                   className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
                   onClick={() => alert(`Deleting Table ${counterNumber}`)}
                 >
