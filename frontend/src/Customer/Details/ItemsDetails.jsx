@@ -14,6 +14,7 @@ export default function ItemDetails() {
   const [currentStep, setCurrentStep] = useState(1)
   const [selectedOptions, setSelectedOptions] = useState({}); // Store selected options for each step
 
+  
   const navigate = useNavigate() // Initialize navigate
   const { id } = useParams(); // Extract the item ID from the URL
   const [item, setItem] = useState(null);
