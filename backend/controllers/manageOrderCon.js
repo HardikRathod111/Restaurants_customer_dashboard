@@ -111,7 +111,7 @@ const updateItemsController = async (req, res) => {
 };
 
 
-const deleteItemsController = async(req,res) => {
+const  deleteItemsController = async(req,res) => {
   const itemId = req.params.id;
     
     if (!itemId) {
