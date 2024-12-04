@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom' // Import useNavigate 
 import axios from 'axios'
 import { useUser } from '../UserContext';
 
+
 export default function ItemDetails() {
   const [quantity, setQuantity] = useState(1);
   const [isVeg, setIsVeg] = useState(true)
