@@ -1,6 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Restaurants_customer_dashboard
 =======
+=======
+
+# Restaurants_customer_dashboard 
+>>>>>>> 355737aface1a42f3b553468772ad96a51764ea4
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

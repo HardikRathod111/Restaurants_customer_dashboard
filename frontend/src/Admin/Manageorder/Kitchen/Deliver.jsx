@@ -353,4 +353,3 @@ function OrderCard({ orderType, tableNo, customerName, itemQuantity, items, cook
     </div>
   );
 }
-

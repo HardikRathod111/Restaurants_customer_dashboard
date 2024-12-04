@@ -26,6 +26,7 @@ app.use("/api/v1/manageorder", require('./routes/manageOrder'));
 app.use('/api/v1/category', require('./routes/categoryRoutes'));
 app.use('/api/v1/user', require('./routes/CustomerRoutes'));
 app.use('/api/v1/addCart' , require('./routes/orderRoute'));
+app.use('/api/v1/order' , require('./routes/placedOrder'));
 
 
 app.get('/',(req,res)=>{

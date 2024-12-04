@@ -363,5 +363,4 @@ export default function AddMoreItems() {
       )}
     </div>
   );
-}
-
+} 

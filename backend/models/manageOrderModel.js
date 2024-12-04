@@ -61,7 +61,7 @@ const ItemSchema = new mongoose.Schema({
   itemType: {
     type: String,
     required: true, // Ensure the type is always provided
-    enum: ['veg', 'nonveg'], // Allowed values
+    enum: ["veg", "nonveg"], // Allowed values
     default: 'veg', // Default to 'veg'
   },
   customizations: [CustomizationSchema], // Embed customizations
