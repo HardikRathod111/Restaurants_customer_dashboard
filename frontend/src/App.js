@@ -16,7 +16,6 @@ import Createqrcode from './Admin/Qrcodes/Createqrcode';
 import OnsiteOrder from './Admin/Manageorder/Onsiteorder/OnsiteOrder';
 import PaymentParcel from './Admin/PaymentHistory/Parcelpayment/PaymentParcel';
 import PaymentOnsite from './Admin/PaymentHistory/Onsitepayment/PaymentOnsite';
-import DeletePrompt from './Admin/ManageMenu/DeletePrompt';
 import Managemenu from './Admin/ManageMenu/Managemenu';
 import Edititem from './Admin/ManageMenu/BurgerEditDetailsBox';
 import AddItems from './Admin/ManageMenu/AddItems';
@@ -53,7 +52,6 @@ function App() {
         <Route path="/Otp" element={<Otp />} />
         <Route path="/resetpassword" element={<Resetpassword />} />
         <Route path="/" element={<Register />} />
-        <Route path='/deleteprompt' element={<DeletePrompt/>}/>
             <Route path="/paymentparcel" element={< PaymentParcel/>} />
             <Route path="/paymentonsite" element={< PaymentOnsite/>} />
             <Route path='/managemenu' element={<Managemenu/>}/>
