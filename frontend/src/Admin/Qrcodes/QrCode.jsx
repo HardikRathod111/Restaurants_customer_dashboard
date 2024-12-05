@@ -453,7 +453,7 @@ function QrCode() {
       <div key={qrCode._id} className="bg-gray-700 rounded-lg flex h-[250px] flex-col items-center relative w-full">
         {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
         <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
-          <h2 className="text-lg font-semibold text-white">{`Table No - ${qrCode.qrName}`}</h2>
+          <h2 className="text-lg font-semibold text-white">{`Counter No - ${qrCode.qrName}`}</h2>
           <div
             className="text-gray-400 cursor-pointer"
             onClick={() => toggledropdown(qrCode._id)}

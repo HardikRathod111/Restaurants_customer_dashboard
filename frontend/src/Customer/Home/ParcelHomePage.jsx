@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 const ParcelHomePage = () => {
 
   const navigate = useNavigate();
-  const [selected, setSelected] = useState("Veg");
+  const [selected, setSelected] = useState("veg"); // Default selected filter
   const [showSearchInput, setShowSearchInput] = useState(false);
+  const [filteredItems, setFilteredItems] = useState([]);
+
 
   const handleCategoryView = () => {
     navigate('/parcel-category');
@@ -73,6 +75,11 @@ const ParcelHomePage = () => {
 
     fetchItems(); // Call the function to fetch items
   }, []);
+
+  useEffect(() => {
+    const filtered = items.filter((item) => item.itemType === selected);
+    setFilteredItems(filtered);
+  }, [selected, items]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -200,22 +207,22 @@ const ParcelHomePage = () => {
       {/* Veg/Non-Veg Toggle */}
       <div className="w-[375px] bg-[#0B0F1F] flex justify-around py-3">
         <button
-          onClick={() => setSelected("Veg")}
-          className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "Veg"
+          onClick={() => setSelected("veg")}
+          className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "veg"
             ? "border-green-500 text-green-500"
             : "border-gray-500 text-gray-500"
             }`}
           style={{ width: "150px" }}
         >
           <span
-            className={`w-3 h-3 rounded-lg ${selected === "Veg" ? "bg-green-500" : "bg-gray-500"
+            className={`w-3 h-3 rounded-lg ${selected === "veg" ? "bg-green-500" : "bg-gray-500"
               }`}
           ></span>
           <span className="ml-2">Veg</span>
         </button>
         <button
-          onClick={() => setSelected("Non Veg")}
-          className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "Non Veg"
+          onClick={() => setSelected("nonveg")}
+          className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "nonveg"
             ? "border-red-500 text-red-500"
             : "border-gray-500 text-gray-500"
             }`}
@@ -223,7 +230,7 @@ const ParcelHomePage = () => {
 
         >
           <span
-            className={`w-3 h-3 rounded-full ${selected === "Non Veg" ? "bg-red-500" : "bg-gray-500"
+            className={`w-3 h-3 rounded-full ${selected === "nonveg" ? "bg-red-500" : "bg-gray-500"
               }`}
           ></span>
           <span className="ml-2">Non Veg</span>
@@ -260,8 +267,8 @@ const ParcelHomePage = () => {
         </div>
           {/* Food Items */}
       <div className="space-y-4">
-      {items.length > 0 ? (
-        items.map((item, index) => (
+      {filteredItems.length > 0 ? (
+          filteredItems.map((item, index) => (
             <div
                 key={index}
                 className="flex items-center justify-between bg-[#252836] rounded-lg p-4"
