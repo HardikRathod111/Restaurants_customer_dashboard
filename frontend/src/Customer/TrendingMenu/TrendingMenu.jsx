@@ -64,7 +64,7 @@ const TrendingMenu = () => {
                 <div className="flex items-center space-x-4">
                   <div className="bg-[#2D303E] w-16 h-16 rounded-lg flex items-center justify-center">
                     <img
-                      src={item.imageUrl}
+                      src={`http://localhost:8080/${item.imageUrl}`}
                       alt={item.itemName}
                       className="object-cover w-full h-full rounded-lg"
                     />

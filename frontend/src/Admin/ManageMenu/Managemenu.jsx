@@ -26,7 +26,6 @@ const Managemenu = () => {
     const handleOpenPopup = () => setIsPopupOpen(true);
     const handleClosePopup = () => setIsPopupOpen(false);
 
-
     const [previewImage, setPreviewImage] = useState(null);
 
     const handleImageUpload = (event) => {
@@ -51,8 +50,6 @@ const Managemenu = () => {
     const toggleVegStatus = () => {
         setIsVeg(!isVeg);
     };
-
-
 
     const handleAddItemClick = () => {
         navigate('/additems', { state: { category: selectedCategory } });
@@ -105,105 +102,9 @@ const Managemenu = () => {
     
     const handleOpenEdit = () => setIsEditOpen(true);
     const handleCloseEdit = () => setIsEditOpen(false);
-    const handleSaveEdit = (details) => {
-        console.log("Saved details:", details);
-        setIsEditOpen(false);
-    };
 
     // Dropdown options for Item Name
     const itemNames = ["Biryani Rice", "Chicken Burger", "Veg Sandwich", "Pizza", "Pasta"];
-    const menuItems = [
-        {
-            id: 1,
-            name: 'Ham Cheeseburger',
-            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
-            price: '₹380',
-            discount: '20% OFF',
-            imageUrl: './assets/images/pngwing 14.png',
-            isVeg: true,
-        },
-        {
-            id: 2,
-            name: 'Green Leaves Burger',
-            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
-            price: '₹80',
-            discount: '',
-            imageUrl: './assets/images/pngwing 13.png',
-            isVeg: false,
-        },
-        {
-            id: 3,
-            name: 'Cheese Burger',
-            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
-            price: '₹350',
-            discount: '20% OFF',
-            imageUrl: './assets/images/pngwing 14-2.png',
-            isVeg: true,
-        },
-        {
-            id: 4,
-            name: 'Miso Burger',
-            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
-            price: '₹260',
-            discount: '10% OFF',
-            imageUrl: './assets/images/pngwing 14.png',
-            isVeg: true,
-        },
-        {
-            id: 5,
-            name: 'Burger Chefs',
-            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
-            price: '₹150',
-            discount: '',
-            imageUrl: './assets/images/pngwing 13-2.png',
-            isVeg: false,
-        },
-        {
-            id: 6,
-            name: 'Burger Monsta',
-            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
-            price: '₹250',
-            discount: '',
-            imageUrl: './assets/images/pngwing 13.png',
-            isVeg: false,
-        },
-        {
-            id: 7,
-            name: 'Cheese Burger',
-            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
-            price: '₹350',
-            discount: '20% OFF',
-            imageUrl: './assets/images/pngwing 14.png',
-            isVeg: true,
-        },
-        {
-            id: 8,
-            name: 'Paneer Burger',
-            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
-            price: '₹260',
-            discount: '10% OFF',
-            imageUrl: './assets/images/pngwing 13-2.png',
-            isVeg: false,
-        },
-        {
-            id: 9,
-            name: 'Green Leaves Burger',
-            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
-            price: '₹200',
-            discount: '',
-            imageUrl: './assets/images/pngwing 14-3.png',
-            isVeg: true,
-        },
-        {
-            id: 10,
-            name: 'Ham Cheeseburger',
-            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
-            price: '₹290',
-            discount: '20% OFF',
-            imageUrl: './assets/images/pngwing 14.png',
-            isVeg: true,
-        },
-    ];
 
     const getTabLabel = () => {
         switch (activeTab) {
@@ -253,35 +154,29 @@ const Managemenu = () => {
 
 
     const handleLogout = () => {
-  // Clear user data from localStorage or sessionStorage
-  localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
-
-  // Optionally make an API request to invalidate session if necessary
-  // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
-
-  // Redirect user to login or home page after logout
-  navigate("/login"); // Or any other page
-};
-const [adminData, setAdminData] = useState({});
-  useEffect(() => {
+    localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
+    navigate("/login"); // Or any other page
+    };
+    const [adminData, setAdminData] = useState({});
+    useEffect(() => {
     // Fetch admin data
     const token = localStorage.getItem("authToken");
     console.log(token);
 
     axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
-      headers: {
-          Authorization: `Bearer ${token}`
-      }
-  })
-  .then(response => {
-    if (response.data.success) {
-      setAdminData(response.data.data); // Set admin data to the state
-    }
-  })
-  .catch(error => {
-      console.error("Error fetching admin data:", error);
-  });
-  }, []);
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (response.data.success) {
+        setAdminData(response.data.data); // Set admin data to the state
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching admin data:", error);
+    });
+    }, []);
 
     const [items, setItems] = useState([]); // State to hold items
 
@@ -603,7 +498,7 @@ const [adminData, setAdminData] = useState({});
                 {/* Category Section */}
                 <section className="mb-6">
                     <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-xl font-semibold text-white">Categories (250)</h3>
+                        <h3 className="text-xl font-semibold text-white">Categories ({categories.length})</h3>
                         <button
                 onClick={handleOpenPopup}
                 className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold sm:text-[12px] md:text-[16px] py-2 px-6 rounded-lg shadow-md flex items-center"
@@ -731,7 +626,7 @@ const [adminData, setAdminData] = useState({});
                         items.map((item, index) => (
                             <div key={item._id} className="bg-gray-800 w-full  rounded-lg p-4 text-gray-300 relative">
                                 <div className='bg-gray-700 w-full h-36 flex items-center justify-center rounded-lg'>
-                                <img src={item.imageUrl} alt={item.itemName} className="w-40 ml-1 h-28  object-cover rounded-md mb-2" />
+                                <img src={`http://localhost:8080/${item.imageUrl}`} alt={item.itemName} className="w-40 ml-1 h-28  object-cover rounded-md mb-2" />
                                 </div>
 
                                 {/* Discount Label */}

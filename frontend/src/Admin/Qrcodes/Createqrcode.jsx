@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { 
   FaHome, FaBoxOpen, FaSearch, FaClipboardList 
 } from 'react-icons/fa';
@@ -9,13 +9,14 @@ import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessu
 import {QRCodeSVG} from 'qrcode.react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
 
 const Createqrcode = () => {
   const location = useLocation();
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
   const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('request');
+  const [activeTab, setActiveTab] = useState('table');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [qrCodeData, setQrCodeData] = useState(location.state?.qrCode || {}); // Access passed QR code data
@@ -35,6 +36,7 @@ const Createqrcode = () => {
   const togglePaymentHistory = () => setPaymentHistoryOpen(!PaymentHistoryOpen);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false)
+  const { qrCode } = location.state || {};
 
   const getTabLabel = () => {
     switch (activeTab) {
@@ -46,47 +48,116 @@ const Createqrcode = () => {
         return 'QR Codes';
     }
   };
+  console.log(activeTab);
+  
 
   const handlenavigateprofile = ()=> {
     navigate('/Profilepage');
   }
 
   const handleSubmit = async () => {
-    const qrData = { link, qrName, additionalText, chooseColor, frameColor, qrColor, contentCategory };
+    const qrData = {
+      activeTab,
+      link,
+      qrName,
+      additionalText,
+      chooseColor,
+      frameColor,
+      qrColor,
+      contentCategory
+  };
+  console.log(qrData);
+    if (qrCode) {
+      // Update QR Code
+      await updateQrCode(qrCode._id, qrData); // Call the update function from your API
+    } else {
+      // Create a new QR Code
+      await createQrCode(qrData); // Call the create function from your API
+    }
+  };
+
+  const createQrCode = async (qrData) => {
     try {
       const response = await fetch('http://localhost:8080/api/v1/qrCode/createQrCode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(qrData),
       });
-  
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
         alert('QR Code created successfully!');
-        console.log(data);
+        navigate('/qrcode');
+        // Optionally, navigate back or refresh the list
       } else {
-        console.error('Server error:', response.statusText);
-        alert('Failed to create QR Code.');
+        alert('Failed to create QR Code');
       }
     } catch (error) {
-      console.error('Network error:', error);
-      alert('Network error. Please check the backend connection.');
+      console.error('Error:', error);
+      alert('Network error. Please try again later.');
     }
   };
+
+  const updateQrCode = async (id, qrData) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/qrCode/updateQrCode/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(qrData),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert('QR Code updated successfully!');
+        navigate('/qrcode');
+        // Optionally, navigate back or refresh the list
+      } else {
+        alert('Failed to update QR Code');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Network error. Please try again later.');
+    }
+  };
+
+  const handleDownload = () => {
+    const svgElement = qrCodeRef.current; // The QRCodeSVG component reference
+    const svgData = new XMLSerializer().serializeToString(svgElement);
+
+    // Create a Blob from the SVG data
+    const svgBlob = new Blob([svgData], { type: "image/svg+xml" });
+    const svgUrl = URL.createObjectURL(svgBlob);
+
+    // Create a temporary image element to load the SVG and convert it to a PNG
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      // Set the canvas size to the size of the image
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Draw the image on the canvas
+      context.drawImage(img, 0, 0);
+
+      // Convert the canvas to a PNG data URL
+      const pngUrl = canvas.toDataURL("image/png");
+
+      // Create a temporary link to download the image
+      const link = document.createElement("a");
+      link.href = pngUrl;
+      link.download = "QRCode.png"; // Name of the downloaded image
+      link.click();
+    };
+    img.src = svgUrl; // Set the image source to the SVG data
+  };
+
+
   const handleLogout = () => {
-    // Clear user data from localStorage or sessionStorage
-    localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
-  
-    // Optionally make an API request to invalidate session if necessary
-    // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
-  
-    // Redirect user to login or home page after logout
+    localStorage.removeItem("authToken");
     navigate("/login"); // Or any other page
   };
   const [adminData, setAdminData] = useState({});
 
   useEffect(() => {
-    // Fetch admin data
     const token = localStorage.getItem("authToken");
     console.log(token);
 
@@ -97,15 +168,14 @@ const Createqrcode = () => {
   })
   .then(response => {
     if (response.data.success) {
-      setAdminData(response.data.data); // Set admin data to the state
+      setAdminData(response.data.data); 
     }
   })
   .catch(error => {
       console.error("Error fetching admin data:", error);
   });
   }, []);
-
-  
+  const qrCodeRef = useRef(null);
 
   return (
     <div className="flex bg-gray-900 text-white font-sans">
@@ -345,14 +415,14 @@ const Createqrcode = () => {
         {/* Tabs */}
         <div className="flex">
           <button
-            onClick={() => setActiveTab('request')}
-            className={`px-4 py-2 rounded-ss-lg ${activeTab === 'request' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'}`}
+            onClick={() => setActiveTab('table')}
+            className={`px-4 py-2 rounded-ss-lg ${activeTab === 'table' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'}`}
           >
             Table
           </button>
           <button
-            onClick={() => setActiveTab('progress')}
-            className={`px-4 py-2 ${activeTab === 'progress' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'} rounded-e-lg rounded-ee-none`}
+            onClick={() => setActiveTab('counter')}
+            className={`px-4 py-2 ${activeTab === 'counter' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'} rounded-e-lg rounded-ee-none`}
           >
             Counter
           </button>
@@ -490,14 +560,17 @@ const Createqrcode = () => {
 
         {/* Download Button */}
         <div className=" justify-center">
-          <div className="bg-[#2B2F3F] relative rounded-lg w-[250px] h-[200px] ml-[290px] p-1 flex justify-center items-center">
+          <div className="bg-[#2B2F3F] relative rounded-lg w-[250px] h-[200px] ml-[290px] p-1 flex justify-center items-center" id="download-container">
             <span className="text-xl">
-              <img src='./assets/images/qrcode_undefined_undefined_2.png' alt='logo' className='w-96' />
-              <QRCodeSVG className='absolute top-10 left-[90px] w-[75px]'  value={link}/>
+              {/* <img src='./assets/images/qrcode_undefined_undefined_2.png' alt='logo' className='w-96' /> */}
+              <QRCodeSVG className='absolute top-10 left-[90px] w-[75px]' ref={qrCodeRef}  value={link}/>
             </span>
           </div>
-          <button className="bg-[#A870FF] text-white px-6 py-2 mt-5 ml-[340px] rounded-lg font-semibold shadow-md hover:bg-[#9142FF]"  onClick={handleSubmit}>
-          {isEditing ? 'Update QR Code' : 'Create QR Code'}
+          <button className="bg-[#A870FF] text-white px-6 py-2 mt-5 ml-[340px] rounded-lg font-semibold shadow-md hover:bg-[#9142FF]"   onClick={async () => {
+            // Run both functions in parallel
+            await Promise.all([handleSubmit(), handleDownload()]);
+          }}>
+          {qrCode ? 'Update QR Code' : 'Create QR Code'}
           </button>
         </div>  
           </div>

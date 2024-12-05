@@ -17,7 +17,7 @@ function QrCode() {
   const [activeLink, setActiveLink] = useState('');
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
   const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('request');
+  const [activeTab, setActiveTab] = useState('table');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null); // Fixed state for dropdown menu
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
@@ -38,9 +38,9 @@ function QrCode() {
 
   const getTabLabel = () => {
     switch (activeTab) {
-      case 'request':
+      case 'table':
         return 'Table';
-      case 'progress':
+      case 'counter':
         return 'Counter';
       default:
         return 'QR Codes';
@@ -358,21 +358,21 @@ function QrCode() {
         {/* Tabs */}
         <div className="flex">
           <button
-            onClick={() => setActiveTab('request')}
-            className={`px-4 py-2 rounded-ss-lg ${activeTab === 'request' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'}`}
+            onClick={() => setActiveTab('table')}
+            className={`px-4 py-2 rounded-ss-lg ${activeTab === 'table' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'}`}
           >
             Table
           </button>
           <button
-            onClick={() => setActiveTab('progress')}
-            className={`px-4 py-2 ${activeTab === 'progress' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'} rounded-e-lg rounded-ee-none`}
+            onClick={() => setActiveTab('counter')}
+            className={`px-4 py-2 ${activeTab === 'counter' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'} rounded-e-lg rounded-ee-none`}
           >
             Counter
           </button>
         </div>
         
         {/* QR Code Section */}
-        {activeTab === 'request' && (
+        {activeTab === 'table' && (
           <section className="relative bg-gray-900 rounded-lg   w-full overflow-auto rounded-ss-none rounded-r-lg rounded-bl-lg">
             <div className="relative bg-gray-800 rounded-lg p-5 w-full">
               <div className="flex justify-between items-center mb-6">
@@ -385,7 +385,9 @@ function QrCode() {
 
               <div className="grid grid-cols-3 xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-6 w-full">
   {qrCodes && qrCodes.length > 0 ? (
-    qrCodes.map((qrCode) => (
+     qrCodes
+     .filter((qrCode) => qrCode.activeTab === activeTab) // Filter based on activeTab
+     .map((qrCode) => (
       <div key={qrCode._id} className="bg-gray-700 rounded-lg flex h-[250px] flex-col items-center relative w-full">
         {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
         <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
@@ -434,7 +436,7 @@ function QrCode() {
             </div>
           </section>
         )}
-        {activeTab === "progress" && (
+        {activeTab === "counter" && (
   <section className="relative bg-gray-900 rounded-lg   w-full overflow-auto rounded-ss-none rounded-r-lg rounded-bl-lg">
     <div className="relative bg-gray-800 rounded-lg p-5 w-full">
       <div className="flex justify-between items-center mb-6">
@@ -446,43 +448,53 @@ function QrCode() {
       </div>
 
       <div className="grid grid-cols-3 xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-6 w-full">
-        {[1, 2].map((counterNumber) => (
-          <div key={counterNumber} className="bg-gray-700 rounded-lg  flex h-[250px] flex-col items-center relative w-full">
-            {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
-            <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
-              <h2 className="text-base font-semibold text-white">{`Counter No - ${counterNumber}`}</h2>
-              <div
-                className="text-gray-400 cursor-pointer"
-                onClick={() => toggleCounterDropdown(counterNumber)} // Updated to use the correct function
-              >
-                <FaEllipsisV />
-              </div>
-            </div>
-
-            {/* Dropdown Menu */}
-            {dropdownOpen === counterNumber && (
-              <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28">
-                <a href='/createqrcode'
-                  className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
-                  onClick={() => alert(`Editing Table ${counterNumber}`)}
-                >
-                  Edit
-                </a>
-                <a 
-                  className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
-                  onClick={() => alert(`Deleting Table ${counterNumber}`)}
-                >
-                  Delete
-                </a>
-              </div>
-            )}
-
-            {/* QR Code Box with Full Width Dark Background */}
-            <div className="bg-black p-6 rounded-lg  w-44 h-40 mt-5 flex justify-center items-center">
-              <img src="./assets/images/Group 1000006213.png" alt={`QR Code for Table ${counterNumber}`} className="w-[120px] h-auto max-w-xs mx-auto" />
-            </div>
+      {qrCodes && qrCodes.length > 0 ? (
+     qrCodes
+     .filter((qrCode) => qrCode.activeTab === activeTab) // Filter based on activeTab
+     .map((qrCode) => (
+      <div key={qrCode._id} className="bg-gray-700 rounded-lg flex h-[250px] flex-col items-center relative w-full">
+        {/* Table Number Label and Three Dots in One Line (Cover Full Width) */}
+        <div className="flex justify-between items-center w-full bg-gray-600 py-2 px-4 rounded-t-lg">
+          <h2 className="text-lg font-semibold text-white">{`Table No - ${qrCode.qrName}`}</h2>
+          <div
+            className="text-gray-400 cursor-pointer"
+            onClick={() => toggledropdown(qrCode._id)}
+            aria-label={`More options for table ${qrCode.qrName}`}
+          >
+            <FaEllipsisV />
           </div>
-        ))}
+        </div>
+
+        {/* Dropdown Menu */}
+        {dropdownOpen === qrCode._id && (
+          <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28 z-10">
+            <a
+              href='/createqrcode'
+              className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
+              onClick={() => handleEditClick(qrCode)}
+            >
+              Edit
+            </a>
+            <a
+              href='/deleteprompt'
+              className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
+              onClick={() => handleDelete(qrCode._id)}
+            >
+              Delete
+            </a>
+          </div>
+        )}
+
+        {/* QR Code Box with Full Width Dark Background */}
+        <div className="bg-gray-900 relative rounded-lg w-44 h-40 mt-6 flex justify-center items-center">
+          
+          <QRCodeSVG className='absolute top-4 left-[40px] w-[100px]'  value={qrCode.link}/>
+        </div>
+      </div>
+    ))
+  ) : (
+    <p>No QR Codes available</p> // Fallback message if no qrCodes are found
+  )}
       </div>
     </div>
   </section>

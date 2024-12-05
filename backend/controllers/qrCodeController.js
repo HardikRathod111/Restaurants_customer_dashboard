@@ -1,36 +1,35 @@
 const QRCode = require("../models/qrCodeModel");
 
 const CreateQrCode = async (req, res) => {
-    try {
-        // Extract data from the request body
-        const { link, qrName, additionalText, chooseColor, frameColor, qrColor, contentCategory } = req.body;
+  try {
+    const {activeTab, link, qrName, additionalText, chooseColor, frameColor, qrColor, contentCategory } = req.body;
 
-        // Check if the required fields are present
-        if (!link) {
-            return res.status(400).json({ message: 'Link is required' });
-        }
-
-        // Create a new QR code document
-        const qrCode = new QRCode({
-            link,
-            qrName,
-            additionalText,
-            chooseColor,
-            frameColor,
-            qrColor,
-            contentCategory,
-        });
-
-        // Save to the database
-        const savedQRCode = await qrCode.save();
-
-        // Respond with the saved data
-        res.status(201).json({ message: 'QR Code created successfully', QRCode: savedQRCode });
-    } catch (error) {
-        console.error('Error saving QR Code:', error);
-        res.status(500).json({ message: 'Internal server error', error });
+    if (!link) {
+      return res.status(400).json({ message: 'Link is required' });
     }
-    };  
+
+    // Create a new QR code document
+    const qrCode = new QRCode({
+      activeTab,
+      link,
+      qrName,
+      additionalText,
+      chooseColor,
+      frameColor,
+      qrColor,
+      contentCategory,
+    });
+
+    // Save to the database
+    const savedQRCode = await qrCode.save();
+
+    res.status(201).json({ message: 'QR Code created successfully', QRCode: savedQRCode });
+  } catch (error) {
+    console.error('Error saving QR Code:', error);
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
 
     const getAllQrCodes = async (req, res) => {
     try {
@@ -59,9 +58,10 @@ const CreateQrCode = async (req, res) => {
           }
       
           // Extract updated data from the request body
-          const { link, qrName, additionalText, chooseColor, frameColor, qrColor, contentCategory } = req.body;
+          const {activeTab, link, qrName, additionalText, chooseColor, frameColor, qrColor, contentCategory } = req.body;
       
           // Update QR code fields
+          qrCode.activeTab = activeTab || qrCode.activeTab;
           qrCode.link = link || qrCode.link;
           qrCode.qrName = qrName || qrCode.qrName;
           qrCode.additionalText = additionalText || qrCode.additionalText;

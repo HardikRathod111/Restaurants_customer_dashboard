@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const ParcelCategory = () => {
 
@@ -29,15 +30,14 @@ const ParcelCategory = () => {
   useEffect(() => {
       fetchCategories();
   }, []);
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center bg-[#1F1D2B] min-h-screen text-white">
       {/* Header */}
       <div className=" items-center justify-between px-4 py-5 w-[375px] bg-[#1F1D2B]  flex">
-        <a href="/parcel-homepage" className="text-white text-lg">
-        <MdOutlineKeyboardArrowLeft style={{fontSize:'25px'}} />
+        <MdOutlineKeyboardArrowLeft style={{fontSize:'25px'}} onClick={() => navigate(-1)}/>
 
-        </a>
         <h1 className="text-lg font-bold">Categories</h1>
         <div className="w-6 h-6"></div> {/* Empty space for alignment */}
       </div>

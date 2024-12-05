@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 // Define the schema for the QR Code data
 const qrCodeSchema = new mongoose.Schema({
+  activeTab: {
+    type: String,
+    required: true,
+  },
   link: {
     type: String,
     required: true,

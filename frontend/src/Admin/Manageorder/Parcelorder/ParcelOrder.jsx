@@ -1,7 +1,5 @@
 
-
-import React, { useState , useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { MdDashboard, MdOutlineRestaurantMenu, MdWindow, MdOutlineQrCodeScanner, MdLogout, MdExpandMore } from 'react-icons/md';
 import { FaBoxOpen, FaClipboardList, FaSearch,FaEye,FaHome  } from 'react-icons/fa';
 import { IoMdCheckmarkCircle,IoMdLogOut, IoMdCloseCircle } from 'react-icons/io';
@@ -9,12 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
 
-
-  
 const ParcelOrder = () => {
     const [manageOrderOpen, setManageOrderOpen] = useState(false);
-      const [showNotifications, setShowNotifications] = useState(false)
-        const [isOpen, setIsOpen] = useState(false);
     const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("request");
@@ -23,65 +17,24 @@ const ParcelOrder = () => {
     const [activeLink, setActiveLink] = useState('');
     const [dropdownOpen, setDropdownOpen] = useState(null);
     const navigate = useNavigate();
-const [adminData, setAdminData] = useState({});
-  useEffect(() => {
-    // Fetch admin data
-    const token = localStorage.getItem("authToken");
-    console.log(token);
-
-    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
-      headers: {
-          Authorization: `Bearer ${token}`
-      }
-  })
-  .then(response => {
-    if (response.data.success) {
-      setAdminData(response.data.data); // Set admin data to the state
-    }
-  })
-  .catch(error => {
-      console.error("Error fetching admin data:", error);
-  });
-  }, []);
-
 
     const [open, setOpen] = useState(false)
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
     const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
+
     const togglePaymentHistory = () => {
       setPaymentHistoryOpen(!PaymentHistoryOpen);
     };    
 
-    
-  const handleLogout = () => {
-  // Clear user data from localStorage or sessionStorage
-  localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
-
-  // Optionally make an API request to invalidate session if necessary
-  // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
-
-  // Redirect user to login or home page after logout
-  navigate("/login"); // Or any other page
-};
+    // const handleRowClick = (order) => {
+    //   setSelectedOrder(order); // Set the selected order
+    //   setShowModal(true);      // Open the modal
+    // };
 
     const handleViewBill = (order) => {
         setSelectedOrder(order); // Set the selected order details
         setShowModal(true); // Open the modal
     };
-
-     useEffect(() => {
-    console.log('Notifications visible:', showNotifications);
-  }, [showNotifications]);
-
-   const doughnut = {
-    labels: ['Parcel Order', 'Onsite Order'],
-    datasets: [
-      {
-        data: [587, 475],
-        backgroundColor: ['#f87171', '#fbbf24'],
-      },
-    ],
-  }
 
     const closeModal = () => {
         setShowModal(false); // Close the modal
@@ -105,13 +58,32 @@ const [adminData, setAdminData] = useState({});
     };
     
 
-    const orders = [
-        { id: 1, customer: "Davis Lipshutz", item: "Rice", date: "10/02/2024", time: "3:45 PM", phone: "98568 86214", quantity: "500 G.M", total: "₹ 500" },
-        { id: 2, customer: "Marcus Dorwart", item: "Biryani Rice", date: "11/02/2024", time: "2:45 PM", phone: "96668 22214", quantity: "100 G.M", total: "₹ 500" },
-    ];
+    // const orders = [
+    //     { id: 1, customer: "Davis Lipshutz", item: "Rice", date: "10/02/2024", time: "3:45 PM", phone: "98568 86214", quantity: "500 G.M", total: "₹ 500" },
+    //     { id: 2, customer: "Marcus Dorwart", item: "Biryani Rice", date: "11/02/2024", time: "2:45 PM", phone: "96668 22214", quantity: "100 G.M", total: "₹ 500" },
+    // ];
     const handlenavigateprofile = ()=> {
       navigate('/Profilepage');
     }
+
+    const [orders, setOrders] = useState([]);
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/order/getPlacedOrder");
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        console.log(data); // Logs the data
+        setOrders(data); // Set the data in the state
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    
+    useEffect(() => {
+      fetchOrders();
+    }, []);
+
+
     return (
       <div className="flex min-h-screen bg-gray-900 text-white font-sans">
         {/* Sidebar */}
@@ -144,9 +116,6 @@ const [adminData, setAdminData] = useState({});
                         <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                             Onsite Order
                         </a>
-                         <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                  Kitchen
-                </a>
                     </div>
                 )}
             </div>
@@ -178,12 +147,10 @@ const [adminData, setAdminData] = useState({});
               QR Codes
             </a>
           </nav>
-           <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
-        onClick={handleLogout}
-        >
-          <IoMdLogOut className="mr-2" />
-           Log Out
-         </button>
+          <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
+            <IoMdLogOut className="mr-2" />
+            Log Out
+          </button>
 
         </aside>
         
@@ -240,7 +207,7 @@ const [adminData, setAdminData] = useState({});
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </a>
-           <div>
+            <div>
               {/* Manage Order Dropdown */}
               <button
                   className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -258,9 +225,6 @@ const [adminData, setAdminData] = useState({});
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
-                       <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                  Kitchen
-                </a>
                   </div>
               )}
           </div>
@@ -292,12 +256,10 @@ const [adminData, setAdminData] = useState({});
             QR Codes
           </a>
         </nav>
-       <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
-        onClick={handleLogout}
-        >
+        <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
           <IoMdLogOut className="mr-2" />
-           Log Out
-         </button>
+          Log Out
+        </button>
 
                 </div>
               </div>
@@ -319,77 +281,29 @@ const [adminData, setAdminData] = useState({});
             className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5"/>
         </div>
 
-       {/* Notification Icon and User Profile Dropdown */}
-          <div className="flex items-center space-x-4">
-            {/* Notification Icon */}
-            <div
-              className="relative cursor-pointer"
-              onClick={() => setIsOpen(!isOpen)}
+        {/* Notification Icon and User Profile Dropdown */}
+        <div className="flex items-center space-x-4">
+          {/* Notification Icon */}
+          <div className="relative">
+            <svg
+              className="w-6 h-6 text-gray-300 cursor-pointer"
+              fill="currentColor"
+              viewBox="0 0 24 24"
             >
-              <svg
-                className="w-6 h-6 text-gray-300"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
-              </svg>
-              {/* Notification Badge */}
-              <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
-            </div>
+              <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
+            </svg>
+            {/* Notification Badge */}
+            <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
+          </div>
 
-            {/* Notification Dropdown */}
-            {isOpen && (
-              <div className="absolute right-0 mt-2 w-72 bg-[#252836] text-gray-300 rounded-md shadow-lg overflow-hidden z-50" style={{ marginRight: '240px', marginTop: '390px', width: '380px' }}>
-                {/* Header with Close Button */}
-                <div className="p-4 flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">Notification</h3>
-                  <button
-                    className="text-gray-400 hover:text-gray-200 focus:outline-none"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                <div className="divide-y divide-gray-700 m-2 ">
-                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
-                    <div className="text-sm font-medium">Parcel Order</div>
-                    <div className="text-sm">Lincoln Siphron</div>
-                    <div className="text-xs text-gray-400">2 Min Ago</div>
-                  </div>
-                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
-                    <div className="text-sm font-medium">Table No: 10</div>
-                    <div className="text-sm">Lincoln Siphron</div>
-                    <div className="text-xs text-gray-400">15 Min Ago</div>
-                  </div>
-                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
-                    <div className="text-sm font-medium">Parcel Order</div>
-                    <div className="text-sm">Lincoln Siphron</div>
-                    <div className="text-xs text-gray-400">1 Hr Ago</div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-
-
-         {/* User Profile Dropdown */}
+          {/* User Profile Dropdown */}
           <div className="relative">
             <button
-              onClick={handlenavigateprofile}
+            onClick={handlenavigateprofile}
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
-              <span className="text-white sm:hidden lg:flex">{adminData.firstname} {adminData.lastname}</span>
+              <span className="text-white sm:hidden lg:flex">Musabbir Hossain</span>
               <svg
                 className="w-4 h-4 text-gray-300"
                 fill="currentColor"
@@ -445,25 +359,51 @@ const [adminData, setAdminData] = useState({});
                                       </tr>
                                   </thead>
                                   <tbody>
-                                      {orders.map(order => (
-                                          <tr key={order.id} className="border-b border-gray-700 hover:bg-gray-700">
-                                              <td className="px-6 py-4">{order.customer}</td>
-                                              <td className="px-6 py-4">{order.item}</td>
-                                              <td className="px-6 py-4">{order.date}</td>
-                                              <td className="px-6 py-4">{order.time}</td>
-                                              <td className="px-6 py-4">{order.phone}</td>
-                                              <td className="px-6 py-4">{order.quantity}</td>
-                                              <td className="px-6 py-4 text-green-500">{order.total}</td>
-                                              <td className="px-6 py-4 flex space-x-2">
-                                                  <button className="bg-green-500 p-2 rounded text-white">
-                                                      <IoMdCheckmarkCircle />
-                                                  </button>
-                                                  <button className="bg-red-500 p-2 rounded text-white">
-                                                      <IoMdCloseCircle />
-                                                  </button>
-                                              </td>
-                                          </tr>
-                                      ))}
+                                  {orders.map((order) => (
+                                      <tr
+                                        key={order._id}
+                                        className="border-b border-gray-700 hover:bg-gray-700"
+                                      >
+                                        {/* Customer Name */}
+                                        <td className="px-6 py-4">{order.userId.name}</td>
+
+                                        {/* Items Name - Combine all item names */}
+                                        <td className="px-6 py-4">
+                                          {order.items.map((item) => item.itemId.itemName).join(", ")}
+                                        </td>
+
+                                        {/* Order Date */}
+                                        <td className="px-6 py-4">
+                                          {new Date(order.orderDate).toLocaleDateString()}
+                                        </td>
+
+                                        {/* Order Time */}
+                                        <td className="px-6 py-4">
+                                          {new Date(order.orderDate).toLocaleTimeString()}
+                                        </td>
+
+                                        {/* Customer Phone */}
+                                        <td className="px-6 py-4">{order.userId.phone}</td>
+
+                                        {/* Total Quantity */}
+                                        <td className="px-6 py-4">
+                                          {order.items.reduce((sum, item) => sum + item.quantity, 0)}
+                                        </td>
+
+                                        {/* Total Bill */}
+                                        <td className="px-6 py-4">{order.totalAmount}</td>
+
+                                        {/* Status */}
+                                        <td className="px-6 py-4 flex space-x-2">
+                                            <button className="bg-green-500 p-2 rounded text-white">
+                                                <IoMdCheckmarkCircle />
+                                            </button>
+                                            <button className="bg-red-500 p-2 rounded text-white">
+                                                <IoMdCloseCircle />
+                                            </button>
+                                        </td>
+                                      </tr>
+                                    ))}
                                   </tbody>
                               </table>
                           </div>
@@ -485,24 +425,49 @@ const [adminData, setAdminData] = useState({});
                                 </tr>
                             </thead>
                             <tbody>
-                                {orders.map(order => (
-                                    <tr key={order.id} className="border-b border-gray-700 hover:bg-gray-700">
-                                        <td className="px-6 py-4">{order.customer}</td>
-                                        <td className="px-6 py-4">{order.item}</td>
-                                        <td className="px-6 py-4">{order.date}</td>
-                                        <td className="px-6 py-4">{order.time}</td>
-                                        <td className="px-6 py-4">{order.phone}</td>
-                                        <td className="px-6 py-4">{order.quantity}</td>
-                                        <td className="px-6 py-4 text-green-500">{order.total}</td>
-                                        <td className="px-6 py-4 flex space-x-2">
-                                            <button className=" p-2 rounded text-white" style={{backgroundColor:'#5678E9'}}
-                                            onClick={() => handleViewBill(order)}>
-                                            <FaEye />
-                                            </button>
-                                          
+                            {orders.map((order) => (
+                                      <tr
+                                        key={order._id}
+                                        className="border-b border-gray-700 hover:bg-gray-700"
+                                      >
+                                        {/* Customer Name */}
+                                        <td className="px-6 py-4">{order.userId.name}</td>
+
+                                        {/* Items Name - Combine all item names */}
+                                        <td className="px-6 py-4">
+                                          {order.items.map((item) => item.itemId.itemName).join(", ")}
                                         </td>
-                                    </tr>
-                                ))}
+
+                                        {/* Order Date */}
+                                        <td className="px-6 py-4">
+                                          {new Date(order.orderDate).toLocaleDateString()}
+                                        </td>
+
+                                        {/* Order Time */}
+                                        <td className="px-6 py-4">
+                                          {new Date(order.orderDate).toLocaleTimeString()}
+                                        </td>
+
+                                        {/* Customer Phone */}
+                                        <td className="px-6 py-4">{order.userId.phone}</td>
+
+                                        {/* Total Quantity */}
+                                        <td className="px-6 py-4">
+                                          {order.items.reduce((sum, item) => sum + item.quantity, 0)}
+                                        </td>
+
+                                        {/* Total Bill */}
+                                        <td className="px-6 py-4">{order.totalAmount}</td>
+
+                                        {/* Status */}
+                                        <td className="px-6 py-4 flex space-x-2">
+                                          <button className=" p-2 rounded text-white" style={{backgroundColor:'#5678E9'}}
+                                          onClick={() => handleViewBill(order)}>
+                                          <FaEye />
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>
@@ -524,23 +489,48 @@ const [adminData, setAdminData] = useState({});
                               </tr>
                           </thead>
                           <tbody>
-                              {orders.map(order => (
-                                  <tr key={order.id} className="border-b border-gray-700 hover:bg-gray-700">
-                                      <td className="px-6 py-4">{order.customer}</td>
-                                      <td className="px-6 py-4">{order.item}</td>
-                                      <td className="px-6 py-4">{order.date}</td>
-                                      <td className="px-6 py-4">{order.time}</td>
-                                      <td className="px-6 py-4">{order.phone}</td>
-                                      <td className="px-6 py-4">{order.quantity}</td>
-                                      <td className="px-6 py-4 text-green-500">{order.total}</td>
-                                      <td className="px-6 py-4 flex space-x-2">
-                                          <button className=" p-2 rounded text-white" style={{backgroundColor:'#5678E9'}}
-                                            onClick={() => handleViewBill(order)}>
-                                          <FaEye />
-                                          </button>
-                                        
-                                      </td>
-                                  </tr>
+                          {orders.map((order) => (
+                                <tr
+                                  key={order._id}
+                                  className="border-b border-gray-700 hover:bg-gray-700"
+                                >
+                                  {/* Customer Name */}
+                                  <td className="px-6 py-4">{order.userId.name}</td>
+
+                                  {/* Items Name - Combine all item names */}
+                                  <td className="px-6 py-4">
+                                    {order.items.map((item) => item.itemId.itemName).join(", ")}
+                                  </td>
+
+                                  {/* Order Date */}
+                                  <td className="px-6 py-4">
+                                    {new Date(order.orderDate).toLocaleDateString()}
+                                  </td>
+
+                                  {/* Order Time */}
+                                  <td className="px-6 py-4">
+                                    {new Date(order.orderDate).toLocaleTimeString()}
+                                  </td>
+
+                                  {/* Customer Phone */}
+                                  <td className="px-6 py-4">{order.userId.phone}</td>
+
+                                  {/* Total Quantity */}
+                                  <td className="px-6 py-4">
+                                    {order.items.reduce((sum, item) => sum + item.quantity, 0)}
+                                  </td>
+
+                                  {/* Total Bill */}
+                                  <td className="px-6 py-4">{order.totalAmount}</td>
+
+                                  {/* Status */}
+                                  <td className="px-6 py-4 flex space-x-2">
+                                    <button className=" p-2 rounded text-white" style={{backgroundColor:'#5678E9'}}
+                                    onClick={() => handleViewBill(order)}>
+                                    <FaEye />
+                                    </button>
+                                  </td>
+                                </tr>
                               ))}
                           </tbody>
                       </table>
@@ -549,7 +539,7 @@ const [adminData, setAdminData] = useState({});
                   </div>
 
                   {/* Modal for viewing bill */}
-               {showModal && (
+              {showModal && selectedOrder && (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
     <div className="bg-[#252836] text-white p-6 rounded-lg max-w-sm
     
@@ -565,16 +555,20 @@ const [adminData, setAdminData] = useState({});
       {/* Bill Details Section */}
       <div className="mt-4 text-sm">
         <div className="flex justify-between mb-2">
-          <p><strong>Bill No:</strong> GRT1715</p>
-          <p><strong>Date:</strong> 24/01/2024</p>
+          <p><strong>Bill No:</strong>GRTHR{orders.findIndex(order => order._id === selectedOrder._id) !== -1 
+          ? orders.findIndex(order => order._id === selectedOrder._id) + 1 
+          : "N/A"}</p>
+          <p><strong>Date:</strong> {" "}
+          {new Date(selectedOrder.orderDate).toLocaleDateString()}</p>
         </div>
         <div className="flex justify-between mb-2">
-          <p><strong>Time:</strong> 7:00 PM</p>
-          <p><strong>Customer:</strong> 98266 66655</p>
+          <p><strong>Time:</strong> {" "}
+          {new Date(selectedOrder.orderDate).toLocaleTimeString()}</p>
+          <p><strong>Customer:</strong> {selectedOrder.userId.phone}</p>
         </div>
         <div className="flex justify-between mb-2">
-          <p><strong>Name:</strong> Chance Geidt</p>
-          <p><strong>Payment:</strong> <span className="text-green-500">Online</span></p>
+          <p><strong>Name:</strong> {selectedOrder.userId.name}</p>
+          <p><strong>Payment:</strong> <span className="text-green-500">{selectedOrder.paymentMethod}</span></p>
         </div>
       </div>
 
@@ -589,51 +583,15 @@ const [adminData, setAdminData] = useState({});
 
         {/* Table Content */}
         <div className="text-sm">
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Jeera Rice</p>
-            <p className="min-w-[60px]">2</p>
-            <p className="min-w-[80px] text-right">290.00</p>
+        {selectedOrder.items.map((item, index) => (
+          <div key={index} className="flex justify-between mb-1">
+            <p className="min-w-[150px]">{item.itemId.itemName}</p>
+            <p className="min-w-[60px]">{item.quantity}</p>
+            <p className="min-w-[80px] text-right">
+              {item.totalPrice.toFixed(2)}
+            </p>
           </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Veg Manhwa So</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">119.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Dal Tadka</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">215.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Butter Tandoor</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">45.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Garlic Naan</p>
-            <p className="min-w-[60px]">5</p>
-            <p className="min-w-[80px] text-right">300.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Veg Sweet Corn</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">119.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Plain Papad</p>
-            <p className="min-w-[60px]">2</p>
-            <p className="min-w-[80px] text-right">160.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Baked Veg With</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">270.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Biryani Rice</p>
-            <p className="min-w-[60px]">2</p>
-            <p className="min-w-[80px] text-right">315.00</p>
-          </div>
+        ))}
         </div>
       </div>
 
@@ -641,15 +599,15 @@ const [adminData, setAdminData] = useState({});
       <div className="mt-4 text-sm">
         <div className="flex justify-between mb-1 font-semibold">
           <p>Total Amount</p>
-          <p>₹ 1315.00</p>
+          <p> {selectedOrder.totalAmount.toFixed(2)}</p>
         </div>
         <div className="flex justify-between mb-1">
           <p>SGST 2.5%</p>
-          <p>₹ 32.88</p>
+          <p>₹ {(selectedOrder.totalAmount * 0.025).toFixed(2)}</p>
         </div>
         <div className="flex justify-between mb-1">
           <p>CGST 2.5%</p>
-          <p>₹ 32.88</p>
+          <p>₹ {(selectedOrder.totalAmount * 0.025).toFixed(2)}</p>
         </div>
       </div>
 
@@ -657,7 +615,7 @@ const [adminData, setAdminData] = useState({});
       <div className="mt-4 border-t border-gray-700 pt-2 text-sm font-semibold">
         <div className="flex justify-between">
           <p>Grand Total Amount</p>
-          <p>₹ 1381.00</p>
+          <p>₹ {(selectedOrder.totalAmount + selectedOrder.totalAmount * 0.05).toFixed(2)}</p>
         </div>
       </div>
     </div>

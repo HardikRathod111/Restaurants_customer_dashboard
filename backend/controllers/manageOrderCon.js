@@ -6,7 +6,7 @@ const addItem = async (req, res) => {
       console.log("req", req.file);
       
       // Extract data from the request body
-      const { itemName, ingredients, price, discount, type, spiceLevel, customizations } = req.body;
+      const { itemName, ingredients, price, discount, type, spiceLevel,itemType, customizations } = req.body;
   
       // Construct the new item
       const newItem = {
@@ -16,6 +16,7 @@ const addItem = async (req, res) => {
         discount,
         type,
         spiceLevel,
+        itemType,
         customizations,
         imageUrl: req.file?.path, // Ensure Multer is configured for file uploads
       };
