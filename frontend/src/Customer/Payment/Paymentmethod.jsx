@@ -35,7 +35,7 @@ const PaymentMethod = () => {
       </div>
 
       {/* Card Selection */}
-      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4">
+      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4 mb-72">
         {/* Master Card */}
         <div className="flex items-center space-x-4 border-b border-gray-700 pb-4">
           <img
@@ -93,7 +93,7 @@ const PaymentMethod = () => {
       </div>
 
       {/* Visa and UPI */}
-      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4 mt-4">
+      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4 mb-80 ">
         <div className="flex items-center space-x-4 border-b border-gray-700 pb-4">
           <img
             src="./assets/images/Frame 1000004335.png"
