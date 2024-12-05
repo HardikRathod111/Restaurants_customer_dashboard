@@ -562,7 +562,7 @@ const Createqrcode = () => {
         <div className=" justify-center">
           <div className="bg-[#2B2F3F] relative rounded-lg w-[250px] h-[200px] ml-[290px] p-1 flex justify-center items-center" id="download-container">
             <span className="text-xl">
-              {/* <img src='./assets/images/qrcode_undefined_undefined_2.png' alt='logo' className='w-96' /> */}
+              <img src='./assets/images/qrcode_undefined_undefined_2.png' alt='logo' className='w-96' />
               <QRCodeSVG className='absolute top-10 left-[90px] w-[75px]' ref={qrCodeRef}  value={link}/>
             </span>
           </div>

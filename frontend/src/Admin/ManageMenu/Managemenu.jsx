@@ -43,8 +43,6 @@ const Managemenu = () => {
 
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-    const handleOpenDelete = () => setIsDeleteOpen(true);
-    const handleCloseDelete = () => setIsDeleteOpen(false);
 
     // Function to toggle between Veg and Non-Veg
     const toggleVegStatus = () => {
@@ -102,6 +100,100 @@ const Managemenu = () => {
     
     const handleOpenEdit = () => setIsEditOpen(true);
     const handleCloseEdit = () => setIsEditOpen(false);
+    const handleSaveEdit = (details) => {
+        console.log("Saved details:", details);
+        setIsEditOpen(false);
+    };
+    const [editingItem, setEditingItem] = useState(null);
+    const [itemToDelete, setItemToDelete] = useState(null); 
+
+    const openEditModal = async (id) => {
+        try {
+          const response = await fetch(`http://localhost:8080/api/v1/manageorder/items/${id}`); // Adjust endpoint
+          const data = await response.json();
+      
+          if (response.ok) {
+            setEditingItem(data); // Store the item's data
+            setIsEditOpen(true); // Open the modal
+          } else {
+            console.error("Error fetching item data:", data.message);
+          }
+        } catch (error) {
+          console.error("Error in openEditModal:", error);
+        }
+      };
+    const closeEditModal = () => {
+        setIsEditOpen(false);
+        setEditingItem(null);
+    };
+
+    const updateItem = async (updatedItem) => {
+        try {
+          const formData = new FormData();
+      
+          // Append text fields to FormData
+          Object.keys(updatedItem).forEach((key) => {
+            if (updatedItem[key] instanceof File) {
+              // If the field is a file, it will be appended as a file
+              formData.append(key, updatedItem[key]);
+            } else {
+              // For non-file fields
+              formData.append(key, updatedItem[key]);
+            }
+          });
+      
+          const response = await fetch(`http://localhost:8080/api/v1/manageorder/editItem/${updatedItem._id}`, {
+            method: 'PUT',
+            body: formData,
+          });
+      
+          const data = await response.json();
+      
+          if (response.ok) {
+            console.log('Item updated successfully:', data.message);
+            // Update the local state here
+            setItems((prevItems) =>
+              prevItems.map((item) =>
+                item._id === updatedItem._id ? { ...item, ...updatedItem } : item
+              )
+            );
+            closeEditModal();
+          } else {
+            console.error('Failed to update item:', data.message || await response.text());
+          }
+        } catch (error) {
+          console.error('Error updating item:', error);
+        }
+      };
+      
+      const handleOpenDelete = (item) => {
+        setItemToDelete(item); // Store the entire item when delete button is clicked
+        setIsDeleteOpen(true); // Open the delete confirmation modal
+        };
+
+        const handleCloseDelete = () => {
+            setIsDeleteOpen(false); // Close the modal
+            setItemToDelete(null); // Reset the item to delete
+        };
+    
+        // Handle the deletion of the item by itemId
+        const handleDelete = async (itemId) => {
+            if (!itemId) {
+                console.error("Invalid itemId!");
+                return;
+            }
+    
+            try {
+                const response = await axios.delete(`http://localhost:8080/api/v1/manageorder/deleteItem/${itemId}`);
+                console.log('Item deleted:', response.data);
+                setRefreshKey((prevKey) => prevKey + 1);
+                // Optionally, update the UI to reflect the deletion (e.g., remove item from the list)
+                setIsDeleteOpen(false); // Close the modal after successful deletion
+            } catch (error) {
+                console.error('Error deleting item:', error);
+                // Optionally, show an error message
+            }
+        };
 
     // Dropdown options for Item Name
     const itemNames = ["Biryani Rice", "Chicken Burger", "Veg Sandwich", "Pizza", "Pasta"];
@@ -125,6 +217,7 @@ const Managemenu = () => {
         navigate('/Profilepage');
     }
     const [categoryName, setCategoryName] = useState('');
+    const [refreshKey, setRefreshKey] = useState(0); // State to trigger re-fetch
      // Initial empty state for categories
     const [selectedImageFile, setSelectedImageFile] = useState(null);
 
@@ -202,7 +295,7 @@ const Managemenu = () => {
         };
 
         fetchItems(); // Call the function to fetch items
-    }, []);
+    }, [refreshKey]);
     
     return (
         <div className="flex min-h-screen bg-gray-900 text-white font-sans">
@@ -646,13 +739,13 @@ const Managemenu = () => {
                                 {dotsMenuOpen === item._id && (
                                     <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28">
                                         <button
-                                            onClick={handleOpenEdit}
+                                            onClick={() => openEditModal(item._id)}
                                             className="hover:text-yellow-600 hover:bg-gray-600 text-white px-4 py-2 rounded"
                                         >
                                             Edit Burger
                                         </button>
                                         {/* Edit Item Modal */}
-            {isEditOpen && (
+                {isEditOpen && editingItem && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-gray-800 text-white w-96 p-6 rounded-lg shadow-lg relative">
                         <h2 className="text-xl font-bold mb-4">Edit Item</h2>
@@ -663,7 +756,11 @@ const Managemenu = () => {
                                 Upload Item Image
                             </label>
                             <div className="w-full h-32 bg-gray-700 rounded flex items-center justify-center cursor-pointer">
-                                <span className="text-gray-300">Change Image</span>
+                            <input
+                                type="file"
+                                className="w-full p-2 bg-gray-700 rounded"
+                                onChange={(e) => setEditingItem({ ...editingItem, image: e.target.files[0] })}
+                            />
                             </div>
                         </div>
 
@@ -672,13 +769,12 @@ const Managemenu = () => {
                             <label className="block mb-2 text-sm font-medium">
                                 Item Name
                             </label>
-                            <select className="w-full p-2 bg-gray-700 rounded">
-                                {itemNames.map((item, index) => (
-                                    <option key={index} value={item}>
-                                        {item}
-                                    </option>
-                                ))}
-                            </select>
+                            <input
+                                type="text"
+                                value={editingItem.itemName}
+                                onChange={(e) => setEditingItem({ ...editingItem, itemName: e.target.value })}
+                                className="w-full p-2 bg-gray-700 rounded"
+                            />
                         </div>
 
                         {/* Item Ingredients Input */}
@@ -689,7 +785,8 @@ const Managemenu = () => {
                             <input
                                 type="text"
                                 className="w-full p-2 bg-gray-700 rounded"
-                                placeholder="Include ingredients..."
+                                value={editingItem.ingredients}
+                                onChange={(e) => setEditingItem({ ...editingItem, ingredients: e.target.value })}
                             />
                         </div>
 
@@ -701,8 +798,9 @@ const Managemenu = () => {
                                 </label>
                                 <input
                                     type="number"
+                                    value={editingItem.price}
+                                    onChange={(e) => setEditingItem({ ...editingItem, price: e.target.value })}
                                     className="w-full p-2 bg-gray-700 rounded"
-                                    placeholder="₹500"
                                 />
                             </div>
                             <div className="flex-1">
@@ -712,7 +810,8 @@ const Managemenu = () => {
                                 <input
                                     type="number"
                                     className="w-full p-2 bg-gray-700 rounded"
-                                    placeholder="20"
+                                    value={editingItem.discount}
+                                    onChange={(e) => setEditingItem({ ...editingItem, discount: e.target.value })}
                                 />
                             </div>
                         </div>
@@ -722,7 +821,11 @@ const Managemenu = () => {
                             <label className="block mb-2 text-sm font-medium">
                                 Select Availability
                             </label>
-                            <select className="w-full p-2 bg-gray-700 rounded">
+                            <select
+                                value={editingItem.availability}
+                                onChange={(e) => setEditingItem({ ...editingItem, availability: e.target.value })}
+                                className="w-full p-2 bg-gray-700 rounded"
+                                >
                                 <option value="Available">Available</option>
                                 <option value="Unavailable">Unavailable</option>
                             </select>
@@ -731,13 +834,13 @@ const Managemenu = () => {
                         {/* Action Buttons */}
                         <div className="flex justify-between">
                             <button
-                                onClick={handleCloseEdit}
+                                onClick={closeEditModal}
                                 className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
                             >
                                 Cancel
                             </button>
                             <button
-                                onClick={handleCloseEdit}
+                                onClick={() => updateItem(editingItem)}
                                 className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
                             >
                                 Save
@@ -752,14 +855,14 @@ const Managemenu = () => {
                                             onClose={handleCloseEdit}
                                             onSave={handleSaveEdit}
                                         /> */}
-                                        <a  onClick={handleOpenDelete}
+                                        <a  onClick={() => handleOpenDelete(item)}
                                             className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
                                         >
                                             Delete
                                         </a>
 
                                         {/* Delete Confirmation Modal */}
-            {isDeleteOpen && (
+                {isDeleteOpen && itemToDelete &&  (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-gray-800 text-white w-80 p-6 rounded-lg shadow-lg relative">
                         <div className="flex flex-col items-center">
@@ -781,7 +884,7 @@ const Managemenu = () => {
                                 </svg>
                             </div>
                             {/* Message */}
-                            <h2 className="text-lg font-bold mb-2">Delete Hamburger</h2>
+                            <h2 className="text-lg font-bold mb-2">Delete {itemToDelete.itemName}</h2>
                             <p className="text-sm text-gray-400 mb-6 text-center">
                                 Are you sure you want to delete this item?
                             </p>
@@ -796,10 +899,7 @@ const Managemenu = () => {
                                 No
                             </button>
                             <button
-                                onClick={() => {
-                                    handleCloseDelete();
-                                    alert("Item Deleted!"); // Replace with your delete logic
-                                }}
+                                onClick={() => handleDelete(itemToDelete._id)}
                                 className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-1/3"
                             >
                                 Yes
