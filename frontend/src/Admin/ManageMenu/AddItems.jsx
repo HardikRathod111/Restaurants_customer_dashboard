@@ -64,48 +64,42 @@ const AddItems = () => {
             prevSteps.map((step, i) =>
                 i === stepIndex
                     ? {
-                          ...step,
-                          options: step.options.map((customise, j) =>
-                              j === customiseIndex
-                                  ? { ...customise, [field]: value }
-                                  : customise
-                          )
-                      }
+                        ...step,
+                        options: step.options.map((customise, j) =>
+                            j === customiseIndex
+                                ? { ...customise, [field]: value }
+                                : customise
+                        )
+                        }
                     : step
             )
         );
     };
     
     const handleLogout = () => {
-  // Clear user data from localStorage or sessionStorage
-  localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
-
-  // Optionally make an API request to invalidate session if necessary
-  // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
-
-  // Redirect user to login or home page after logout
-  navigate("/login"); // Or any other page
-};
-const [adminData, setAdminData] = useState({});
-  useEffect(() => {
+        localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
+        navigate("/login"); // Or any other page
+    };
+    const [adminData, setAdminData] = useState({});
+    useEffect(() => {
     // Fetch admin data
     const token = localStorage.getItem("authToken");
     console.log(token);
 
     axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
-      headers: {
-          Authorization: `Bearer ${token}`
-      }
-  })
-  .then(response => {
-    if (response.data.success) {
-      setAdminData(response.data.data); // Set admin data to the state
-    }
-  })
-  .catch(error => {
-      console.error("Error fetching admin data:", error);
-  });
-  }, []);
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (response.data.success) {
+        setAdminData(response.data.data); // Set admin data to the state
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching admin data:", error);
+    });
+    }, []);
     const handleCustoChange = (e,index, key) => {
         const { value } = e.target;
         
@@ -116,30 +110,7 @@ const [adminData, setAdminData] = useState({});
             
             return updatedFormData;
         });
-
-        // setSteps((prev) => {
-        //     const updatedFormData = [...prev]; //to Create a copy of the array
-        //     console.log("update", updatedFormData[index]["options"]);
-            
-        //     updatedFormData[index]["options"] = customizations; // Update the specific field
-        //     console.log("step", updatedFormData);
-            
-        //     return updatedFormData;
-        // });
     };
-    
-    // useEffect(()=>{
-    //     // setSteps((prev) => {
-    //     //         const updatedFormData = [...prev]; // Create a copy of the array
-    //     //         updatedFormData[index][key] = cus; // Update the specific field
-    //     //         console.log("step", updatedFormData);
-                
-    //     //         return updatedFormData;
-    //     //     });
-    // },[customizations])
-    // const isStepFilled = (step) => {
-    //     step.title.trim() && step.name.trim() && step.detail.trim() && step.rate.trim();
-    // };
 
     const [previewImage, setPreviewImage] = useState(null);
 
@@ -187,10 +158,6 @@ const [adminData, setAdminData] = useState({});
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent form from refreshing the page
 
-        // const allSteps = {
-            
-        // }
-
         const formData = {
             itemName: document.getElementById('item-name').value,
             ingredients: document.getElementById('item-ingredients').value,
@@ -211,20 +178,7 @@ const [adminData, setAdminData] = useState({});
         }
     
         try {
-            // Handle form submission
-            // const formDataWithFile = new FormData();
             
-            
-            // // Append non-file fields to FormData
-            // for (const key in formData) {
-            //     formDataWithFile.append(key, formData[key]);
-            // }
-            // console.log(formDataWithFile.keys());
-            // let rec = null
-            // for (let [key, value] of formDataWithFile.entries()) {
-            //     console.log(key, value); // This will print each key-value pair inside the FormData
-            //     rec = {...rec, [key] : value}
-            // }
             console.log("REC?>>>>", formData);
             
             // Send form data including  image to backend
@@ -482,27 +436,27 @@ const [adminData, setAdminData] = useState({});
                     <h2 className="text-xl font-semibold text-white">Add Items {category}</h2>
                     <div className="flex items-center space-x-3">
                         <button
-                            onClick={() => setSelected("Veg")}
-                            className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "Veg"
+                            onClick={() => setSelected("veg")}
+                            className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "veg"
                                 ? "border-green-500 text-green-500"
                                 : "border-gray-500 text-gray-500"
                                 }`}
                         >
                             <span
-                                className={`w-3 h-3 rounded-lg ${selected === "Veg" ? "bg-green-500" : "bg-gray-500"
+                                className={`w-3 h-3 rounded-lg ${selected === "veg" ? "bg-green-500" : "bg-gray-500"
                                     }`}
                             ></span>
                             <span className="ml-2">Veg</span>
                         </button>
                         <button
-                            onClick={() => setSelected("Non Veg")}
-                            className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "Non Veg"
+                            onClick={() => setSelected("nonveg")}
+                            className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "nonveg"
                                 ? "border-red-500 text-red-500"
                                 : "border-gray-500 text-gray-500"
                                 }`}
                         >
                             <span
-                                className={`w-3 h-3 rounded-full ${selected === "Non Veg" ? "bg-red-500" : "bg-gray-500"
+                                className={`w-3 h-3 rounded-full ${selected === "nonveg" ? "bg-red-500" : "bg-gray-500"
                                     }`}
                             ></span>
                             <span className="ml-2">Non Veg</span>
