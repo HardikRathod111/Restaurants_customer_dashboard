@@ -133,4 +133,3 @@ const  deleteItemsController = async(req,res) => {
 }
 
 module.exports = { getAllItemCon, getsingleitemscontroller, updateItemsController,deleteItemsController, addItem, getItem};
-

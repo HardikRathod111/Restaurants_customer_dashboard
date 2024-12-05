@@ -5,7 +5,6 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';  // Import axios
 
-
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();

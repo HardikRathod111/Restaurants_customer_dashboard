@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   FaHome, FaBoxOpen, FaSearch, FaClipboardList 
 } from 'react-icons/fa';
@@ -8,6 +8,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
 import {QRCodeSVG} from 'qrcode.react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 const Createqrcode = () => {
@@ -72,6 +73,38 @@ const Createqrcode = () => {
       alert('Network error. Please check the backend connection.');
     }
   };
+  const handleLogout = () => {
+    // Clear user data from localStorage or sessionStorage
+    localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
+  
+    // Optionally make an API request to invalidate session if necessary
+    // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
+  
+    // Redirect user to login or home page after logout
+    navigate("/login"); // Or any other page
+  };
+  const [adminData, setAdminData] = useState({});
+
+  useEffect(() => {
+    // Fetch admin data
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+  .then(response => {
+    if (response.data.success) {
+      setAdminData(response.data.data); // Set admin data to the state
+    }
+  })
+  .catch(error => {
+      console.error("Error fetching admin data:", error);
+  });
+  }, []);
+
   
 
   return (
@@ -137,7 +170,8 @@ const Createqrcode = () => {
               QR Codes
             </a>
           </nav>
-          <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
+          <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+            onClick={handleLogout}>
             <IoMdLogOut className="mr-2" />
             Log Out
           </button>
@@ -246,7 +280,8 @@ const Createqrcode = () => {
             QR Codes
           </a>
         </nav>
-        <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
+        <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto"
+          onClick={handleLogout}>
           <IoMdLogOut className="mr-2" />
             Log Out
         </button>
@@ -292,7 +327,7 @@ const Createqrcode = () => {
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
-              <span className="text-white sm:hidden lg:flex">Musabbir Hossain</span>
+              <span className="text-white sm:hidden lg:flex">{adminData.firstname} {adminData.lastname}</span>
               <svg
                 className="w-4 h-4 text-gray-300"
                 fill="currentColor"

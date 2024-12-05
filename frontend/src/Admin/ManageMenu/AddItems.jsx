@@ -76,6 +76,36 @@ const AddItems = () => {
         );
     };
     
+    const handleLogout = () => {
+  // Clear user data from localStorage or sessionStorage
+  localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
+
+  // Optionally make an API request to invalidate session if necessary
+  // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
+
+  // Redirect user to login or home page after logout
+  navigate("/login"); // Or any other page
+};
+const [adminData, setAdminData] = useState({});
+  useEffect(() => {
+    // Fetch admin data
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+  .then(response => {
+    if (response.data.success) {
+      setAdminData(response.data.data); // Set admin data to the state
+    }
+  })
+  .catch(error => {
+      console.error("Error fetching admin data:", error);
+  });
+  }, []);
     const handleCustoChange = (e,index, key) => {
         const { value } = e.target;
         
@@ -86,7 +116,30 @@ const AddItems = () => {
             
             return updatedFormData;
         });
+
+        // setSteps((prev) => {
+        //     const updatedFormData = [...prev]; //to Create a copy of the array
+        //     console.log("update", updatedFormData[index]["options"]);
+            
+        //     updatedFormData[index]["options"] = customizations; // Update the specific field
+        //     console.log("step", updatedFormData);
+            
+        //     return updatedFormData;
+        // });
     };
+    
+    // useEffect(()=>{
+    //     // setSteps((prev) => {
+    //     //         const updatedFormData = [...prev]; // Create a copy of the array
+    //     //         updatedFormData[index][key] = cus; // Update the specific field
+    //     //         console.log("step", updatedFormData);
+                
+    //     //         return updatedFormData;
+    //     //     });
+    // },[customizations])
+    // const isStepFilled = (step) => {
+    //     step.title.trim() && step.name.trim() && step.detail.trim() && step.rate.trim();
+    // };
 
     const [previewImage, setPreviewImage] = useState(null);
 
@@ -134,6 +187,10 @@ const AddItems = () => {
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent form from refreshing the page
 
+        // const allSteps = {
+            
+        // }
+
         const formData = {
             itemName: document.getElementById('item-name').value,
             ingredients: document.getElementById('item-ingredients').value,
@@ -141,11 +198,9 @@ const AddItems = () => {
             discount: document.getElementById('item-discount').value,
             type: document.getElementById('item-type').value,
             spiceLevel: document.querySelector('input[name="spice-level"]:checked')?.value,
-            itemType : selected,
             customizations: steps, // Assuming `steps` holds customization data
-            
+            itemType : selected
         };
-        
     
         // Handle image file separately
         const fileInput = document.getElementById('file-upload');
@@ -156,6 +211,20 @@ const AddItems = () => {
         }
     
         try {
+            // Handle form submission
+            // const formDataWithFile = new FormData();
+            
+            
+            // // Append non-file fields to FormData
+            // for (const key in formData) {
+            //     formDataWithFile.append(key, formData[key]);
+            // }
+            // console.log(formDataWithFile.keys());
+            // let rec = null
+            // for (let [key, value] of formDataWithFile.entries()) {
+            //     console.log(key, value); // This will print each key-value pair inside the FormData
+            //     rec = {...rec, [key] : value}
+            // }
             console.log("REC?>>>>", formData);
             
             // Send form data including  image to backend
@@ -164,10 +233,9 @@ const AddItems = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            
+    
             console.log('Item added successfull');
             alert('Item added successfully!');
-            navigate('/managemenu');
         } catch (error) {
             console.error('Error adding item:', error);
             alert('Failed to add item. Please try again.');
@@ -238,10 +306,12 @@ const AddItems = () => {
               QR Codes
             </a>
           </nav>
-          <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
-            <IoMdLogOut className="mr-2" />
-            Log Out
-          </button>
+           <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}
+        >
+          <IoMdLogOut className="mr-2" />
+           Log Out
+         </button>
             </aside>
             {/* Main Content */}
             <main className="flex-1 lg:ml-[200px] md:ml-0 sm:w-svw p-6 bg-gray-900">
@@ -346,7 +416,9 @@ const AddItems = () => {
             QR Codes
           </a>
         </nav>
-        <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
+         <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}
+        >
           <IoMdLogOut className="mr-2" />
            Log Out
          </button>
@@ -360,7 +432,7 @@ const AddItems = () => {
     </Dialog>
         
         {/* Search Bar */}
-        <div className="relative w-[400px]  marker">
+        <div className="relative w-[400px] ml-48 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -385,14 +457,14 @@ const AddItems = () => {
             <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
           </div>
 
-          {/* User Profile Dropdown */}
+         {/* User Profile Dropdown */}
           <div className="relative">
             <button
-            onClick={handlenavigateprofile}
+              onClick={handlenavigateprofile}
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
-              <span className="text-white sm:hidden lg:flex">Musabbir Hossain</span>
+              <span className="text-white sm:hidden lg:flex">{adminData.firstname} {adminData.lastname}</span>
               <svg
                 className="w-4 h-4 text-gray-300"
                 fill="currentColor"
@@ -410,27 +482,27 @@ const AddItems = () => {
                     <h2 className="text-xl font-semibold text-white">Add Items {category}</h2>
                     <div className="flex items-center space-x-3">
                         <button
-                            onClick={() => setSelected("veg")}
+                            onClick={() => setSelected("Veg")}
                             className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "Veg"
                                 ? "border-green-500 text-green-500"
                                 : "border-gray-500 text-gray-500"
                                 }`}
                         >
                             <span
-                                className={`w-3 h-3 rounded-lg ${selected === "veg" ? "bg-green-500" : "bg-gray-500"
+                                className={`w-3 h-3 rounded-lg ${selected === "Veg" ? "bg-green-500" : "bg-gray-500"
                                     }`}
                             ></span>
                             <span className="ml-2">Veg</span>
                         </button>
                         <button
-                            onClick={() => setSelected("nonveg")}
+                            onClick={() => setSelected("Non Veg")}
                             className={`flex items-center px-4 py-2 border-2 rounded-lg transition-colors duration-200 ${selected === "Non Veg"
                                 ? "border-red-500 text-red-500"
                                 : "border-gray-500 text-gray-500"
                                 }`}
                         >
                             <span
-                                className={`w-3 h-3 rounded-full ${selected === "nonveg" ? "bg-red-500" : "bg-gray-500"
+                                className={`w-3 h-3 rounded-full ${selected === "Non Veg" ? "bg-red-500" : "bg-gray-500"
                                     }`}
                             ></span>
                             <span className="ml-2">Non Veg</span>

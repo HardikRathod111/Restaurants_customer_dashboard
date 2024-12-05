@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Forgotpassword from './Admin/Pages/Forgotpassword';
@@ -56,7 +57,7 @@ function App() {
             <Route path='/managemenu' element={<Managemenu/>}/>
         <Route path='/additems' element={<AddItems/>}/>
         <Route path='/edititem' element={<Edititem/>}/>
-        {/* //customer files */}
+          {/* //customer files */}
         <Route path='/itemsdetails/:id' element={<ItemDetails/>}/>
         <Route path='/cartpage' element={<CartPage/>}/>
         <Route path='/parcel-login' element={<ParcelLogin/>}/>

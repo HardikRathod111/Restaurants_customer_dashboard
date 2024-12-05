@@ -19,6 +19,7 @@ const Managemenu = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [dotsMenuOpen, setDotsMenuOpen] = useState(null);
     const [isVeg, setIsVeg] = useState(true);
+      const [isOpen, setIsOpen] = useState(false);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [Category, setCategory] = useState([]);
     const [open, setOpen] = useState(false)
@@ -43,10 +44,15 @@ const Managemenu = () => {
 
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+    const handleOpenDelete = () => setIsDeleteOpen(true);
+    const handleCloseDelete = () => setIsDeleteOpen(false);
+
     // Function to toggle between Veg and Non-Veg
     const toggleVegStatus = () => {
         setIsVeg(!isVeg);
     };
+
+
 
     const handleAddItemClick = () => {
         navigate('/additems', { state: { category: selectedCategory } });
@@ -97,108 +103,108 @@ const Managemenu = () => {
         setSelectedCategory(categoryName);
     };    
     
-    // const handleOpenEdit = () => setIsEditOpen(true);
-    // const handleCloseEdit = () => setIsEditOpen(false);
+    const handleOpenEdit = () => setIsEditOpen(true);
+    const handleCloseEdit = () => setIsEditOpen(false);
     const handleSaveEdit = (details) => {
         console.log("Saved details:", details);
         setIsEditOpen(false);
     };
 
-    const [editingItem, setEditingItem] = useState(null);
-    const [itemToDelete, setItemToDelete] = useState(null); // Store the item object
-
-    const openEditModal = async (id) => {
-        try {
-          const response = await fetch(`http://localhost:8080/api/v1/manageorder/items/${id}`); // Adjust endpoint
-          const data = await response.json();
-      
-          if (response.ok) {
-            setEditingItem(data); // Store the item's data
-            setIsEditOpen(true); // Open the modal
-          } else {
-            console.error("Error fetching item data:", data.message);
-          }
-        } catch (error) {
-          console.error("Error in openEditModal:", error);
-        }
-      };
-    const closeEditModal = () => {
-        setIsEditOpen(false);
-        setEditingItem(null);
-    };
-
-    const updateItem = async (updatedItem) => {
-        try {
-          const formData = new FormData();
-      
-          // Append text fields to FormData
-          Object.keys(updatedItem).forEach((key) => {
-            if (updatedItem[key] instanceof File) {
-              // If the field is a file, it will be appended as a file
-              formData.append(key, updatedItem[key]);
-            } else {
-              // For non-file fields
-              formData.append(key, updatedItem[key]);
-            }
-          });
-      
-          const response = await fetch(`http://localhost:8080/api/v1/manageorder/editItem/${updatedItem._id}`, {
-            method: 'PUT',
-            body: formData,
-          });
-      
-          const data = await response.json();
-      
-          if (response.ok) {
-            console.log('Item updated successfully:', data.message);
-            // Update the local state here
-            setItems((prevItems) =>
-              prevItems.map((item) =>
-                item._id === updatedItem._id ? { ...item, ...updatedItem } : item
-              )
-            );
-            closeEditModal();
-          } else {
-            console.error('Failed to update item:', data.message || await response.text());
-          }
-        } catch (error) {
-          console.error('Error updating item:', error);
-        }
-      };
-      
-      const handleOpenDelete = (item) => {
-        setItemToDelete(item); // Store the entire item when delete button is clicked
-        setIsDeleteOpen(true); // Open the delete confirmation modal
-    };
-
-    // Close Delete Modal
-    const handleCloseDelete = () => {
-        setIsDeleteOpen(false); // Close the modal
-        setItemToDelete(null); // Reset the item to delete
-    };
-
-    // Handle the deletion of the item by itemId
-    const handleDelete = async (itemId) => {
-        if (!itemId) {
-            console.error("Invalid itemId!");
-            return;
-        }
-
-        try {
-            const response = await axios.delete(`http://localhost:8080/api/v1/manageorder/deleteItem/${itemId}`);
-            console.log('Item deleted:', response.data);
-            setRefreshKey((prevKey) => prevKey + 1);
-            // Optionally, update the UI to reflect the deletion (e.g., remove item from the list)
-            setIsDeleteOpen(false); // Close the modal after successful deletion
-        } catch (error) {
-            console.error('Error deleting item:', error);
-            // Optionally, show an error message
-        }
-    };      
-
     // Dropdown options for Item Name
     const itemNames = ["Biryani Rice", "Chicken Burger", "Veg Sandwich", "Pizza", "Pasta"];
-    
+    const menuItems = [
+        {
+            id: 1,
+            name: 'Ham Cheeseburger',
+            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
+            price: '₹380',
+            discount: '20% OFF',
+            imageUrl: './assets/images/pngwing 14.png',
+            isVeg: true,
+        },
+        {
+            id: 2,
+            name: 'Green Leaves Burger',
+            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
+            price: '₹80',
+            discount: '',
+            imageUrl: './assets/images/pngwing 13.png',
+            isVeg: false,
+        },
+        {
+            id: 3,
+            name: 'Cheese Burger',
+            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
+            price: '₹350',
+            discount: '20% OFF',
+            imageUrl: './assets/images/pngwing 14-2.png',
+            isVeg: true,
+        },
+        {
+            id: 4,
+            name: 'Miso Burger',
+            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
+            price: '₹260',
+            discount: '10% OFF',
+            imageUrl: './assets/images/pngwing 14.png',
+            isVeg: true,
+        },
+        {
+            id: 5,
+            name: 'Burger Chefs',
+            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
+            price: '₹150',
+            discount: '',
+            imageUrl: './assets/images/pngwing 13-2.png',
+            isVeg: false,
+        },
+        {
+            id: 6,
+            name: 'Burger Monsta',
+            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
+            price: '₹250',
+            discount: '',
+            imageUrl: './assets/images/pngwing 13.png',
+            isVeg: false,
+        },
+        {
+            id: 7,
+            name: 'Cheese Burger',
+            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
+            price: '₹350',
+            discount: '20% OFF',
+            imageUrl: './assets/images/pngwing 14.png',
+            isVeg: true,
+        },
+        {
+            id: 8,
+            name: 'Paneer Burger',
+            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
+            price: '₹260',
+            discount: '10% OFF',
+            imageUrl: './assets/images/pngwing 13-2.png',
+            isVeg: false,
+        },
+        {
+            id: 9,
+            name: 'Green Leaves Burger',
+            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
+            price: '₹200',
+            discount: '',
+            imageUrl: './assets/images/pngwing 14-3.png',
+            isVeg: true,
+        },
+        {
+            id: 10,
+            name: 'Ham Cheeseburger',
+            description: 'Premium beef, fresh brioche buns, crispy lettuce, tomatoes, cheese, pickles.',
+            price: '₹290',
+            discount: '20% OFF',
+            imageUrl: './assets/images/pngwing 14.png',
+            isVeg: true,
+        },
+    ];
+
     const getTabLabel = () => {
         switch (activeTab) {
         case 'request':
@@ -218,7 +224,6 @@ const Managemenu = () => {
         navigate('/Profilepage');
     }
     const [categoryName, setCategoryName] = useState('');
-    const [refreshKey, setRefreshKey] = useState(0); // State to trigger re-fetch
      // Initial empty state for categories
     const [selectedImageFile, setSelectedImageFile] = useState(null);
 
@@ -246,6 +251,38 @@ const Managemenu = () => {
         }
     };
 
+
+    const handleLogout = () => {
+  // Clear user data from localStorage or sessionStorage
+  localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
+
+  // Optionally make an API request to invalidate session if necessary
+  // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
+
+  // Redirect user to login or home page after logout
+  navigate("/login"); // Or any other page
+};
+const [adminData, setAdminData] = useState({});
+  useEffect(() => {
+    // Fetch admin data
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+  .then(response => {
+    if (response.data.success) {
+      setAdminData(response.data.data); // Set admin data to the state
+    }
+  })
+  .catch(error => {
+      console.error("Error fetching admin data:", error);
+  });
+  }, []);
+
     const [items, setItems] = useState([]); // State to hold items
 
     useEffect(() => {
@@ -270,8 +307,7 @@ const Managemenu = () => {
         };
 
         fetchItems(); // Call the function to fetch items
-    }, [refreshKey]);
-
+    }, []);
     
     return (
         <div className="flex min-h-screen bg-gray-900 text-white font-sans">
@@ -305,6 +341,9 @@ const Managemenu = () => {
                         <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                             Onsite Order
                         </a>
+                         <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Kitchen
+                </a>
                     </div>
                 )}
             </div>
@@ -336,10 +375,12 @@ const Managemenu = () => {
               QR Codes
             </a>
           </nav>
-          <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
-            <IoMdLogOut className="mr-2" />
-            Log Out
-          </button>
+          <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}
+        >
+          <IoMdLogOut className="mr-2" />
+           Log Out
+         </button>
 
             </aside>
 
@@ -414,6 +455,9 @@ const Managemenu = () => {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
+                       <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Kitchen
+                </a>
                   </div>
               )}
           </div>
@@ -445,7 +489,9 @@ const Managemenu = () => {
             QR Codes
           </a>
         </nav>
-        <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
+        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}
+        >
           <IoMdLogOut className="mr-2" />
            Log Out
          </button>
@@ -459,7 +505,7 @@ const Managemenu = () => {
     </Dialog>
         
         {/* Search Bar */}
-        <div className="relative w-[400px]  marker">
+        <div className="relative w-[400px] ml-48 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -469,29 +515,76 @@ const Managemenu = () => {
             className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5"/>
         </div>
 
-        {/* Notification Icon and User Profile Dropdown */}
-        <div className="flex items-center space-x-4">
-          {/* Notification Icon */}
-          <div className="relative">
-            <svg
-              className="w-6 h-6 text-gray-300 cursor-pointer"
-              fill="currentColor"
-              viewBox="0 0 24 24"
+       {/* Notification Icon and User Profile Dropdown */}
+          <div className="flex items-center space-x-4">
+            {/* Notification Icon */}
+            <div
+              className="relative cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
-            </svg>
-            {/* Notification Badge */}
-            <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
-          </div>
+              <svg
+                className="w-6 h-6 text-gray-300"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
+              </svg>
+              {/* Notification Badge */}
+              <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
+            </div>
+
+            {/* Notification Dropdown */}
+            {isOpen && (
+              <div className="absolute right-0 mt-2 w-72 bg-[#252836] text-gray-300 rounded-md shadow-lg overflow-hidden z-50" style={{ marginRight: '240px', marginTop: '390px', width: '380px' }}>
+                {/* Header with Close Button */}
+                <div className="p-4 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Notification</h3>
+                  <button
+                    className="text-gray-400 hover:text-gray-200 focus:outline-none"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div className="divide-y divide-gray-700 m-2 ">
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">2 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Table No: 10</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">15 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">1 Hr Ago</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
 
           {/* User Profile Dropdown */}
           <div className="relative">
             <button
-            onClick={handlenavigateprofile}
+              onClick={handlenavigateprofile}
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
-              <span className="text-white sm:hidden lg:flex">Musabbir Hossain</span>
+              <span className="text-white sm:hidden lg:flex">{adminData.firstname} {adminData.lastname}</span>
               <svg
                 className="w-4 h-4 text-gray-300"
                 fill="currentColor"
@@ -594,8 +687,7 @@ const Managemenu = () => {
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                                     <button
                                         onClick={() => handleCategoryClick('All')}
-                                        className=" text-white p-2 rounded-md flex items-center bg-yellow-600"
-                                    >
+                                        className=" text-white p-2 rounded-md flex items-center bg-yellow-600">
                                         <img
                                             src="./assets/images/pngwing 14-2.png"
                                             alt='all'
@@ -637,7 +729,7 @@ const Managemenu = () => {
                         items.map((item, index) => (
                             <div key={item._id} className="bg-gray-800 w-full  rounded-lg p-4 text-gray-300 relative">
                                 <div className='bg-gray-700 w-full h-36 flex items-center justify-center rounded-lg'>
-                                <img src={`http://localhost:8080/${item.imageUrl}`}  alt={item.itemName} className="w-40 ml-1 h-28  object-cover rounded-md mb-2" />
+                                <img src={item.imageUrl} alt={item.itemName} className="w-40 ml-1 h-28  object-cover rounded-md mb-2" />
                                 </div>
 
                                 {/* Discount Label */}
@@ -657,13 +749,13 @@ const Managemenu = () => {
                                 {dotsMenuOpen === item._id && (
                                     <div className="absolute top-10 right-2 bg-gray-700 text-white rounded-md shadow-md py-1 w-28">
                                         <button
-                                            onClick={() => openEditModal(item._id)}
+                                            onClick={handleOpenEdit}
                                             className="hover:text-yellow-600 hover:bg-gray-600 text-white px-4 py-2 rounded"
                                         >
                                             Edit Burger
                                         </button>
                                         {/* Edit Item Modal */}
-                {isEditOpen && editingItem && (
+            {isEditOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-gray-800 text-white w-96 p-6 rounded-lg shadow-lg relative">
                         <h2 className="text-xl font-bold mb-4">Edit Item</h2>
@@ -674,11 +766,7 @@ const Managemenu = () => {
                                 Upload Item Image
                             </label>
                             <div className="w-full h-32 bg-gray-700 rounded flex items-center justify-center cursor-pointer">
-                            <input
-                                type="file"
-                                className="w-full p-2 bg-gray-700 rounded"
-                                onChange={(e) => setEditingItem({ ...editingItem, image: e.target.files[0] })}
-                            />
+                                <span className="text-gray-300">Change Image</span>
                             </div>
                         </div>
 
@@ -687,12 +775,13 @@ const Managemenu = () => {
                             <label className="block mb-2 text-sm font-medium">
                                 Item Name
                             </label>
-                            <input
-                                type="text"
-                                value={editingItem.itemName}
-                                onChange={(e) => setEditingItem({ ...editingItem, itemName: e.target.value })}
-                                className="w-full p-2 bg-gray-700 rounded"
-                            />
+                            <select className="w-full p-2 bg-gray-700 rounded">
+                                {itemNames.map((item, index) => (
+                                    <option key={index} value={item}>
+                                        {item}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         {/* Item Ingredients Input */}
@@ -703,8 +792,7 @@ const Managemenu = () => {
                             <input
                                 type="text"
                                 className="w-full p-2 bg-gray-700 rounded"
-                                value={editingItem.ingredients}
-                                onChange={(e) => setEditingItem({ ...editingItem, ingredients: e.target.value })}
+                                placeholder="Include ingredients..."
                             />
                         </div>
 
@@ -716,9 +804,8 @@ const Managemenu = () => {
                                 </label>
                                 <input
                                     type="number"
-                                    value={editingItem.price}
-                                    onChange={(e) => setEditingItem({ ...editingItem, price: e.target.value })}
                                     className="w-full p-2 bg-gray-700 rounded"
+                                    placeholder="₹500"
                                 />
                             </div>
                             <div className="flex-1">
@@ -728,8 +815,7 @@ const Managemenu = () => {
                                 <input
                                     type="number"
                                     className="w-full p-2 bg-gray-700 rounded"
-                                    value={editingItem.discount}
-                                    onChange={(e) => setEditingItem({ ...editingItem, discount: e.target.value })}
+                                    placeholder="20"
                                 />
                             </div>
                         </div>
@@ -739,11 +825,7 @@ const Managemenu = () => {
                             <label className="block mb-2 text-sm font-medium">
                                 Select Availability
                             </label>
-                            <select
-                                value={editingItem.availability}
-                                onChange={(e) => setEditingItem({ ...editingItem, availability: e.target.value })}
-                                className="w-full p-2 bg-gray-700 rounded"
-                                >
+                            <select className="w-full p-2 bg-gray-700 rounded">
                                 <option value="Available">Available</option>
                                 <option value="Unavailable">Unavailable</option>
                             </select>
@@ -752,13 +834,13 @@ const Managemenu = () => {
                         {/* Action Buttons */}
                         <div className="flex justify-between">
                             <button
-                                onClick={closeEditModal}
+                                onClick={handleCloseEdit}
                                 className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
                             >
                                 Cancel
                             </button>
                             <button
-                                onClick={() => updateItem(editingItem)}
+                                onClick={handleCloseEdit}
                                 className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
                             >
                                 Save
@@ -773,14 +855,14 @@ const Managemenu = () => {
                                             onClose={handleCloseEdit}
                                             onSave={handleSaveEdit}
                                         /> */}
-                                        <a  onClick={() => handleOpenDelete(item)}
+                                        <a  onClick={handleOpenDelete}
                                             className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
                                         >
                                             Delete
                                         </a>
 
                                         {/* Delete Confirmation Modal */}
-                {isDeleteOpen && itemToDelete && (
+            {isDeleteOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-gray-800 text-white w-80 p-6 rounded-lg shadow-lg relative">
                         <div className="flex flex-col items-center">
@@ -802,7 +884,7 @@ const Managemenu = () => {
                                 </svg>
                             </div>
                             {/* Message */}
-                            <h2 className="text-lg font-bold mb-2">Delete {itemToDelete.itemName}</h2>
+                            <h2 className="text-lg font-bold mb-2">Delete Hamburger</h2>
                             <p className="text-sm text-gray-400 mb-6 text-center">
                                 Are you sure you want to delete this item?
                             </p>
@@ -817,7 +899,10 @@ const Managemenu = () => {
                                 No
                             </button>
                             <button
-                                onClick={() => handleDelete(itemToDelete._id)}
+                                onClick={() => {
+                                    handleCloseDelete();
+                                    alert("Item Deleted!"); // Replace with your delete logic
+                                }}
                                 className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-1/3"
                             >
                                 Yes

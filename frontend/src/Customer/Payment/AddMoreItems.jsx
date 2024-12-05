@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { FaChevronLeft, FaCaretRight } from 'react-icons/fa';
 import { IoIosCloseCircle } from "react-icons/io";
@@ -361,5 +363,4 @@ export default function AddMoreItems() {
       )}
     </div>
   );
-}
-
+} 

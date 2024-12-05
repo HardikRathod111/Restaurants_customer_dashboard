@@ -12,6 +12,7 @@ import axios from 'axios';
 import { QRCodeSVG } from 'qrcode.react';
 
 
+
 function QrCode() {
   const [activeLink, setActiveLink] = useState('');
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
@@ -77,6 +78,8 @@ function QrCode() {
     navigate('/createqrcode', { state: { qrCode } }); // Pass data using the state
   };
 
+  const [adminData, setAdminData] = useState({});
+
   const [qrCodes, setQrCodes] = useState([]);
 
   useEffect(() => {
@@ -90,6 +93,32 @@ function QrCode() {
       };
 
       fetchQrCodes();
+  }, []);
+  
+  const handleLogout = () => {
+    // Clear user data from localStorage or sessionStorage
+    localStorage.removeItem("authToken"); 
+    navigate("/login"); // Or any other page
+  };
+
+  useEffect(() => {
+    // Fetch admin data
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+  .then(response => {
+    if (response.data.success) {
+      setAdminData(response.data.data); // Set admin data to the state
+    }
+  })
+  .catch(error => {
+      console.error("Error fetching admin data:", error);
+  });
   }, []);
 
   return (
@@ -155,7 +184,8 @@ function QrCode() {
             QR Codes
           </a>
         </nav>
-        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
+        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}>
           <IoMdLogOut className="mr-2" />
            Log Out
          </button>
@@ -263,7 +293,8 @@ function QrCode() {
             QR Codes
           </a>
         </nav>
-        <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
+        <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}>
           <IoMdLogOut className="mr-2" />
            Log Out
          </button>
@@ -309,7 +340,7 @@ function QrCode() {
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
-              <span className="text-white sm:hidden lg:flex">Musabbir Hossain</span>
+              <span className="text-white sm:hidden lg:flex">{adminData.firstname} {adminData.lastname}</span>
               <svg
                 className="w-4 h-4 text-gray-300"
                 fill="currentColor"

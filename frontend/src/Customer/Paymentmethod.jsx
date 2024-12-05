@@ -6,7 +6,7 @@ const PaymentMethod = () => {
     <div className="bg-[#121212] text-white min-h-screen flex flex-col justify-between px-4">
       {/* Header */}
       <div className="flex items-center py-4">
-        <a href="/cartpage" className="text-white text-lg">
+        <button className="text-white text-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -21,7 +21,7 @@ const PaymentMethod = () => {
               d="M15.75 19.5L8.25 12l7.5-7.5"
             />
           </svg>
-        </a>
+        </button>
         <h1 className="flex-grow text-center text-lg font-semibold">
           Payment Method
         </h1>
@@ -119,4 +119,4 @@ const PaymentMethod = () => {
   );
 };
 
-export default PaymentMethod;     
+export default PaymentMethod;

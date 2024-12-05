@@ -1,18 +1,58 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
+import axios from 'axios';
 import { FaBoxOpen, FaClipboardList, FaSearch } from 'react-icons/fa';
 import { MdWindow, MdOutlineRestaurantMenu, MdOutlineQrCodeScanner, MdExpandMore } from "react-icons/md";
 import { IoMdLogOut } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
+import { useNavigate } from 'react-router-dom';
 
 export default function Deliver() {
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
   const [paymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+
+     const handlenavigateprofile = ()=> {
+    navigate('/Profilepage');
+  }
+
+  const handleLogout = () => {
+  // Clear user data from localStorage or sessionStorage
+  localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
+
+  // Optionally make an API request to invalidate session if necessary
+  // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
+
+  // Redirect user to login or home page after logout
+  navigate("/login"); // Or any other page
+};
+const [adminData, setAdminData] = useState({});
+  useEffect(() => {
+    // Fetch admin data
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+  .then(response => {
+    if (response.data.success) {
+      setAdminData(response.data.data); // Set admin data to the state
+    }
+  })
+  .catch(error => {
+      console.error("Error fetching admin data:", error);
+  });
+  }, []);
 
   const toggleManageOrder = () => {
     setManageOrderOpen(!manageOrderOpen);
   };
+    const navigate = useNavigate();
+ 
 
   const togglePaymentHistory = () => {
     setPaymentHistoryOpen(!paymentHistoryOpen);
@@ -81,10 +121,12 @@ export default function Deliver() {
             QR Codes
           </a>
         </nav>
-        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
+        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}
+        >
           <IoMdLogOut className="mr-2" />
-          Log Out
-        </button>
+           Log Out
+         </button>
       </aside>
 
       <main className="flex-1 lg:ml-[200px] md:ml-0 sm:w-svw p-6 bg-gray-900">
@@ -95,7 +137,7 @@ export default function Deliver() {
             <br />
             <span className="text-gray-400 font-normal text-lg">Jd's Restro</span>
           </h2>
-          <div className="relative w-[400px] marker">
+          <div className="relative w-[400px] ml-[100px] marker">
             <input
               type="text"
               placeholder="Search Here Your Delicious Food..."
@@ -105,35 +147,87 @@ export default function Deliver() {
               className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5" />
           </div>
 
+          {/* Notification Icon and User Profile Dropdown */}
           <div className="flex items-center space-x-4">
-            <div className="relative">
+            {/* Notification Icon */}
+            <div
+              className="relative cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
+            >
               <svg
-                className="w-6 h-6 text-gray-300 cursor-pointer"
+                className="w-6 h-6 text-gray-300"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
               </svg>
+              {/* Notification Badge */}
               <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
             </div>
 
-            <div className="relative">
-              <button
-                className="flex items-center space-x-2 focus:outline-none"
+            {/* Notification Dropdown */}
+            {isOpen && (
+              <div className="absolute right-0 mt-2 w-72 bg-[#252836] text-gray-300 rounded-md shadow-lg overflow-hidden z-50" style={{ marginRight: '240px', marginTop: '390px', width: '380px' }}>
+                {/* Header with Close Button */}
+                <div className="p-4 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Notification</h3>
+                  <button
+                    className="text-gray-400 hover:text-gray-200 focus:outline-none"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div className="divide-y divide-gray-700 m-2 ">
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">2 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Table No: 10</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">15 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">1 Hr Ago</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+
+             {/* User Profile Dropdown */}
+          <div className="relative">
+            <button
+              onClick={handlenavigateprofile}
+              className="flex items-center space-x-2 focus:outline-none"
+            >
+              <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
+              <span className="text-white sm:hidden lg:flex">{adminData.firstname} {adminData.lastname}</span>
+              <svg
+                className="w-4 h-4 text-gray-300"
+                fill="currentColor"
+                viewBox="0 0 20 20"
               >
-               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
-                <span className="text-white sm:hidden lg:flex">Musabbir Hossain</span>
-                <svg
-                  className="w-4 h-4 text-gray-300"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M5.25 7.5l4.25 4.25 4.25-4.25L15 9l-5 5-5-5z" />
-                </svg>
-              </button>
-            </div>
+                <path d="M5.25 7.5l4.25 4.25 4.25-4.25L15 9l-5 5-5-5z" />
+              </svg>
+            </button>
           </div>
-        </header>
+        </div>
+      </header>
 
         {/* Delivery Dashboard Content */}
         <div className="h-screen bg-slate-900 text-white p-4">
@@ -259,4 +353,3 @@ function OrderCard({ orderType, tableNo, customerName, itemQuantity, items, cook
     </div>
   );
 }
-
