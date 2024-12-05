@@ -308,7 +308,8 @@ const [adminData, setAdminData] = useState({});
     </Dialog>
         
         {/* Search Bar */}
-        <div className="relative w-[400px] ml-44  marker">
+        <div className='flex'>
+        <div className="relative w-[400px] mr-28  marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -398,6 +399,7 @@ const [adminData, setAdminData] = useState({});
               </svg>
             </button>
           </div>
+        </div>
         </div>
         </header>
 

@@ -36,6 +36,8 @@ import Deliver from './Admin/Manageorder/Kitchen/Deliver';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');

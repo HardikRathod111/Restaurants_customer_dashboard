@@ -342,14 +342,15 @@ const [adminData, setAdminData] = useState({});
     </Dialog>
         
         {/* Search Bar */}
-        <div className="relative w-[400px] ml-44 marker">
+        <div className='flex'>
+        <div className="relative w-[400px] mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
-            className="w-[300px] sm:w-[150px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+            className="w-[300px] sm:w-[200px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
           />
           < FaSearch 
-            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5"/>
+            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-[330px] md:left-2 top-2.5"/>
         </div>
 
        {/* Notification Icon and User Profile Dropdown */}
@@ -431,6 +432,7 @@ const [adminData, setAdminData] = useState({});
               </svg>
             </button>
           </div>
+        </div>
         </div>
       </header>
 

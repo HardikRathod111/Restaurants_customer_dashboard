@@ -295,7 +295,8 @@ function Editprofile() {
     </Dialog>
         
         {/* Search Bar */}
-        <div className="relative w-[400px] ml-24 marker">
+        <div className='flex'>
+        <div className="relative w-[400px] mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -384,6 +385,7 @@ function Editprofile() {
               </svg>
             </button>
           </div>
+        </div>
         </div>
       </header>
       <section className="flex gap-3 sm:flex-col md:flex-row w-full">

@@ -149,7 +149,8 @@ const [adminData, setAdminData] = useState({});
             <br />
             <span className="text-gray-400 font-normal text-lg">Jd's Restro</span>
           </h2>
-          <div className="relative w-[400px] ml-[100px] marker">
+          <div className='flex'>
+          <div className="relative w-[400px] mr-28 marker">
             <input
               type="text"
               placeholder="Search Here Your Delicious Food..."
@@ -235,6 +236,7 @@ const [adminData, setAdminData] = useState({});
                 <path d="M5.25 7.5l4.25 4.25 4.25-4.25L15 9l-5 5-5-5z" />
               </svg>
             </button>
+          </div>
           </div>
           </div>
         </header>
