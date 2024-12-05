@@ -19,6 +19,7 @@ function QrCode() {
   const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('request');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null); // Fixed state for dropdown menu
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
@@ -350,7 +351,8 @@ function QrCode() {
           </Dialog>
 
           {/* Search Bar */}
-          <div className="relative w-[400px]  marker">
+          <div className='flex'>
+          <div className="relative w-[400px] mr-28 marker">
             <input
               type="text"
               placeholder="Search Here Your Delicious Food..."
@@ -360,12 +362,15 @@ function QrCode() {
               className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5" />
           </div>
 
-          {/* Notification Icon and User Profile Dropdown */}
-          <div className="flex items-center space-x-4">
+         {/* Notification Icon and User Profile Dropdown */}
+         <div className="flex items-center space-x-4">
             {/* Notification Icon */}
-            <div className="relative">
+            <div
+              className="relative cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
+            >
               <svg
-                className="w-6 h-6 text-gray-300 cursor-pointer"
+                className="w-6 h-6 text-gray-300"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -375,23 +380,68 @@ function QrCode() {
               <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
             </div>
 
-            {/* User Profile Dropdown */}
-            <div className="relative">
-              <button
-                onClick={handlenavigateprofile}
-                className="flex items-center space-x-2 focus:outline-none"
+            {/* Notification Dropdown */}
+            {isOpen && (
+              <div className="absolute right-0 mt-2 w-72 bg-[#252836] text-gray-300 rounded-md shadow-lg overflow-hidden z-50" style={{ marginRight: '240px', marginTop: '390px', width: '380px' }}>
+                {/* Header with Close Button */}
+                <div className="p-4 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Notification</h3>
+                  <button
+                    className="text-gray-400 hover:text-gray-200 focus:outline-none"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div className="divide-y divide-gray-700 m-2 ">
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">2 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Table No: 10</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">15 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">1 Hr Ago</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+
+         {/* User Profile Dropdown */}
+          <div className="relative">
+            <button
+              onClick={handlenavigateprofile}
+              className="flex items-center space-x-2 focus:outline-none"
+            >
+              <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
+              <span className="text-white sm:hidden lg:flex">{adminData.firstname} {adminData.lastname}</span>
+              <svg
+                className="w-4 h-4 text-gray-300"
+                fill="currentColor"
+                viewBox="0 0 20 20"
               >
-                <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
-                <span className="text-white sm:hidden lg:flex">{adminData.firstname} {adminData.lastname}</span>
-                <svg
-                  className="w-4 h-4 text-gray-300"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M5.25 7.5l4.25 4.25 4.25-4.25L15 9l-5 5-5-5z" />
-                </svg>
-              </button>
-            </div>
+                <path d="M5.25 7.5l4.25 4.25 4.25-4.25L15 9l-5 5-5-5z" />
+              </svg>
+            </button>
+          </div>
+        </div>
           </div>
         </header>
 
