@@ -588,7 +588,7 @@ const [adminData, setAdminData] = useState({});
                 {/* Modal for viewing bill */}
                       {showModal && (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
-    <div className="bg-[#252836] text-white p-6 rounded-lg max-w-sm h-screen w-full shadow-lg">
+    <div className="bg-[#252836] text-white p-6 rounded-lg max-w-sm h-screen w-full shadow-lg" style={{height:'600px'}}> 
       {/* Header Section */}
       <div className="flex justify-between items-center border-b border-gray-700 pb-4">
         <h2 className="text-lg font-semibold">Parcel Payment Bill</h2>
