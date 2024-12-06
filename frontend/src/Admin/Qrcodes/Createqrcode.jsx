@@ -20,15 +20,15 @@ const Createqrcode = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const [qrCodeData, setQrCodeData] = useState(location.state?.qrCode || {}); // Access passed QR code data
+  const [qrCodeData, setQrCodeData] = useState(location.state?.qrCode || {});
   const [category, setCategory] = useState(qrCodeData.contentCategory || 'Food & Drink');
-  const [link, setLink] =  useState(qrCodeData.link || '');
-  const [additionalText, setAdditionalText] =useState(qrCodeData.additionalText || '');
+  const [link, setLink] = useState(qrCodeData.link || '');
+  const [additionalText, setAdditionalText] = useState(qrCodeData.additionalText || '');
   const [chooseColor, setChooseColor] = useState(qrCodeData.chooseColor || '#000000');
   const [frameColor, setFrameColor] = useState(qrCodeData.frameColor || '#000000');
-  const [qrColor, setQRColor] =  useState(qrCodeData.qrColor || '#000000');
-  const [contentCategory, setContentCategory] = useState('Food & Drink'); // State for content category
-  const [qrName, setQRName] =  useState(qrCodeData.qrName || ''); // State for QR Name
+  const [qrColor, setQRColor] = useState(qrCodeData.qrColor || '#000000');
+  const [contentCategory, setContentCategory] = useState('Food & Drink');
+  const [qrName, setQRName] = useState(qrCodeData.qrName || '');
 
   const isEditing = Boolean(qrCodeData);
 
@@ -537,42 +537,39 @@ const Createqrcode = () => {
               </div>
 
               {/* Color Pickers */}
-              <div className="relative">
+              <div>
                 <label className="block text-sm mb-1">Choose Color</label>
-                <div className="flex items-center bg-gray-700 rounded p-3 cursor-pointer">
+                <div className="flex items-center bg-gray-700 rounded p-3">
                   <input
                     type="color"
-                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    className="w-8 h-8 rounded cursor-pointer"
                     value={chooseColor}
                     onChange={(e) => setChooseColor(e.target.value)}
                   />
-                  <div className="w-4 h-4 rounded-full"  style={{ backgroundColor: chooseColor }}></div>
-                  <span className="ml-2">{chooseColor}  </span>
+                  <span className="ml-2">{chooseColor}</span>
                 </div>
               </div>
-              <div className="relative">
+              <div>
                 <label className="block text-sm mb-1">Frame Color</label>
-                <div className="flex items-center bg-gray-700 rounded p-3 cursor-pointer">
+                <div className="flex items-center bg-gray-700 rounded p-3">
                   <input
                     type="color"
-                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    className="w-8 h-8 rounded cursor-pointer"
                     value={frameColor}
                     onChange={(e) => setFrameColor(e.target.value)}
                   />
-                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: frameColor }}></div>
                   <span className="ml-2">{frameColor}</span>
                 </div>
               </div>
-              <div className="relative">
+              <div>
                 <label className="block text-sm mb-1">QR Color</label>
-                <div className="flex items-center bg-gray-700 rounded p-3 cursor-pointer">
+                <div className="flex items-center bg-gray-700 rounded p-3">
                   <input
                     type="color"
-                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    className="w-8 h-8 rounded cursor-pointer"
                     value={qrColor}
                     onChange={(e) => setQRColor(e.target.value)}
                   />
-                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: qrColor }}></div>
                   <span className="ml-2">{qrColor}</span>
                 </div>
               </div>
@@ -617,7 +614,7 @@ const Createqrcode = () => {
           <div className="bg-[#2B2F3F] relative rounded-lg w-[250px] h-[200px] ml-[290px] p-1 flex justify-center items-center" id="download-container">
             <span className="text-xl">
               <img src='./assets/images/qrcode_undefined_undefined_2.png' alt='logo' className='w-96' />
-              <QRCodeSVG className='absolute top-10 left-[90px] w-[75px]' ref={qrCodeRef}  value={link}/>
+              <QRCodeSVG className='absolute top-10 left-[90px] w-[75px]' ref={qrCodeRef}  value={link} bgColor={chooseColor} fgColor={qrColor}/>
             </span>
           </div>
           <button className="bg-[#A870FF] text-white px-6 py-2 mt-5 ml-[340px] rounded-lg font-semibold shadow-md hover:bg-[#9142FF]"   onClick={async () => {
@@ -636,3 +633,4 @@ const Createqrcode = () => {
 }
 
 export default Createqrcode;
+
