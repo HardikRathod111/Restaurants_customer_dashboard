@@ -10,7 +10,7 @@ const PaymentMethod = () => {
     navigate('/parcel-Homepage')
   }
   return (
-    <div className="bg-[#121212] text-white min-h-screen flex flex-col justify-between px-4">
+    <div className="bg-[#121212] text-white min-h-screen flex flex-col px-4">
       {/* Header */}
       <div className="flex items-center py-4">
         <button className="text-white text-lg">
@@ -35,9 +35,9 @@ const PaymentMethod = () => {
       </div>
 
       {/* Card Selection */}
-      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4 mb-72">
+      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4 mb-40">
         {/* Master Card */}
-        <div className="flex items-center space-x-4 border-b border-gray-700 pb-4">
+        <div className="flex items-center space-x-4 border-b border-gray-700 pb-4 mt-5 mb-5">
           <img
             src="./assets/images/Frame.png"
             alt="Master Card"
@@ -93,9 +93,10 @@ const PaymentMethod = () => {
       </div>
 
       {/* Visa and UPI */}
-      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4  ">
-        <div className="flex items-center space-x-4 border-b border-gray-700 pb-4">
-          <img
+      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4
+      ">
+      <div className="flex items-center space-x-4 ">
+      <img
             src="./assets/images/Frame 1000004335.png"
             alt="Visa Card"
             className="w-10 h-10"
@@ -110,7 +111,7 @@ const PaymentMethod = () => {
             className="w-10 h-10"
           />
           <h2 className="flex-grow font-medium">UPI</h2>
-          <input type="radio" name="payment-method" className="accent-yellow-500" />
+          <input type="radio" name="payment-method" className="accent-yellow-500" />  
         </div>
       </div>
 
