@@ -20,6 +20,8 @@ function QrCode() {
   const [activeTab, setActiveTab] = useState('table');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null); // Fixed state for dropdown menu
+  const [isOpen, setIsOpen] = useState(false);
+
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
   const togglePaymentHistory = () => setPaymentHistoryOpen(!PaymentHistoryOpen);
@@ -55,16 +57,17 @@ function QrCode() {
   const [selectedQrCode, setSelectedQrCode] = useState(null);
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this QR code?");
-    if (!confirmDelete) return;
+    // const confirmDelete = window.confirm("Are you sure you want to delete this QR code?");
+    // if (!confirmDelete) return;
   
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/qrCode/deleteQrCode/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/qrCode/deleteQrCode/${selectedQrCodeId}`, {
         method: 'DELETE',
       });
   
       if (response.ok) {
-        alert('QR Code deleted successfully!');
+        setIsModalOpen(false);
+        // alert('QR Code deleted successfully!');
       } else {
         alert('Failed to delete QR Code');
       }
@@ -96,9 +99,20 @@ function QrCode() {
   }, []);
   
   const handleLogout = () => {
-    // Clear user data from localStorage or sessionStorage
     localStorage.removeItem("authToken"); 
     navigate("/login"); // Or any other page
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [selectedQrCodeId, setSelectedQrCodeId] = useState(null); // State to store QR Code ID for deletion
+  const handleDeleteClick = (id) => {
+    setSelectedQrCodeId(id); // Set the selected QR code to delete
+    setIsModalOpen(true); // Open the confirmation modal
+  };
+
+
+  const closeModal = () => {
+    setIsModalOpen(false); // Close the modal if the user cancels
   };
 
   useEffect(() => {
@@ -185,7 +199,8 @@ function QrCode() {
           </a>
         </nav>
         <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
-        onClick={handleLogout}>
+        onClick={handleLogout}
+        >
           <IoMdLogOut className="mr-2" />
            Log Out
          </button>
@@ -293,8 +308,9 @@ function QrCode() {
             QR Codes
           </a>
         </nav>
-        <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto"
-        onClick={handleLogout}>
+        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}
+        >
           <IoMdLogOut className="mr-2" />
            Log Out
          </button>
@@ -307,31 +323,79 @@ function QrCode() {
       </div>
     </Dialog>
         
-        {/* Search Bar */}
-        <div className="relative w-[400px]  marker">
+       {/* Search Bar */}
+       <div className='flex'>
+        <div className="relative w-[400px] mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
-            className="w-[300px] sm:w-[150px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+            className="w-[300px] sm:w-[200px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
           />
           < FaSearch 
-            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5"/>
+            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-[330px] md:left-2 top-2.5"/>
         </div>
 
-        {/* Notification Icon and User Profile Dropdown */}
-        <div className="flex items-center space-x-4">
-          {/* Notification Icon */}
-          <div className="relative">
-            <svg
-              className="w-6 h-6 text-gray-300 cursor-pointer"
-              fill="currentColor"
-              viewBox="0 0 24 24"
+       {/* Notification Icon and User Profile Dropdown */}
+          <div className="flex items-center space-x-4">
+            {/* Notification Icon */}
+            <div
+              className="relative cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
-            </svg>
-            {/* Notification Badge */}
-            <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
-          </div>
+              <svg
+                className="w-6 h-6 text-gray-300"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
+              </svg>
+              {/* Notification Badge */}
+              <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
+            </div>
+
+            {/* Notification Dropdown */}
+            {isOpen && (
+              <div className="absolute right-0 mt-2 w-72 bg-[#252836] text-gray-300 rounded-md shadow-lg overflow-hidden z-50" style={{ marginRight: '240px', marginTop: '390px', width: '380px' }}>
+                {/* Header with Close Button */}
+                <div className="p-4 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Notification</h3>
+                  <button
+                    className="text-gray-400 hover:text-gray-200 focus:outline-none"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div className="divide-y divide-gray-700 m-2 ">
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">2 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Table No: 10</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">15 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">1 Hr Ago</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
 
           {/* User Profile Dropdown */}
           <div className="relative">
@@ -350,6 +414,7 @@ function QrCode() {
               </svg>
             </button>
           </div>
+        </div>
         </div>
       </header>
 
@@ -410,15 +475,14 @@ function QrCode() {
               Edit
             </a>
             <a
-              href='/deleteprompt'
               className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
-              onClick={() => handleDelete(qrCode._id)}
+              onClick={() => handleDeleteClick(qrCode._id)}
             >
               Delete
             </a>
           </div>
         )}
-
+        
         {/* QR Code Box with Full Width Dark Background */}
         <div className="bg-gray-900 relative rounded-lg w-44 h-40 mt-6 flex justify-center items-center">
           
@@ -430,6 +494,43 @@ function QrCode() {
     <p>No QR Codes available</p> // Fallback message if no qrCodes are found
   )}
 </div>
+
+{/* Confirmation Modal */}
+{isModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="bg-[#1e1e2d] rounded-lg p-6 w-[350px]">
+                    <h2 className="text-white text-xl font-semibold mb-4">Delete QR Code</h2>
+
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="bg-red-600 p-4 rounded-full border-2 border-pink-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="36" height="36">
+                          <path d="M3 6h18v2H3V6zm3 4v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10H6zm8 6v-6h2v6h-2zm-4 0v-6h2v6H10zm-3-14h10l1 1H6l1-1z" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <p className="text-gray-400 text-center mb-6">
+                      <strong className='text-white text-2xl font-medium ml-3'>Delete This Qr Code</strong> <br />
+                      <span className='ml-6'> Are you sure you want to delete <br /> this item?</span>
+                    </p>
+
+                    <div className="flex justify-between">
+                      <button
+                        onClick={closeModal}
+                        className="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-14 rounded-lg"
+                      >
+                        No
+                      </button>
+                      <button
+                        onClick={handleDelete}
+                        className="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-14 rounded-lg"
+                      >
+                        Yes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
             </div>
           </section>
@@ -474,9 +575,8 @@ function QrCode() {
               Edit
             </a>
             <a
-              href='/deleteprompt'
               className="block w-full text-left px-4 py-2 hover:text-yellow-600 hover:bg-gray-600"
-              onClick={() => handleDelete(qrCode._id)}
+              onClick={() => handleDeleteClick(qrCode._id)}
             >
               Delete
             </a>
@@ -494,6 +594,42 @@ function QrCode() {
     <p>No QR Codes available</p> // Fallback message if no qrCodes are found
   )}
       </div>
+      {/* Confirmation Modal */}
+{isModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="bg-[#1e1e2d] rounded-lg p-6 w-[350px]">
+                    <h2 className="text-white text-xl font-semibold mb-4">Delete QR Code</h2>
+
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="bg-red-600 p-4 rounded-full border-2 border-pink-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="36" height="36">
+                          <path d="M3 6h18v2H3V6zm3 4v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10H6zm8 6v-6h2v6h-2zm-4 0v-6h2v6H10zm-3-14h10l1 1H6l1-1z" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <p className="text-gray-400 text-center mb-6">
+                      <strong className='text-white text-2xl font-medium ml-3'>Delete This Qr Code</strong> <br />
+                      <span className='ml-6'> Are you sure you want to delete <br /> this item?</span>
+                    </p>
+
+                    <div className="flex justify-between">
+                      <button
+                        onClick={closeModal}
+                        className="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-14 rounded-lg"
+                      >
+                        No
+                      </button>
+                      <button
+                        onClick={handleDelete}
+                        className="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-14 rounded-lg"
+                      >
+                        Yes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
     </div>
   </section>
 )}

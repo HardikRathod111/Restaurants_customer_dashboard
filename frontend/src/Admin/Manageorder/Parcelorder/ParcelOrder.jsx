@@ -5,7 +5,8 @@ import { FaBoxOpen, FaClipboardList, FaSearch,FaEye,FaHome  } from 'react-icons/
 import { IoMdCheckmarkCircle,IoMdLogOut, IoMdCloseCircle } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react';
+import axios from 'axios';
 
 const ParcelOrder = () => {
     const [manageOrderOpen, setManageOrderOpen] = useState(false);
@@ -17,6 +18,10 @@ const ParcelOrder = () => {
     const [activeLink, setActiveLink] = useState('');
     const [dropdownOpen, setDropdownOpen] = useState(null);
     const navigate = useNavigate();
+    const [restaurants, setRestaurants] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+
+
 
     const [open, setOpen] = useState(false)
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
@@ -25,11 +30,6 @@ const ParcelOrder = () => {
     const togglePaymentHistory = () => {
       setPaymentHistoryOpen(!PaymentHistoryOpen);
     };    
-
-    // const handleRowClick = (order) => {
-    //   setSelectedOrder(order); // Set the selected order
-    //   setShowModal(true);      // Open the modal
-    // };
 
     const handleViewBill = (order) => {
         setSelectedOrder(order); // Set the selected order details
@@ -56,12 +56,17 @@ const ParcelOrder = () => {
                 return "";
         }
     };
-    
 
-    // const orders = [
-    //     { id: 1, customer: "Davis Lipshutz", item: "Rice", date: "10/02/2024", time: "3:45 PM", phone: "98568 86214", quantity: "500 G.M", total: "₹ 500" },
-    //     { id: 2, customer: "Marcus Dorwart", item: "Biryani Rice", date: "11/02/2024", time: "2:45 PM", phone: "96668 22214", quantity: "100 G.M", total: "₹ 500" },
-    // ];
+    const handleLogout = () => {
+      // Clear user data from localStorage or sessionStorage
+      localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
+    
+      // Optionally make an API request to invalidate session if necessary
+      // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
+    
+      // Redirect user to login or home page after logout
+      navigate("/login"); // Or any other page
+    };
     const handlenavigateprofile = ()=> {
       navigate('/Profilepage');
     }
@@ -82,6 +87,27 @@ const ParcelOrder = () => {
     useEffect(() => {
       fetchOrders();
     }, []);
+
+    const [adminData, setAdminData] = useState({});
+  useEffect(() => {
+    // Fetch admin data
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+  .then(response => {
+    if (response.data.success) {
+      setAdminData(response.data.data); // Set admin data to the state
+    }
+  })
+  .catch(error => {
+      console.error("Error fetching admin data:", error);
+  });
+  }, []);
 
 
     return (
@@ -147,10 +173,12 @@ const ParcelOrder = () => {
               QR Codes
             </a>
           </nav>
-          <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto">
-            <IoMdLogOut className="mr-2" />
-            Log Out
-          </button>
+          <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}
+        >
+          <IoMdLogOut className="mr-2" />
+           Log Out
+         </button>
 
         </aside>
         
@@ -158,12 +186,11 @@ const ParcelOrder = () => {
         <main className="flex-1 lg:ml-[200px] md:ml-0 sm:w-svw p-6 bg-gray-900">
         <header className="flex justify-between sm:justify-normal md:justify-between items-center mb-6 pb-4 ">
         {/* Welcome Text */}
-        <div className="flex items-center xl:flex sm:hidden text-white font-semibold">
-          <FaHome />
-          <h4 className="ml-2 border-l-[1px] pl-2" style={{ fontSize: '15px' ,color:"#CA923D"}}>
-          {getTabLabel()}
-          </h4>
-        </div>
+        <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
+          Welcome Back 👋 
+          <br />
+          <span className="text-gray-400 font-normal text-lg">{restaurants.restaurantName}</span>
+        </h2>
 
         <button id="toggleButton" className='lg:hidden' onClick={() => setOpen(true)}>
         <BsThreeDotsVertical style={{fontSize:'20px'}}/>
@@ -207,7 +234,7 @@ const ParcelOrder = () => {
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </a>
-            <div>
+           <div>
               {/* Manage Order Dropdown */}
               <button
                   className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
@@ -225,6 +252,9 @@ const ParcelOrder = () => {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
+                       <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                        Kitchen
+                        </a>
                   </div>
               )}
           </div>
@@ -256,10 +286,12 @@ const ParcelOrder = () => {
             QR Codes
           </a>
         </nav>
-        <button className="flex items-center px-4 py-2 mr-12 md:mt-6 bg-red-500 rounded-md text-white ml-auto">
+        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}
+        >
           <IoMdLogOut className="mr-2" />
-          Log Out
-        </button>
+           Log Out
+         </button>
 
                 </div>
               </div>
@@ -270,39 +302,87 @@ const ParcelOrder = () => {
     </Dialog>
         
         {/* Search Bar */}
-        <div className="relative w-[400px]  marker">
+        <div className='flex'>
+        <div className="relative w-[400px] mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
-            className="w-[300px] sm:w-[150px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+            className="w-[300px] sm:w-[200px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
           />
           < FaSearch 
-            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5"/>
+            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-[330px] md:left-2 top-2.5"/>
         </div>
 
-        {/* Notification Icon and User Profile Dropdown */}
-        <div className="flex items-center space-x-4">
-          {/* Notification Icon */}
-          <div className="relative">
-            <svg
-              className="w-6 h-6 text-gray-300 cursor-pointer"
-              fill="currentColor"
-              viewBox="0 0 24 24"
+       {/* Notification Icon and User Profile Dropdown */}
+          <div className="flex items-center space-x-4">
+            {/* Notification Icon */}
+            <div
+              className="relative cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
-            </svg>
-            {/* Notification Badge */}
-            <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
-          </div>
+              <svg
+                className="w-6 h-6 text-gray-300"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
+              </svg>
+              {/* Notification Badge */}
+              <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
+            </div>
+
+            {/* Notification Dropdown */}
+            {isOpen && (
+              <div className="absolute right-0 mt-2 w-72 bg-[#252836] text-gray-300 rounded-md shadow-lg overflow-hidden z-50" style={{ marginRight: '240px', marginTop: '390px', width: '380px' }}>
+                {/* Header with Close Button */}
+                <div className="p-4 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Notification</h3>
+                  <button
+                    className="text-gray-400 hover:text-gray-200 focus:outline-none"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div className="divide-y divide-gray-700 m-2 ">
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">2 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Table No: 10</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">15 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">1 Hr Ago</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
 
           {/* User Profile Dropdown */}
           <div className="relative">
             <button
-            onClick={handlenavigateprofile}
+              onClick={handlenavigateprofile}
               className="flex items-center space-x-2 focus:outline-none"
             >
               <img src="./assets/images/21460d39cd98ccca0d3fa906d5718aa3.jpg" alt="User" className="md:w-10 sm:w-8 md:h-10 sm:h-8 rounded-full" />
-              <span className="text-white sm:hidden lg:flex">Musabbir Hossain</span>
+              <span className="text-white sm:hidden lg:flex">{adminData.firstname} {adminData.lastname}</span>
               <svg
                 className="w-4 h-4 text-gray-300"
                 fill="currentColor"
@@ -313,7 +393,9 @@ const ParcelOrder = () => {
             </button>
           </div>
         </div>
-        </header>
+        </div>
+      </header>
+
 
                   {/* Tabs */}
                   <div className="flex">

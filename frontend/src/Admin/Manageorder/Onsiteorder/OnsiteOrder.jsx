@@ -24,13 +24,7 @@ const OnsiteOrder = () => {
       const [isOpen, setIsOpen] = useState(false);
 
 const handleLogout = () => {
-  // Clear user data from localStorage or sessionStorage
   localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
-
-  // Optionally make an API request to invalidate session if necessary
-  // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
-
-  // Redirect user to login or home page after logout
   navigate("/login"); // Or any other page
 };
 const [adminData, setAdminData] = useState({});
@@ -53,10 +47,6 @@ const [adminData, setAdminData] = useState({});
       console.error("Error fetching admin data:", error);
   });
   }, []);
-
-
-
-   
 
     const handleViewBill = (order) => {
         setSelectedOrder(order); // Set the selected order details
@@ -302,15 +292,16 @@ const [adminData, setAdminData] = useState({});
       </div>
     </Dialog>
         
-        {/* Search Bar */}
-        <div className="relative w-[400px] ml-56 marker">
+       {/* Search Bar */}
+        <div className='flex'>
+        <div className="relative w-[400px] mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
-            className="w-[300px] sm:w-[150px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+            className="w-[300px] sm:w-[200px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
           />
           < FaSearch 
-            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5"/>
+            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-[330px] md:left-2 top-2.5"/>
         </div>
 
        {/* Notification Icon and User Profile Dropdown */}
@@ -376,7 +367,6 @@ const [adminData, setAdminData] = useState({});
 
 
           {/* User Profile Dropdown */}
-         {/* User Profile Dropdown */}
           <div className="relative">
             <button
               onClick={handlenavigateprofile}
@@ -393,6 +383,7 @@ const [adminData, setAdminData] = useState({});
               </svg>
             </button>
           </div>
+        </div>
         </div>
       </header>
 

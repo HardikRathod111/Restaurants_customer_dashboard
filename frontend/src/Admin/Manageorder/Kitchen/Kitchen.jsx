@@ -9,6 +9,7 @@ import { IoMdLogOut } from "react-icons/io";
 import axios from 'axios';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
 
 export default function Kitchen() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -16,25 +17,20 @@ export default function Kitchen() {
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
   const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
   const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [restaurants, setRestaurants] = useState([]);
+  const [open, setOpen] = useState(false)
 
 
-   
 
   const handlenavigateprofile = () => {
     navigate('/Profilepage');
   }
 
   const handleLogout = () => {
-  // Clear user data from localStorage or sessionStorage
-  localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
-
-  // Optionally make an API request to invalidate session if necessary
-  // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
-
-  // Redirect user to login or home page after logout
-  navigate("/login"); // Or any other page
-};
+    localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
+    navigate("/login"); // Or any other page
+  };
 const [adminData, setAdminData] = useState({});
   useEffect(() => {
     // Fetch admin data
@@ -143,22 +139,136 @@ const [adminData, setAdminData] = useState({});
 
       <main className="flex-1 lg:ml-[200px] md:ml-0 sm:w-svw p-6 bg-gray-900">
         {/* Navbar */}
-        <header className="flex justify-between sm:justify-normal md:justify-between items-center mb-6 pb-4">
-          <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
-            Welcome Back 👋 
-            <br />
-            <span className="text-gray-400 font-normal text-lg">Jd's Restro</span>
-          </h2>
-          <div className="relative w-[400px] ml-[100px] marker">
-            <input
-              type="text"
-              placeholder="Search Here Your Delicious Food..."
-              className="w-[300px] sm:w-[150px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3 ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
-            />
-            <FaSearch 
-              className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5"/>
+        <header className="flex justify-between sm:justify-normal md:justify-between items-center mb-6 pb-4 ">
+        {/* Welcome Text */}
+        <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
+          Welcome Back 👋 
+          <br />
+          <span className="text-gray-400 font-normal text-lg">{restaurants.restaurantName}</span>
+        </h2>
+
+        <button id="toggleButton" className='lg:hidden' onClick={() => setOpen(true)}>
+        <BsThreeDotsVertical style={{fontSize:'20px'}}/>
+        </button>
+        <Dialog open={open} onClose={setOpen} className="relative z-10">
+      <DialogBackdrop
+        transition
+        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
+      />
+
+      <div className="fixed inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            <DialogPanel
+              transition
+              className="pointer-events-auto relative w-screen max-w-md sm:w-60 transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"
+            >
+              <TransitionChild>
+                <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 duration-500 ease-in-out data-[closed]:opacity-0 sm:-ml-10 sm:pr-4">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                  >
+                    <span className="absolute -inset-2.5" />
+                    <span className="sr-only">Close panel</span>
+                    {/* <XMarkIcon aria-hidden="true" className="h-6 w-6" /> */}
+                  </button>
+                </div>
+              </TransitionChild>
+              <div className="flex h-screen flex-col overflow-y-scroll  py-6 shadow-xl  bg-gray-800 p-4 items-center">
+                
+                <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                <div className="flex flex-col items-center mb-8">
+          {/* Centered Image */}
+          <img src="./assets/images/Frame 1000005156.png" alt="Logo" className="h-20 rounded-full mb-2" />
+        </div>
+
+        <nav className="flex flex-col space-y-3 w-full">
+          <a href='/dashboard' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700 w-full">
+            <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            Dashboard
+          </a>
+           <div>
+              {/* Manage Order Dropdown */}
+              <button
+                  className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                  onClick={toggleManageOrder}
+              >
+                  <FaBoxOpen className="mr-2 text-yellow-500" />
+                  Manage Order
+                  <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {manageOrderOpen && (
+                  <div className="ml-8 mt-2 space-y-2">
+                      <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                          Parcel Order
+                      </a>
+                      <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                          Onsite Order
+                      </a>
+                       <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                        Kitchen
+                        </a>
+                  </div>
+              )}
           </div>
-          {/* Notification Icon and User Profile Dropdown */}
+          <a href='/managemenu' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+            <MdOutlineRestaurantMenu className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            Manage Menu
+          </a>
+          <div>
+              {/* PaymentHistory Dropdown */}
+              <button className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                onClick={togglePaymentHistory}>
+                <FaClipboardList className="mr-2 text-yellow-500" />
+                PaymentHistory
+                <MdExpandMore className={`ml-auto transform ${PaymentHistoryOpen ? 'rotate-180' : '' }`} />
+              </button>
+              {PaymentHistoryOpen && (
+              <div className="ml-8 mt-2 space-y-2">
+                <a href='/paymentparcel' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Parcel Order
+                </a>
+                <a href='/paymentonsite' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                  Onsite Order
+                </a>
+              </div>
+              )}
+            </div>
+          <a href='/qrcode' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+            <MdOutlineQrCodeScanner  className="mr-2 w-[20px] h-[20px] text-yellow-500" />
+            QR Codes
+          </a>
+        </nav>
+        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        onClick={handleLogout}
+        >
+          <IoMdLogOut className="mr-2" />
+           Log Out
+         </button>
+
+                </div>
+              </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </div>
+    </Dialog>
+        
+        {/* Search Bar */}
+        <div className='flex'>
+        <div className="relative w-[400px] mr-28 marker">
+          <input
+            type="text"
+            placeholder="Search Here Your Delicious Food..."
+            className="w-[300px] sm:w-[200px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+          />
+          < FaSearch 
+            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-[330px] md:left-2 top-2.5"/>
+        </div>
+
+       {/* Notification Icon and User Profile Dropdown */}
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
@@ -219,7 +329,8 @@ const [adminData, setAdminData] = useState({});
               </div>
             )}
 
-            {/* User Profile Dropdown */}
+
+          {/* User Profile Dropdown */}
           <div className="relative">
             <button
               onClick={handlenavigateprofile}
@@ -236,8 +347,10 @@ const [adminData, setAdminData] = useState({});
               </svg>
             </button>
           </div>
-          </div>
-        </header>
+        </div>
+        </div>
+      </header>
+
 
         {/* Kitchen Order Management */}
         <div className="h-screen bg-slate-900 text-white p-4">

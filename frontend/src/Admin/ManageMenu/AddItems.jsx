@@ -21,6 +21,7 @@ const AddItems = () => {
     const [customizations, setCustomizations] = useState([{name:'', rate:'', detail:''}]);
     const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
     const location = useLocation();
+    const [isOpen, setIsOpen] = useState(false);
     const category = location.state?.category
     const [steps, setSteps] = useState([
         { title: '',
@@ -386,32 +387,80 @@ const AddItems = () => {
     </Dialog>
         
         {/* Search Bar */}
-        <div className="relative w-[400px] ml-48 marker">
+        <div className='flex'>
+        <div className="relative w-[400px] mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
-            className="w-[300px] sm:w-[150px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
+            className="w-[300px] sm:w-[200px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
           />
           < FaSearch 
-            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-36 md:left-2 top-2.5"/>
+            className="w-5 h-5 ml-48 text-gray-400 absolute sm:right-[330px] md:left-2 top-2.5"/>
         </div>
 
-        {/* Notification Icon and User Profile Dropdown */}
-        <div className="flex items-center space-x-4">
-          {/* Notification Icon */}
-          <div className="relative">
-            <svg
-              className="w-6 h-6 text-gray-300 cursor-pointer"
-              fill="currentColor"
-              viewBox="0 0 24 24"
+       {/* Notification Icon and User Profile Dropdown */}
+          <div className="flex items-center space-x-4">
+            {/* Notification Icon */}
+            <div
+              className="relative cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
-            </svg>
-            {/* Notification Badge */}
-            <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
-          </div>
+              <svg
+                className="w-6 h-6 text-gray-300"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2a7 7 0 00-7 7v4.29l-1.71 1.7a1 1 0 00-.29.71v1a1 1 0 001 1h16a1 1 0 001-1v-1a1 1 0 00-.29-.71L19 13.29V9a7 7 0 00-7-7zm-1 18h2a1 1 0 01-2 0z" />
+              </svg>
+              {/* Notification Badge */}
+              <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500" />
+            </div>
 
-         {/* User Profile Dropdown */}
+            {/* Notification Dropdown */}
+            {isOpen && (
+              <div className="absolute right-0 mt-2 w-72 bg-[#252836] text-gray-300 rounded-md shadow-lg overflow-hidden z-50" style={{ marginRight: '240px', marginTop: '390px', width: '380px' }}>
+                {/* Header with Close Button */}
+                <div className="p-4 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Notification</h3>
+                  <button
+                    className="text-gray-400 hover:text-gray-200 focus:outline-none"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div className="divide-y divide-gray-700 m-2 ">
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">2 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Table No: 10</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">15 Min Ago</div>
+                  </div>
+                  <div className="p-3 bg-[#1F1D2B] cursor-pointer rounded-md  mb-1">
+                    <div className="text-sm font-medium">Parcel Order</div>
+                    <div className="text-sm">Lincoln Siphron</div>
+                    <div className="text-xs text-gray-400">1 Hr Ago</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+
+          {/* User Profile Dropdown */}
           <div className="relative">
             <button
               onClick={handlenavigateprofile}
@@ -428,6 +477,7 @@ const AddItems = () => {
               </svg>
             </button>
           </div>
+        </div>
         </div>
                 </header>
 
