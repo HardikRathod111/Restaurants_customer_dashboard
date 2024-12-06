@@ -58,13 +58,7 @@ const ParcelOrder = () => {
     };
 
     const handleLogout = () => {
-      // Clear user data from localStorage or sessionStorage
       localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
-    
-      // Optionally make an API request to invalidate session if necessary
-      // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
-    
-      // Redirect user to login or home page after logout
       navigate("/login"); // Or any other page
     };
     const handlenavigateprofile = ()=> {
@@ -88,7 +82,7 @@ const ParcelOrder = () => {
       fetchOrders();
     }, []);
 
-    const [adminData, setAdminData] = useState({});
+  const [adminData, setAdminData] = useState({});
   useEffect(() => {
     // Fetch admin data
     const token = localStorage.getItem("authToken");
@@ -321,7 +315,7 @@ const ParcelOrder = () => {
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
-              className="relative cursor-pointer"
+              className="relative cursor-pointer sm:hidden md:block"
               onClick={() => setIsOpen(!isOpen)}
             >
               <svg

@@ -34,6 +34,12 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
+      orderType: {
+        type: String,
+        enum: ["Onsite", "Parcel"],
+        default: "Parcel",
+        required: true,
+      },
 });
 
 orderSchema.pre(/^find/, function (next) {

@@ -145,7 +145,7 @@ const [adminData, setAdminData] = useState({});
   }, []); 
 
   return (
-   <div className="flex bg-gray-900 text-white font-sans">
+  <div className="flex bg-gray-900 text-white font-sans">
       {/* Sidebar */}
       <aside className="w-[200px] fixed top-0 left-0 h-screen sm:hidden lg:flex bg-gray-800 p-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-8">
@@ -158,28 +158,28 @@ const [adminData, setAdminData] = useState({});
             <MdWindow className="mr-2 w-[20px] h-[20px] text-yellow-500" />
             Dashboard
           </a>
-           <div>
+          <div>
               {/* Manage Order Dropdown */}
               <button
-                  className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
-                  onClick={toggleManageOrder}
+                className="flex items-center p-3 w-full rounded-md text-gray-300 hover:bg-gray-700"
+                onClick={toggleManageOrder}
               >
                   <FaBoxOpen className="mr-2 text-yellow-500" />
                   Manage Order
                   <MdExpandMore className={`ml-auto transform ${manageOrderOpen ? 'rotate-180' : ''}`} />
               </button>
               {manageOrderOpen && (
-                  <div className="ml-8 mt-2 space-y-2">
-                      <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                          Parcel Order
+                <div className="ml-8 mt-2 space-y-2">
+                    <a href='/parcelorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                        Parcel Order
+                    </a>
+                    <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                        Onsite Order
+                    </a>
+                      <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                      Kitchen
                       </a>
-                      <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                          Onsite Order
-                      </a>
-                       <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
-                        Kitchen
-                        </a>
-                  </div>
+                </div>
               )}
           </div>
           <a href='/managemenu' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
@@ -214,8 +214,8 @@ const [adminData, setAdminData] = useState({});
         onClick={handleLogout}
         >
           <IoMdLogOut className="mr-2" />
-           Log Out
-         </button>
+          Log Out
+        </button>
 
       </aside>
 
@@ -339,7 +339,7 @@ const [adminData, setAdminData] = useState({});
         
        {/* Search Bar */}
        <div className='flex'>
-        <div className="relative w-[400px] mr-28 marker">
+        <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -353,7 +353,7 @@ const [adminData, setAdminData] = useState({});
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
-              className="relative cursor-pointer"
+              className="relative cursor-pointer sm:hidden md:block"
               onClick={() => setIsOpen(!isOpen)}
             >
               <svg

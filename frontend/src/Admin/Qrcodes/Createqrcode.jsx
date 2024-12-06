@@ -393,8 +393,8 @@ const handleTemplateSelect = (templateId) => {
         
          {/* Search Bar */}
          <div className='flex'>
-        <div className="relative w-[400px] mr-28 marker">
-          <input
+         <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
+         <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
             className="w-[300px] sm:w-[200px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
