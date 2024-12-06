@@ -3,7 +3,7 @@ import { FaCaretRight } from "react-icons/fa";
 
 const PaymentMethod = () => {
   return (
-    <div className="bg-[#121212] text-white min-h-screen flex flex-col justify-between px-4">
+    <div className="bg-[#121212] text-white min-h-screen flex flex-col px-4">
       {/* Header */}
       <div className="flex items-center py-4">
         <a href="/cartpage" className="text-white text-lg">
@@ -27,10 +27,9 @@ const PaymentMethod = () => {
         </h1>
       </div>
 
-      {/* Card Selection */}
       <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4">
         {/* Master Card */}
-        <div className="flex items-center space-x-4 border-b border-gray-700 pb-4">
+        <div className="flex items-center space-x-4 border-b border-gray-700 pb-4 mt-5 mb-5">
           <img
             src="./assets/images/Frame.png"
             alt="Master Card"
@@ -82,8 +81,8 @@ const PaymentMethod = () => {
       </div>
 
       {/* Visa and UPI */}
-      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4 mt-4">
-        <div className="flex items-center space-x-4 border-b border-gray-700 pb-4">
+      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4 mt-3">
+        <div className="flex items-center space-x-4 ">
           <img
             src="./assets/images/Frame 1000004335.png"
             alt="Visa Card"
@@ -92,7 +91,10 @@ const PaymentMethod = () => {
           <h2 className="flex-grow font-medium">Visa Card</h2>
           <input type="radio" name="payment-method" className="accent-yellow-500" />
         </div>
-        <div className="flex items-center space-x-4">
+      </div>
+
+      <div className="bg-[#1D1D1D] p-4 rounded-lg space-y-4 mt-3">
+      <div className="flex items-center space-x-4 ">
           <img
             src="./assets/images/Frame 1000004336.png"
             alt="UPI"
@@ -101,7 +103,8 @@ const PaymentMethod = () => {
           <h2 className="flex-grow font-medium">UPI</h2>
           <input type="radio" name="payment-method" className="accent-yellow-500" />
         </div>
-      </div>
+        </div>
+
 
       <div className="fixed bottom-0 left-0 w-[375px] bg-[#1A1B23] p-4 flex items-center justify-between">
         <div>
