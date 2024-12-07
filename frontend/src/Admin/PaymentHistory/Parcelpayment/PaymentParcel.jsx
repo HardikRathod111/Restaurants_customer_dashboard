@@ -18,8 +18,8 @@ const PaymentParcel = () => {
     const [selectedOrder, setSelectedOrder] = useState(null); // For selected order details
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
-      const [isOpen, setIsOpen] = useState(false);
-
+    const [isOpen, setIsOpen] = useState(false);
+    
     const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
 
     const togglePaymentHistory = () => {
@@ -43,15 +43,10 @@ const PaymentParcel = () => {
     };
 
     const handleLogout = () => {
-  // Clear user data from localStorage or sessionStorage
-  localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
+      localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
+      navigate("/login"); // Or any other page
+    };
 
-  // Optionally make an API request to invalidate session if necessary
-  // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
-
-  // Redirect user to login or home page after logout
-  navigate("/login"); // Or any other page
-};
 const [adminData, setAdminData] = useState({});
   useEffect(() => {
     // Fetch admin data
@@ -62,7 +57,7 @@ const [adminData, setAdminData] = useState({});
       headers: {
           Authorization: `Bearer ${token}`
       }
-  })
+  }) 
   .then(response => {
     if (response.data.success) {
       setAdminData(response.data.data); // Set admin data to the state
@@ -122,14 +117,26 @@ const [adminData, setAdminData] = useState({});
         }
     };
 
-    const orders = [
-        { id: 1, customer: "Davis Lipshutz", item: "Rice", date: "10/02/2024", time: "3:45 PM", phone: "98568 86214", quantity: "500 G.M", total: "₹ 500", payment: 'Online' },
-        { id: 2, customer: "Marcus Dorwart", item: "Biryani Rice", date: "11/02/2024", time: "2:45 PM", phone: "96668 22214", quantity: "100 G.M", total: "₹ 500", payment: 'Cash' },
-    ];
-
     const handlenavigateprofile = ()=> {
         navigate('/Profilepage');
     }
+
+    const [orders, setOrders] = useState([]);
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/order/getPlacedOrder");
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        console.log(data); // Logs the data
+        setOrders(data); // Set the data in the state
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    
+    useEffect(() => {
+      fetchOrders();
+    }, []);
 
     return (
         <div className="flex min-h-screen text-white font-sans" style={{ backgroundColor: "#0B0F1F" }}>
@@ -424,9 +431,6 @@ const [adminData, setAdminData] = useState({});
         </div>        
                 </header>
 
-
-
-
                 <div className=" rounded-lg p-5 sm:hidden md:flex mb-4 flex justify-between items-center" style={{ backgroundColor: '#1F1D2B' }}>
                     <h2 className="text-xl font-semibold text-white">Payment Details</h2>
                     <div className="flex items-center space-x-3">
@@ -529,12 +533,6 @@ const [adminData, setAdminData] = useState({});
                 <section className="bg-gray-800 p-6 rounded-lg" style={{ backgroundColor: '#2D303E' }}>
                     <div className="flex justify-between mb-6">
                         <h1 className="text-2xl font-semibold ">Parcel Order</h1>
-
-
-
-
-
-
                     </div>
                     <div className="overflow-x-auto rounded-t-lg">
                         <table className="w-full text-sm text-left ">
@@ -552,14 +550,14 @@ const [adminData, setAdminData] = useState({});
                             <tbody>
                                 {orders.map(order => (
                                     <tr key={order.id} className="border-b border-gray-700 hover:bg-gray-700" style={{ backgroundColor: '#1F1D2B' }}>
-                                        <td className="px-6 py-4">{order.customer}</td>
-                                        <td className="px-6 py-4">{order.phone}</td>
-                                        <td className="px-6 py-4">{order.item}</td>
-                                        <td className="px-6 py-4">{order.quantity}</td>
-                                        <td className="px-6 py-4 text-green-500">{order.total}</td>
+                                        <td className="px-6 py-4">{order.userId.name}</td>
+                                        <td className="px-6 py-4">{order.userId.phone}</td>
+                                        <td className="px-6 py-4">{order.items.map((item) => item.itemId.itemName).join(", ")}</td>
+                                        <td className="px-6 py-4">{order.items.reduce((sum, item) => sum + item.quantity, 0)}</td>
+                                        <td className="px-6 py-4 text-green-500">{order.totalAmount}</td>
                                         <td className="px-6 py-4 text-green-500">
                                             <div>
-                                                {order.payment === "Online" ? (
+                                                {order.paymentMethod === "Online" ? (
                                                     <div className="flex items-center px-4 py-1 rounded-full text-white bg-[#1F3746] space-x-2">
                                                         <FaRegMoneyBillAlt className="w-4 h-4 text-[#18D8FF]" />
                                                         <span className="text-sm text-[#18D8FF]">Online</span>
@@ -588,9 +586,9 @@ const [adminData, setAdminData] = useState({});
                 </section>
 
                 {/* Modal for viewing bill */}
-                      {showModal && (
+                      {showModal && selectedOrder && (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
-    <div className="bg-[#252836] text-white p-6 rounded-lg max-w-sm h-screen w-full shadow-lg">
+    <div className="bg-[#252836] text-white p-6 rounded-lg max-w-sm w-full shadow-lg">
       {/* Header Section */}
       <div className="flex justify-between items-center border-b border-gray-700 pb-4">
         <h2 className="text-lg font-semibold">Parcel Payment Bill</h2>
@@ -602,16 +600,20 @@ const [adminData, setAdminData] = useState({});
       {/* Bill Details Section */}
       <div className="mt-4 text-sm">
         <div className="flex justify-between mb-2">
-          <p><strong>Bill No:</strong> GRT1715</p>
-          <p><strong>Date:</strong> 24/01/2024</p>
+          <p><strong>Bill No:</strong>GRTHR{orders.findIndex(order => order._id === selectedOrder._id) !== -1 
+          ? orders.findIndex(order => order._id === selectedOrder._id) + 1 
+          : "N/A"}</p>
+          <p><strong>Date:</strong> {" "}
+          {new Date(selectedOrder.orderDate).toLocaleDateString()}</p>
         </div>
         <div className="flex justify-between mb-2">
-          <p><strong>Time:</strong> 7:00 PM</p>
-          <p><strong>Customer:</strong> 98266 66655</p>
+          <p><strong>Time:</strong> {" "}
+          {new Date(selectedOrder.orderDate).toLocaleTimeString()}</p>
+          <p><strong>Customer:</strong> {selectedOrder.userId.phone}</p>
         </div>
         <div className="flex justify-between mb-2">
-          <p><strong>Name:</strong> Chance Geidt</p>
-          <p><strong>Payment:</strong> <span className="text-green-500">Online</span></p>
+          <p><strong>Name:</strong> {selectedOrder.userId.name}</p>
+          <p><strong>Payment:</strong> <span className="text-green-500">{selectedOrder.paymentMethod}</span></p>
         </div>
       </div>
 
@@ -626,51 +628,15 @@ const [adminData, setAdminData] = useState({});
 
         {/* Table Content */}
         <div className="text-sm">
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Jeera Rice</p>
-            <p className="min-w-[60px]">2</p>
-            <p className="min-w-[80px] text-right">290.00</p>
+        {selectedOrder.items.map((item, index) => (
+          <div key={index} className="flex justify-between mb-1">
+            <p className="min-w-[150px]">{item.itemId.itemName}</p>
+            <p className="min-w-[60px]">{item.quantity}</p>
+            <p className="min-w-[80px] text-right">
+              {item.totalPrice.toFixed(2)}
+            </p>
           </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Veg Manhwa So</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">119.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Dal Tadka</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">215.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Butter Tandoor</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">45.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Garlic Naan</p>
-            <p className="min-w-[60px]">5</p>
-            <p className="min-w-[80px] text-right">300.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Veg Sweet Corn</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">119.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Plain Papad</p>
-            <p className="min-w-[60px]">2</p>
-            <p className="min-w-[80px] text-right">160.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Baked Veg With</p>
-            <p className="min-w-[60px]">1</p>
-            <p className="min-w-[80px] text-right">270.00</p>
-          </div>
-          <div className="flex justify-between mb-1">
-            <p className="min-w-[150px]">Biryani Rice</p>
-            <p className="min-w-[60px]">2</p>
-            <p className="min-w-[80px] text-right">315.00</p>
-          </div>
+        ))}
         </div>
       </div>
 
@@ -678,15 +644,15 @@ const [adminData, setAdminData] = useState({});
       <div className="mt-4 text-sm">
         <div className="flex justify-between mb-1 font-semibold">
           <p>Total Amount</p>
-          <p>₹ 1315.00</p>
+          <p> {selectedOrder.totalAmount.toFixed(2)}</p>
         </div>
         <div className="flex justify-between mb-1">
           <p>SGST 2.5%</p>
-          <p>₹ 32.88</p>
+          <p>₹ {(selectedOrder.totalAmount * 0.025).toFixed(2)}</p>
         </div>
         <div className="flex justify-between mb-1">
           <p>CGST 2.5%</p>
-          <p>₹ 32.88</p>
+          <p>₹ {(selectedOrder.totalAmount * 0.025).toFixed(2)}</p>
         </div>
       </div>
 
@@ -694,7 +660,7 @@ const [adminData, setAdminData] = useState({});
       <div className="mt-4 border-t border-gray-700 pt-2 text-sm font-semibold">
         <div className="flex justify-between">
           <p>Grand Total Amount</p>
-          <p>₹ 1381.00</p>
+          <p>₹ {(selectedOrder.totalAmount + selectedOrder.totalAmount * 0.05).toFixed(2)}</p>
         </div>
       </div>
     </div>

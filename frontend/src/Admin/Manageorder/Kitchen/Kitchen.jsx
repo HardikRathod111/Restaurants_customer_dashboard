@@ -11,7 +11,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
 
-export default function Kitchen() {
+export default function       Kitchen() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
@@ -246,7 +246,7 @@ const [adminData, setAdminData] = useState({});
         >
           <IoMdLogOut className="mr-2" />
            Log Out
-         </button>
+         </button>   
 
                 </div>
               </div>
