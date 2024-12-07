@@ -20,6 +20,7 @@ const AddItems = () => {
     const [showForm, setShowForm] = useState(false);
     const [customizations, setCustomizations] = useState([{name:'', rate:'', detail:''}]);
     const [PaymentHistoryOpen, setPaymentHistoryOpen] = useState(false);
+    const [restaurants, setRestaurants] = useState([]);
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const category = location.state?.category
@@ -230,6 +231,9 @@ const AddItems = () => {
                         <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                             Onsite Order
                         </a>
+                        <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                            Kitchen
+                        </a>
                     </div>
                 )}
             </div>
@@ -273,12 +277,11 @@ const AddItems = () => {
                 {/* Header */}
                 <header className="flex justify-between sm:justify-normal md:justify-between items-center mb-6 pb-4 ">
         {/* Welcome Text */}
-        <div className="flex items-center xl:flex sm:hidden text-white font-semibold">
-          <FaHome />
-          <h4 className="ml-2 border-l-[1px] pl-2" style={{ fontSize: '15px' ,color:"#CA923D"}}>
-          {getTabLabel()}
-          </h4>
-        </div>
+        <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
+          Welcome Back 👋 
+          <br />
+          <span className="text-gray-400 font-normal text-lg">{restaurants.restaurantName}</span>
+        </h2>
 
         <button id="toggleButton" className='lg:hidden' onClick={() => setOpen(true)}>
         <BsThreeDotsVertical style={{fontSize:'20px'}}/>
@@ -340,6 +343,9 @@ const AddItems = () => {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
+                       <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                        Kitchen
+                        </a>
                   </div>
               )}
           </div>
@@ -371,7 +377,7 @@ const AddItems = () => {
             QR Codes
           </a>
         </nav>
-         <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
+        <button className="flex items-center px-4 py-2 mr-12 mt-auto bg-red-500 rounded-md text-white ml-auto"
         onClick={handleLogout}
         >
           <IoMdLogOut className="mr-2" />
@@ -388,7 +394,7 @@ const AddItems = () => {
         
         {/* Search Bar */}
         <div className='flex'>
-        <div className="relative w-[400px] mr-28 marker">
+        <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -402,7 +408,7 @@ const AddItems = () => {
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
-              className="relative cursor-pointer"
+              className="relative cursor-pointer sm:hidden md:block"
               onClick={() => setIsOpen(!isOpen)}
             >
               <svg
@@ -479,9 +485,7 @@ const AddItems = () => {
           </div>
         </div>
         </div>
-                </header>
-
-
+      </header>
                 <div className=" rounded-lg p-5 mb-4 flex justify-between items-center" style={{ backgroundColor: '#1F1D2B' }}>
                     <h2 className="text-xl font-semibold text-white">Add Items {category}</h2>
                     <div className="flex items-center space-x-3">

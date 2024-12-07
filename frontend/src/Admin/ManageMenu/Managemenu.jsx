@@ -18,6 +18,7 @@ const Managemenu = () => {
     const [activeTab, setActiveTab] = useState('request');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [dotsMenuOpen, setDotsMenuOpen] = useState(null);
+    const [restaurants, setRestaurants] = useState([]);
     const [isVeg, setIsVeg] = useState(true);
       const [isOpen, setIsOpen] = useState(false);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -376,12 +377,11 @@ const Managemenu = () => {
             <main className="flex-1 lg:ml-[200px] md:ml-0 sm:w-svw p-6 bg-gray-900">
             <header className="flex justify-between sm:justify-normal md:justify-between items-center mb-6 pb-4 ">
         {/* Welcome Text */}
-        <div className="flex items-center xl:flex sm:hidden text-white font-semibold">
-          <FaHome />
-          <h4 className="ml-2 border-l-[1px] pl-2" style={{ fontSize: '15px' ,color:"#CA923D"}}>
-          {getTabLabel()}
-          </h4>
-        </div>
+        <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
+          Welcome Back 👋 
+          <br />
+          <span className="text-gray-400 font-normal text-lg">{restaurants.restaurantName}</span>
+        </h2>
 
         <button id="toggleButton" className='lg:hidden' onClick={() => setOpen(true)}>
         <BsThreeDotsVertical style={{fontSize:'20px'}}/>
@@ -443,9 +443,9 @@ const Managemenu = () => {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
-                       <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                  Kitchen
-                </a>
+                       <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                        Kitchen
+                        </a>
                   </div>
               )}
           </div>
@@ -494,7 +494,7 @@ const Managemenu = () => {
         
         {/* Search Bar */}
         <div className='flex'>
-        <div className="relative w-[400px] mr-28 marker">
+        <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -508,7 +508,7 @@ const Managemenu = () => {
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
-              className="relative cursor-pointer"
+              className="relative cursor-pointer sm:hidden md:block"
               onClick={() => setIsOpen(!isOpen)}
             >
               <svg
@@ -585,7 +585,7 @@ const Managemenu = () => {
           </div>
         </div>
         </div>
-            </header>
+      </header>
 
                 {/* Main section goes here */}
                 {/* Category Section */}

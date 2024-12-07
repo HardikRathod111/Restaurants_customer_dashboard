@@ -236,6 +236,9 @@ const handleTemplateSelect = (templateId) => {
                         <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                             Onsite Order
                         </a>
+                        <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                            Kitchen
+                        </a>
                     </div>
                 )}
             </div>
@@ -346,6 +349,9 @@ const handleTemplateSelect = (templateId) => {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
+                      <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                            Kitchen
+                        </a>
                   </div>
               )}
           </div>
@@ -596,22 +602,22 @@ const handleTemplateSelect = (templateId) => {
             </div>
             <div className="grid grid-cols-2 gap-5 mb-10 ml-40">
             {['template1', 'template3', 'template4', 'template6'].map((templateId) => (
-  <div
-    key={templateId}
-    className={`bg-[#2B2F3F] rounded-lg w-[300px] p-1 flex justify-center items-center cursor-pointer ${
-      selectedTemplate === templateId ? 'ring-2 ring-yellow-500' : ''
-    }`}
-    onClick={() => handleTemplateSelect(templateId)}
-  >
-    <span className="text-xl">
-      <img
-        src={templateBackgrounds[templateId]} // Dynamically using templateBackgrounds
-        alt={`Template ${templateId}`}
-        className="w-20"
-      />
-    </span>
-  </div>
-))}
+            <div
+            key={templateId}
+             className={`bg-[#2B2F3F] rounded-lg w-[300px] p-1 flex justify-center items-center cursor-pointer ${
+               selectedTemplate === templateId ? 'ring-2 ring-yellow-500' : ''
+              }`}
+              onClick={() => handleTemplateSelect(templateId)}
+            >
+              <span className="text-xl">
+                <img
+                 src={templateBackgrounds[templateId]} // Dynamically using templateBackgrounds
+                  alt={`Template ${templateId}`}
+                  className="w-20"
+                />
+              </span>
+            </div>
+          ))}
 
 </div>
               {/* QR Code Preview */}

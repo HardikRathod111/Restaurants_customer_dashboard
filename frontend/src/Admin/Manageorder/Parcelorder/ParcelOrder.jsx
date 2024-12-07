@@ -137,8 +137,8 @@ const ParcelOrder = () => {
                             Onsite Order
                         </a>
                         <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                                 Kitchen
-                                </a>
+                            Kitchen
+                        </a>
                     </div>
                 )}
             </div>
@@ -249,10 +249,9 @@ const ParcelOrder = () => {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
-                      <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
-                                 Kitchen
-                                </a>
-
+                       <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                        Kitchen
+                        </a>
                   </div>
               )}
           </div>
@@ -301,7 +300,7 @@ const ParcelOrder = () => {
         
         {/* Search Bar */}
         <div className='flex'>
-        <div className="relative w-[400px] mr-28  marker">
+        <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -393,6 +392,8 @@ const ParcelOrder = () => {
         </div>
         </div>
       </header>
+
+
                   {/* Tabs */}
                   <div className="flex">
                       <button 
