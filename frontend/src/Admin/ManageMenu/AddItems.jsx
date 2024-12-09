@@ -519,6 +519,7 @@ const AddItems = () => {
                 </div>
 
 
+                
                 <section
                     className="bg-gray-800 p-3 rounded-lg mb-2"
                     style={{ backgroundColor: "#2D303E" }}
@@ -631,6 +632,7 @@ const AddItems = () => {
 
 
                 </section>
+
 
 
                 {/* Toggle form visibility */}
