@@ -521,7 +521,7 @@ const AddItems = () => {
 
                 
                 <section
-                    className="bg-gray-800 p-3 rounded-lg mb-2"
+                    className="bg-gray-800 p-3 rounded-lg mb-2  overflow-x-auto"
                     style={{ backgroundColor: "#2D303E" }}
                 >
 
