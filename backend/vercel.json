@@ -1,0 +1,34 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "server.js",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "routes/**/*.js",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "controllers/**/*.js",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "models/**/*.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)",
+        "dest": "server.js"
+      }
+    ],
+    "env": {
+      "NODE_ENV": "production",
+      "mongo_url": "mongodb+srv://ayushipaladiya1133:8Jj7BexJOQK6UIKN@cluster0.o8caq.mongodb.net/",
+      "jwt_secret": "mysecretvalue"
+    },
+    "ignoreCommand": "echo \"Ignoring unnecessary files...\""
+  }
+  
