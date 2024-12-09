@@ -17,6 +17,7 @@ const PaymentParcel = () => {
     const [activeTab, setActiveTab] = useState("request");
     const [selectedOrder, setSelectedOrder] = useState(null); // For selected order details
     const [showModal, setShowModal] = useState(false);
+    const [restaurants, setRestaurants] = useState([]);
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     
@@ -216,18 +217,15 @@ const [adminData, setAdminData] = useState({});
             {/* Main Content */}
             <main className="flex-1 lg:ml-[200px] md:ml-0 sm:w-svw p-6 bg-gray-900">
                 {/* Header */}
-                <header className="flex justify-between sm:justify-normal md:justify-between items-center mb-6 pb-4">
-                    <div className="flex items-center xl:flex sm:hidden text-white font-semibold">
-                        <FaHome />
-                        {/* <h4 className="ml-2 border-l-[1px] pl-2" style={{ fontSize: '15px' ,color:"#CA923D"}}></h4> */}
-                        {/* <h4 className="ml-2 border-l-[1px] pl-2" style={{ fontSize: '15px' ,color:"#CA923D"}}></h4> */}
-                        <h1 className="text-md font-semibold  text-white ml-2">| Payment History <span style={{ color: "#CA923D" }} className='text-md font-semibold'>| Parcel Order</span></h1>
+                <header className="flex justify-between sm:justify-normal md:justify-between items-center mb-6 pb-4 ">
+        {/* Welcome Text */}
+        <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
+          Welcome Back 👋 
+          <br />
+          <span className="text-gray-400 font-normal text-lg">{restaurants.restaurantName}</span>
+        </h2>
 
-                    </div>
-
-
-
-                    <button id="toggleButton" className='lg:hidden' onClick={() => setOpen(true)}>
+        <button id="toggleButton" className='lg:hidden' onClick={() => setOpen(true)}>
         <BsThreeDotsVertical style={{fontSize:'20px'}}/>
         </button>
         <Dialog open={open} onClose={setOpen} className="relative z-10">
@@ -336,9 +334,9 @@ const [adminData, setAdminData] = useState({});
       </div>
     </Dialog>
         
-         {/* Search Bar */}
-         <div className='flex'>
-        <div className="relative w-[400px] mr-28 marker">
+        {/* Search Bar */}
+        <div className='flex'>
+        <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -352,7 +350,7 @@ const [adminData, setAdminData] = useState({});
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
-              className="relative cursor-pointer"
+              className="relative cursor-pointer sm:hidden md:block"
               onClick={() => setIsOpen(!isOpen)}
             >
               <svg
@@ -428,9 +426,8 @@ const [adminData, setAdminData] = useState({});
             </button>
           </div>
         </div>
-        </div>        
-                </header>
-
+        </div>
+      </header>
                 <div className=" rounded-lg p-5 sm:hidden md:flex mb-4 flex justify-between items-center" style={{ backgroundColor: '#1F1D2B' }}>
                     <h2 className="text-xl font-semibold text-white">Payment Details</h2>
                     <div className="flex items-center space-x-3">

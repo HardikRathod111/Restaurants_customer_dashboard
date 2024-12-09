@@ -16,6 +16,7 @@ const OnsiteOrder = () => {
     const [selectedOrder, setSelectedOrder] = useState(null); // For selected order details
     const [showModal, setShowModal] = useState(false); 
     const navigate = useNavigate();
+    const [restaurants, setRestaurants] = useState([]);
     const [open, setOpen] = useState(false)
     const [activeLink, setActiveLink] = useState('');
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
@@ -176,12 +177,11 @@ const [adminData, setAdminData] = useState({});
       <main className="flex-1 lg:ml-[200px] md:ml-0 sm:w-svw p-6 bg-gray-900">
       <header className="flex justify-between sm:justify-normal md:justify-between items-center mb-6 pb-4 ">
         {/* Welcome Text */}
-        <div className="flex items-center xl:flex sm:hidden text-white font-semibold">
-          <FaHome />
-          <h4 className="ml-2 border-l-[1px] pl-2" style={{ fontSize: '15px' ,color:"#CA923D"}}>
-          {getTabLabel()}
-          </h4>
-        </div>
+        <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
+          Welcome Back 👋 
+          <br />
+          <span className="text-gray-400 font-normal text-lg">{restaurants.restaurantName}</span>
+        </h2>
 
         <button id="toggleButton" className='lg:hidden' onClick={() => setOpen(true)}>
         <BsThreeDotsVertical style={{fontSize:'20px'}}/>
@@ -292,9 +292,9 @@ const [adminData, setAdminData] = useState({});
       </div>
     </Dialog>
         
-       {/* Search Bar */}
+        {/* Search Bar */}
         <div className='flex'>
-        <div className="relative w-[400px] mr-28 marker">
+        <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -308,7 +308,7 @@ const [adminData, setAdminData] = useState({});
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
-              className="relative cursor-pointer"
+              className="relative cursor-pointer sm:hidden md:block"
               onClick={() => setIsOpen(!isOpen)}
             >
               <svg
@@ -386,7 +386,6 @@ const [adminData, setAdminData] = useState({});
         </div>
         </div>
       </header>
-
                 {/* Tabs */}
                 <div className="flex">
                     <button 
@@ -503,7 +502,7 @@ const [adminData, setAdminData] = useState({});
                 {/* Modal for viewing bill */}
                           {showModal && (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
-    <div className="bg-[#252836] text-white p-6 rounded-lg max-w-sm h-screen w-full shadow-lg">
+    <div className="bg-[#252836] text-white p-6 rounded-lg max-w-sm w-full shadow-lg">
       {/* Header Section */}
       <div className="flex justify-between items-center border-b border-gray-700 pb-4">
         <h2 className="text-lg font-semibold">Parcel Payment Bill</h2>

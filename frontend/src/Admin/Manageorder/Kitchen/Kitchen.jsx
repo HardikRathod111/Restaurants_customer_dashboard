@@ -11,7 +11,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
 
-export default function       Kitchen() {
+export default function Kitchen() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
@@ -282,7 +282,7 @@ const [adminData, setAdminData] = useState({});
         >
           <IoMdLogOut className="mr-2" />
            Log Out
-         </button>   
+         </button>
 
                 </div>
               </div>
@@ -294,7 +294,7 @@ const [adminData, setAdminData] = useState({});
         
         {/* Search Bar */}
         <div className='flex'>
-        <div className="relative w-[400px] mr-28 marker">
+        <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -308,7 +308,7 @@ const [adminData, setAdminData] = useState({});
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
-              className="relative cursor-pointer"
+              className="relative cursor-pointer sm:hidden md:block"
               onClick={() => setIsOpen(!isOpen)}
             >
               <svg
@@ -386,7 +386,6 @@ const [adminData, setAdminData] = useState({});
         </div>
         </div>
       </header>
-
 
         {/* Kitchen Order Management */}
         <div className="h-screen bg-slate-900 text-white p-4">

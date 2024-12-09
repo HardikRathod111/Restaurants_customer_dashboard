@@ -21,7 +21,7 @@ function QrCode() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null); // Fixed state for dropdown menu
   const [isOpen, setIsOpen] = useState(false);
-
+  const [restaurants, setRestaurants] = useState([]);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
   const togglePaymentHistory = () => setPaymentHistoryOpen(!PaymentHistoryOpen);
@@ -122,7 +122,7 @@ function QrCode() {
 
     axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
       headers: {
-          Authorization: `Bearer ${token}`
+          Authorization:`Bearer ${token}`
       }
   })
   .then(response => {
@@ -167,6 +167,9 @@ function QrCode() {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
+                      <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                            Kitchen
+                        </a>
                   </div>
               )}
           </div>
@@ -214,7 +217,7 @@ function QrCode() {
         <h2 className="text-xl font-semibold text-white sm:hidden xl:flex">
           Welcome Back 👋 
           <br />
-          <span className="text-gray-400 font-normal text-lg">Jd's Restro</span>
+          <span className="text-gray-400 font-normal text-lg">{restaurants.restaurantName}</span>
         </h2>
 
         <button id="toggleButton" className='lg:hidden' onClick={() => setOpen(true)}>
@@ -277,6 +280,9 @@ function QrCode() {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
+                       <a href='/kitchen' className='flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700'>
+                        Kitchen
+                        </a>
                   </div>
               )}
           </div>
@@ -323,9 +329,9 @@ function QrCode() {
       </div>
     </Dialog>
         
-       {/* Search Bar */}
-       <div className='flex'>
-        <div className="relative w-[400px] mr-28 marker">
+        {/* Search Bar */}
+        <div className='flex'>
+        <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -339,7 +345,7 @@ function QrCode() {
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
-              className="relative cursor-pointer"
+              className="relative cursor-pointer sm:hidden md:block"
               onClick={() => setIsOpen(!isOpen)}
             >
               <svg
@@ -417,7 +423,6 @@ function QrCode() {
         </div>
         </div>
       </header>
-
         {/* Tabs */}
         <div className="flex">
           <button
@@ -428,8 +433,7 @@ function QrCode() {
           </button>
           <button
             onClick={() => setActiveTab('counter')}
-            className={`px-4 py-2 ${activeTab === 'counter' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'} rounded-e-lg rounded-ee-none`}
-          >
+            className={`px-4 py-2 rounded-e-lg rounded-ee-none ${activeTab === 'counter' ? 'border-b-2 border-yellow-500 bg-[#372f28] text-[#CA923D]' : 'bg-gray-700 text-gray-300'}`} >
             Counter
           </button>
         </div>

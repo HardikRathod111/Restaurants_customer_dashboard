@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "restaurants_customer_dashboard",
   "version": "1.0.0",
   "description": "",
@@ -9,8 +8,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
-=======
+  "license": "ISC",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
@@ -66,5 +64,4 @@
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14"
   }
->>>>>>> 30734f8e234495f182f4554628f338c727fafcdd
 }

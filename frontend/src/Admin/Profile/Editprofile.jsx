@@ -293,7 +293,6 @@ function Editprofile() {
         </div>
       </div>
     </Dialog>
-        
          {/* Search Bar */}
          <div className='flex'>
         <div className="relative w-[400px] mr-28 marker">

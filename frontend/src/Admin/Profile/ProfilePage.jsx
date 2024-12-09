@@ -368,7 +368,7 @@ function ProfilePage() {
         <a
          href="/Profilepage"
          onClick={() => handleLinkClick("profile")}
-         className={`flex items-center w-full p-2 rounded-md text-white ${
+         className={`flex items-center w-full p-2 bg-yellow-600 rounded-md text-white ${
            activeLink === "profile"
              ? "bg-yellow-500 text-gray-900"
              : "bg-gray-700 text-gray-300"
@@ -397,7 +397,7 @@ function ProfilePage() {
         <a
           href="/TermsAndConditions"
           onClick={() => handleLinkClick("terms-and-conditions")}
-          className={`flex items-center bg-yellow-600  text-white w-full px-1 py-2 rounded-md ${
+          className={`flex items-center  text-white w-full px-1 py-2 rounded-md ${
             activeLink === "terms-and-conditions"
               ? "bg-yellow-500 text-gray-900"
               : "bg-gray-700 text-gray-300"

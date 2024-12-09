@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
+import { MdAddBox } from "react-icons/md";
 
 const Createqrcode = () => {
   const location = useLocation();
@@ -28,8 +29,34 @@ const Createqrcode = () => {
   const [qrColor, setQRColor] =  useState(qrCodeData.qrColor || '#000000');
   const [contentCategory, setContentCategory] = useState('Food & Drink'); // State for content category
   const [qrName, setQRName] =  useState(qrCodeData.qrName || ''); // State for QR Name
+  const [selectedTemplate, setSelectedTemplate] = useState('default');
+  const [backgroundImage, setBackgroundImage] = useState('./assets/images/qrcode_undefined_undefined_2.png');
+
 
   const isEditing = Boolean(qrCodeData);
+
+  const element = document.querySelector("#elementId");
+if (element) {
+  const xmlString = new XMLSerializer().serializeToString(element);
+} else {
+  console.error("Element not found!");
+}
+
+const templateBackgrounds = {
+  'default': './assets/images/qrcode_undefined_undefined_2.png',
+  'template1': './assets/images/qrcode_undefined_undefined.png',
+  // 'template2': './assets/images/Group 1116601973.png',
+  'template3': './assets/images/Group 1116601958.png',
+  'template4': './assets/images/Group 1116601960.png',
+  // 'template5': './assets/images/Group 1116601959.png',
+  'template6': './assets/images/Group 1116601961.png',
+};
+
+const handleTemplateSelect = (templateId) => {
+  setSelectedTemplate(templateId);
+  // Set the background image based on the selected template
+  setBackgroundImage(templateBackgrounds[templateId]);
+};
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const toggleManageOrder = () => setManageOrderOpen(!manageOrderOpen);
@@ -163,7 +190,7 @@ const Createqrcode = () => {
 
     axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
       headers: {
-          Authorization: `Bearer ${token}`
+          Authorization:`Bearer ${token}`
       }
   })
   .then(response => {
@@ -208,6 +235,9 @@ const Createqrcode = () => {
                         </a>
                         <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                             Onsite Order
+                        </a>
+                        <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                            Kitchen
                         </a>
                     </div>
                 )}
@@ -319,6 +349,9 @@ const Createqrcode = () => {
                       <a href='/onsiteorder' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
                           Onsite Order
                       </a>
+                      <a href='/kitchen' className="flex items-center p-2 rounded-md text-gray-300 hover:bg-gray-700">
+                            Kitchen
+                        </a>
                   </div>
               )}
           </div>
@@ -366,8 +399,8 @@ const Createqrcode = () => {
         
          {/* Search Bar */}
          <div className='flex'>
-        <div className="relative w-[400px] mr-28 marker">
-          <input
+         <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
+         <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
             className="w-[300px] sm:w-[200px] xl:w-[260px] 2xl:w-[300px] md:w-[300px] h-[40px] p-2 pl-10 md:ml-48 sm:ml-3  ml-48 bg-gray-800 rounded-full text-gray-300 placeholder-gray-400 focus:outline-none"
@@ -496,11 +529,11 @@ const Createqrcode = () => {
           {/* Name and Category */}
           <div className="flex space-x-4">
             <div className="w-1/2">
-              <label className="block text-sm mb-1">Name Your QR (Optional)</label>
+              <label className="block text-sm mb-1">Name Your QR </label>
               <input
                 type="text"
                 className="bg-gray-700 p-3 rounded w-full text-gray-200 placeholder-gray-400"
-                placeholder="Food & Drink"
+                placeholder="1"
                 value={qrName}
                 onChange={(e) => setQRName(e.target.value)}
               />
@@ -567,57 +600,50 @@ const Createqrcode = () => {
                 </div>
               </div>
             </div>
-             {/* Thematic Icons Section */}
-        <div className="grid grid-cols-3 gap-1  mb-6">
-          <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
-            {/* Insert SVG or Icon Here */}
-            <span className="text-lg">
-              <img src='./assets/images/qrcode_undefined_undefined.png' alt='logo' className='w-16'/>
-            </span>
-          </div>
-          <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
-            <span className="text-xl">
-              <img src='./assets/images/Group 1116601973.png' alt='logo' className='w-20'/>
-            </span>
-          </div>
-          <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
-            <span className="text-xl">
-              <img src='./assets/images/Group 1116601958.png' alt='logo' className='w-20'/>
-            </span>
-          </div>
-          <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
-            <span className="text-xl">
-              <img src='./assets/images/Group 1116601960.png' alt='logo' className='w-20'/>
-            </span>
-          </div>
-          <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
-            <span className="text-xl">
-              <img src='./assets/images/Group 1116601959.png' alt='logo' className='w-20'/>
-            </span>
-          </div>
-            <div className="bg-[#2B2F3F] rounded-lg w-[200px] p-1 flex justify-center items-center">
-            <span className="text-xl">
-              <img src='./assets/images/Group 1116601961.png' alt='logo' className='w-20'/>
-            </span>
-          </div>
-        </div>
+            <div className="grid grid-cols-2 gap-5 mb-10 ml-40">
+            {['template1', 'template3', 'template4', 'template6'].map((templateId) => (
+            <div
+            key={templateId}
+             className={`bg-[#2B2F3F] rounded-lg w-[300px] p-1 flex justify-center items-center cursor-pointer ${
+               selectedTemplate === templateId ? 'ring-2 ring-yellow-500' : ''
+              }`}
+              onClick={() => handleTemplateSelect(templateId)}
+            >
+              <span className="text-xl">
+                <img
+                 src={templateBackgrounds[templateId]} // Dynamically using templateBackgrounds
+                  alt={`Template ${templateId}`}
+                  className="w-20"
+                />
+              </span>
+            </div>
+          ))}
 
-        {/* Download Button */}
-        <div className=" justify-center">
-          <div className="bg-[#2B2F3F] relative rounded-lg w-[250px] h-[200px] ml-[290px] p-1 flex justify-center items-center" id="download-container">
-            <span className="text-xl">
-              <img src='./assets/images/qrcode_undefined_undefined_2.png' alt='logo' className='w-96' />
-              <QRCodeSVG className='absolute top-10 left-[90px] w-[75px]' ref={qrCodeRef}  value={link} bgColor={chooseColor} fgColor={qrColor}/>
-            </span>
-          </div>
-          <button className="bg-[#A870FF] text-white px-6 py-2 mt-5 ml-[340px] rounded-lg font-semibold shadow-md hover:bg-[#9142FF]"   onClick={async () => {
+</div>
+              {/* QR Code Preview */}
+                   <div className="flex justify-center">
+                <div className="bg-[#2B2F3F] relative rounded-lg w-[250px] h-[250px] p-1 flex justify-center items-center" id="download-container">
+                  <span className="text-xl">
+                    <img src={backgroundImage} alt='QR Code Background' className='w-96' />
+                    <QRCodeSVG className='absolute top-16 left-[88px] w-[75px]' ref={qrCodeRef}  value={link}/>
+                    <input type="radio" name="payment-method" className="accent-yellow-500 absolute top-56 left-16" />
+                    <span className='absolute top-[215px] left-[85px]'>SVG</span>
+                    <input type="radio" name="payment-method" className="accent-yellow-500 absolute top-56 left-36" />
+                    <span className='absolute top-[215px] left-[165px]'>PNG</span>
+                  </span>
+                </div>
+              </div>
+          {/* Create/Update and Download Buttons */}
+          <div className="flex justify-center mt-6">
+          <button className="bg-yellow-600 flex text-white px-6 py-2 mt-5 rounded-lg font-semibold shadow-md hover:bg-yellow-700"   onClick={async () => {
             // Run both functions in parallel
             await Promise.all([handleSubmit(), handleDownload()]);
           }}>
-          {qrCode ? 'Update QR Code' : 'Create QR Code'}
+              <MdAddBox className="mr-2  w-5 h-6" />
+          {qrCode ? 'Update QR Code' : 'Download QR'}
           </button>
-        </div>  
-          </div>
+              </div>
+            </div>
           </div>
         </section>
       </main>

@@ -109,14 +109,14 @@ function Register() {
   
   return (
     <div
-      className="h-full min-h-screen w-full flex items-center justify-center bg-cover bg-center"
+      className=" min-h-screen w-full flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: "url('./assets/images/b031f0ade82ec13db272ea276a0e4068.jpg')" }}
     >
-      <div className="bg-black bg-opacity-70 p-8 rounded-lg max-w-full w-full flex flex-col md:flex-row items-center md:items-start">
+      <div className="bg-black bg-opacity-70 min-h-screen p-8 rounded-lg max-w-full w-full flex flex-col md:flex-row items-center md:items-start">
         
         {/* Left Section - Form */}
-        <div className="min-h-screen md:w-full lg:w-1/2 bg-black p-8 flex flex-col justify-center">
-          <h2 className="text-3xl font-semibold text-white mb-6">Registration</h2>
+        <div className=" md:w-full lg:w-1/2 bg-black p-10 flex flex-col justify-center">
+          <h2 className="text-3xl  font-semibold text-white mb-6">Registration</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Form Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

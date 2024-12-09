@@ -264,9 +264,8 @@ const TermsAndConditions = () => {
         </div>
       </div>
     </Dialog>
-        
-         {/* Search Bar */}
-         <div className='flex'>
+        {/* Search Bar */}
+        <div className="flex">
         <div className="relative w-[400px] mr-28 marker">
           <input
             type="text"
@@ -359,7 +358,6 @@ const TermsAndConditions = () => {
         </div>
         </div> 
         </header>
-
         <section className="flex gap-3 sm:flex-col md:flex-row w-full">
           {/* Menu Section */}
           <div className="md:w-[250px] h-[250px] xl:h-[250px] lg:h-[270px] md:h-[280px] sm:h-[280px] sm:w-full   bg-gray-800 p-4 rounded-md">
