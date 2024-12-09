@@ -16,7 +16,12 @@
       {
         "src": "models/**/*.js",
         "use": "@vercel/node"
+      },
+      {
+        "src": "/uploads/(.*)",
+        "dest": "/uploads/$1"
       }
+      
     ],
     "routes": [
       {
