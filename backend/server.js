@@ -11,7 +11,12 @@ dotenv.config();
 connectDB();
 
 app.use(cors({
-    origin: 'http://localhost:3000' // Replace with your frontend URL
+    origin: [
+        'http://localhost:3000', // For local development
+        'https://restaurants-customer-dashboard.vercel.app' // Live frontend URL
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust methods as needed
+    credentials: true // If cookies or authentication tokens are used
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
