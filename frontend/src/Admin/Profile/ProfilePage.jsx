@@ -45,7 +45,7 @@ function ProfilePage() {
     localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
   
     // Optionally make an API request to invalidate session if necessary
-    // await axios.post('http://localhost:8080/api/v1/auth/logout'); // Optional backend call
+    // await axios.post('https://restaurants-customer-dashboard.onrender.com/api/v1/auth/logout'); // Optional backend call
   
     // Redirect user to login or home page after logout
     navigate("/login"); // Or any other page
@@ -57,7 +57,7 @@ function ProfilePage() {
     const token = localStorage.getItem("authToken");
     console.log(token);
 
-    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+    axios.get("https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/getadmin", {
       headers: {
           Authorization: `Bearer ${token}`
       }
