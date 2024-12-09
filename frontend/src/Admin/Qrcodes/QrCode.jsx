@@ -490,7 +490,7 @@ function QrCode() {
         {/* QR Code Box with Full Width Dark Background */}
         <div className="bg-gray-900 relative rounded-lg w-44 h-40 mt-6 flex justify-center items-center">
           
-          <QRCodeSVG className='absolute top-4 left-[40px] w-[100px]'  value={qrCode.link}/>
+          <QRCodeSVG className='absolute top-4 left-[40px] w-[100px]' fgColor={qrCode.chooseColor} bgColor={qrCode.qrColor}  value={qrCode.link}/>
         </div>
       </div>
     ))
@@ -590,7 +590,7 @@ function QrCode() {
         {/* QR Code Box with Full Width Dark Background */}
         <div className="bg-gray-900 relative rounded-lg w-44 h-40 mt-6 flex justify-center items-center">
           
-          <QRCodeSVG className='absolute top-4 left-[40px] w-[100px]'  value={qrCode.link}/>
+          <QRCodeSVG className='absolute top-4 left-[40px] w-[100px]' fgColor={qrCode.chooseColor} bgColor={qrCode.qrColor} value={qrCode.link}/>
         </div>
       </div>
     ))

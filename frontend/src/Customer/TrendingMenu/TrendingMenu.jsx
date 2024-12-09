@@ -36,7 +36,7 @@ const TrendingMenu = () => {
   }, []);
 
   return (
-    <div className="text-white min-h-screen w-[375px]">
+    <div className="text-white  w-[375px]">
       {/* Header */}
      
     <div className=" flex items-center justify-between px-4 py-5 w-[375px] bg-[#1F1D2B] ">
@@ -54,7 +54,7 @@ const TrendingMenu = () => {
       </div>
 
       {/* Menu Section */}
-      <div className="space-y-4 p-4 bg-[#0B0F1F]">
+      <div className="space-y-4 h-screen p-4 bg-[#0B0F1F]">
       {items.length > 0 ? (
         items.map((item, index) => (
             <div
@@ -77,7 +77,9 @@ const TrendingMenu = () => {
                     </p>
                   </div>
                 </div>
-                <button className="bg-[#CA923D] text-xs text-white px-4 py-2 rounded-lg font-bold">
+                <button className="bg-[#CA923D] text-xs text-white px-4 py-2 rounded-lg font-bold"
+                        onClick={() => navigate(`/itemsdetails/${item._id}`)} // Pass the item's ID in the URL
+                >
                   Order Now
                 </button>
               </div>

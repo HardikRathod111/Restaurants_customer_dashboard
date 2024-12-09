@@ -47,7 +47,66 @@ const createOrder = async (req, res) => {
       res.status(500).json({ message: "Error fetching orders", error: error.message });
     }
   };
+
+  const acceptOrder = async (req, res) => {
+    const { orderId } = req.params;  // Assuming the orderId is passed in the URL
+  
+    try {
+      // Find the order and update orderAccepted and status fields
+      const updatedOrder = await PlacedOrder.findByIdAndUpdate(
+        orderId,
+        {
+          orderAccepted: true,  // Set orderAccepted to true
+          status: "isProgress",   // Change status to Accepted
+        },
+        { new: true } // Return the updated document
+      );
+  
+      if (!updatedOrder) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+  
+      // Send the updated order details back to the frontend
+      res.status(200).json({
+        message: "Order accepted successfully",
+        order: updatedOrder,
+      });
+    } catch (error) {
+      console.error("Error accepting order:", error);
+      res.status(500).send("Error accepting the order");
+    }
+  };
+
+  const deliverOrder = async (req, res) => {
+    const { orderId } = req.params;  // Assuming the orderId is passed in the URL
+  
+    try {
+      // Find the order and update orderAccepted and status fields
+      const updatedOrder = await PlacedOrder.findByIdAndUpdate(
+        orderId,
+        {
+          orderAccepted: true,  // Set orderAccepted to true
+          status: "isDelivered",   // Change status to Accepted
+        },
+        { new: true } // Return the updated document
+      );
+  
+      if (!updatedOrder) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+  
+      // Send the updated order details back to the frontend
+      res.status(200).json({
+        message: "Order accepted successfully",
+        order: updatedOrder,
+      });
+    } catch (error) {
+      console.error("Error accepting order:", error);
+      res.status(500).send("Error accepting the order");
+    }
+    }
+  
   
   
 
-module.exports = { createOrder, getAllOrders };
+module.exports = { createOrder, getAllOrders , acceptOrder ,deliverOrder };

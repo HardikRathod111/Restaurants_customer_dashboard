@@ -435,7 +435,7 @@ const [adminData, setAdminData] = useState({});
 
         <div className="flex flex-col 2xl:flex-row gap-8 mb-8 w-full">
   {/* Image Container */}
-  <div className="flex-1 rounded-lg p-6 relative overflow-hidden w-full min-h-40 ">
+  <div className="flex-1 rounded-lg p-16 relative overflow-hidden w-full min-h-40 ">
     <img
       src={`${process.env.PUBLIC_URL}/assets/images/Frame 1000006002.png`}
       alt="Restaurant interior"

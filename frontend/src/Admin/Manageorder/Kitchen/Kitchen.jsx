@@ -11,7 +11,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
 
-export default function Kitchen() {
+export default function       Kitchen() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
   const [manageOrderOpen, setManageOrderOpen] = useState(false);
@@ -59,12 +59,48 @@ const [adminData, setAdminData] = useState({});
   const togglePaymentHistory = () => {
     setPaymentHistoryOpen(!PaymentHistoryOpen);
   };
- 
+
   const handleLinkClick = (linkName) => {
     setActiveLink(linkName);
   };
 
+  const acceptOrderHandler = async (orderId) => {
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/order/accept-order/${orderId}`, {
+        method: 'PATCH', // Assuming you are patching the order
+      });
+
+      if (response.ok) {
+        // If the order is accepted successfully, navigate to /Kitchen
+        console.log('Order accepted successfully:', response);
+        navigate('/deliver');
+      } else {
+        console.error('Failed to accept the order');
+      }
+    } catch (error) {
+      console.error('Error accepting order:', error);
+    }
+  };
+
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+  const [orders, setOrders] = useState([]);
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/order/getPlacedOrder");
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        console.log(data); // Logs the data
+        setOrders(data); // Set the data in the state
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    
+    useEffect(() => {
+      fetchOrders();
+    }, []);
 
   return (
     <div className="flex min-h-screen bg-gray-900 text-white font-sans">
@@ -246,7 +282,7 @@ const [adminData, setAdminData] = useState({});
         >
           <IoMdLogOut className="mr-2" />
            Log Out
-         </button>
+         </button>   
 
                 </div>
               </div>
@@ -258,7 +294,7 @@ const [adminData, setAdminData] = useState({});
         
         {/* Search Bar */}
         <div className='flex'>
-        <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
+        <div className="relative w-[400px] mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -272,7 +308,7 @@ const [adminData, setAdminData] = useState({});
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
-              className="relative cursor-pointer sm:hidden md:block"
+              className="relative cursor-pointer"
               onClick={() => setIsOpen(!isOpen)}
             >
               <svg
@@ -351,6 +387,7 @@ const [adminData, setAdminData] = useState({});
         </div>
       </header>
 
+
         {/* Kitchen Order Management */}
         <div className="h-screen bg-slate-900 text-white p-4">
           <header className="flex justify-between items-center mb-6">
@@ -363,147 +400,80 @@ const [adminData, setAdminData] = useState({});
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Order Card 1 */}
-            <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
-              <div className="bg-slate-700 p-3 flex justify-between items-center">
-                <span className="text-gray-300">Order Type</span>
-                <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">Onsite</span>
+            {orders
+             .filter(order => order.orderAccepted === false)
+             .map((order, index) => (
+        <div key={order._id || index} className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+          <div className="bg-slate-700 p-3 flex justify-between items-center">
+            <span className="text-gray-300">Order Type</span>
+            <span className={`px-3 py-1 rounded-full text-sm ${
+              order.orderType === "Onsite" ? "bg-blue-500 text-white" : "bg-green-500 text-white"
+            }`}>
+              {order.orderType || "Unknown"}
+            </span>
+          </div>
+          <div className="p-4 space-y-3">
+            {order.orderType === "Onsite" && (
+              <div className="flex justify-between items-center">
+                <span className="text-white">Table No:</span>
+                <span className="bg-gray-700 text-gray-400 px-2 py-1 rounded-md text-sm">{order.tableNumber || "N/A"}</span>
               </div>
-              <div className="p-4 space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-white">Table No:</span>
-                  <span className="bg-gray-700 text-gray-400 px-2 py-1 rounded-md text-sm">1</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <label className="text-base text-white block">Customer Name:</label>
-                  <p className="text-gray-400">Ramjibhai</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <label className="text-base text-white block">Item Quantity:</label>
-                  <p className="bg-gray-700 text-blue-400 px-2 py-1 rounded-md text-sm">5</p>
-                </div>
-                <div>
-                  <label className="text-base text-white block mb-1">Item Name:</label>
-                  <div className="flex gap-1">
-                    <span className="bg-slate-700  text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
-                      Pizza(01)
-                    </span>
-                    <span className="bg-slate-700 text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
-                      Manchurian(02)
-                    </span>
-                    <span className="bg-slate-700 text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
-                      PavBhaji(02)
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm text-white block">Cooking Request:</label>
-                  <p className="text-sm text-gray-400">Make it a little spicy & creamy.</p>
-                </div>
-                <div>
-                  <label className="text-sm text-white block">Customization:</label>
-                  <p className="text-sm text-gray-400">(1)100% Wheat Crust,(2)Large,(3) Jalapeno</p>
-                </div>
-                <a 
-                  href="/deliver" 
-                  className="w-full bg-amber-500 hover:bg-amber-600 text-black py-2 rounded-md mt-2 text-center block"
-                >
-                  Accept Order
-                </a>
+            )}
+            <div className="flex justify-between items-center">
+              <label className="text-base text-white block">Customer Name:</label>
+              <p className="text-gray-400">{order.userId.name || "Anonymous"}</p>
+            </div>
+            <div className="flex justify-between items-center">
+              <label className="text-base text-white block">Item Quantity:</label>
+              <p className="bg-gray-700 text-blue-400 px-2 py-1 rounded-md text-sm">
+                {order.items.reduce((total, item) => total + item.quantity, 0)}
+              </p>
+            </div>
+            <div>
+              <label className="text-base text-white block mb-1">Item Name:</label>
+              <div className="flex gap-1 flex-wrap">
+                {order.items.map((item, i) => (
+                  <span key={i} className="bg-slate-700 text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
+                    {item.itemId.itemName} ({item.quantity})
+                  </span>
+                ))}
               </div>
             </div>
+            {/* {order.cookingRequest && ( */}
+              <div>
+                <label className="text-sm text-white block">Cooking Request:</label>
+                <p className="text-sm text-gray-400">{order.cookingRequest}</p>
+              </div>
+            {/* )} */}
+            {order.items.some((item) => item.customizations.length > 0) && (
+              <div>
+                <label className="text-sm text-white block">Customization:</label>
+                <p className="text-sm text-gray-400">
+                  {order.items
+                    .flatMap((item) =>
+                      item.customizations.map((custom, index) => {
+                        const title = custom.title || "No Title";
+                        const option = custom.option || "No Option";
+                        return `(${index + 1}) ${title}: ${option}`;
+                      })
+                    )
+                    .join(", ")}
+                </p>
+              </div>
+            )}
 
-            {/* Order Card 2 */}
-            <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
-              <div className="bg-slate-700 p-3 flex justify-between items-center">
-                <span className="text-gray-300">Order Type</span>
-                <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm">Parcel</span>
-              </div>
-              <div className="p-4 space-y-3">
-                <div className="flex justify-between items-center">
-                  <label className="text-base text-white block">Customer Name:</label>
-                  <p className="text-gray-400">MukeshBhai</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <label className="text-base text-white block">Item Quantity:</label>
-                  <p className="bg-gray-700 text-blue-400 px-2 py-1 rounded-md text-sm">2</p>
-                </div>
-                <div>
-                  <label className="text-base text-white block mb-1">Item Name:</label>
-                  <div className="flex gap-1">
-                    <span className="bg-slate-700  text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
-                      Burger (01)
-                    </span>
-                    <span className="bg-slate-700  text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
-                      Pizza (01)
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm text-white block">Cooking Request:</label>
-                  <p className="text-sm text-gray-400">Make it a little spicy & creamy.</p>
-                </div>
-                <div>
-                  <label className="text-sm text-white block">Customization:</label>
-                  <p className="text-sm text-gray-400 block">(1) 100% Wheat Crust, (2) Small, (3) Jalapeno</p>
-                </div>
-                <a 
-                  href="/deliver" 
-                  className="w-full bg-amber-500 hover:bg-amber-600 text-black py-2 rounded-md mt-2 text-center block"
-                >
-                  Accept Order
-                </a>
-              </div>
-            </div>
-
-            {/* Order Card 3 */}
-            <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
-              <div className="bg-slate-700 p-3 flex justify-between items-center">
-                <span className="text-gray-300">Order Type</span>
-                <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">Onsite</span>
-              </div>
-              <div className="p-4 space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400">Table No:</span>
-                  <span className="bg-gray-700 text-white px-2 py-1 rounded-md text-sm">2</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <label className="text-base text-white block">Customer Name:</label>
-                  <p className="text-gray-400">Rajubhai</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <label className="text-base text-white block">Item Quantity:</label>
-                  <p className="bg-gray-700 text-blue-400 px-2 py-1 rounded-md text-sm">3</p>
-                </div>
-                <div>
-                  <label className="text-base text-white block mb-1">Item Name:</label>
-                  <div className="flex gap-1">
-                    <span className="bg-slate-700  text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
-                      Burger (01)
-                    </span>
-                    <span className="bg-slate-700  text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
-                      Pizza (02)
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm text-white block">Cooking Request:</label>
-                  <p className="text-sm text-gray-400">Make it a little spicy & creamy.</p>
-                </div>
-                <div>
-                  <label className="text-sm text-white block">Customization:</label>
-                  <p className="text-sm text-gray-400">(1) 100% Wheat Crust, (2) Small, (3) Jalapeno</p>
-                </div>
-                <a 
-                  href="/deliver" 
-                  className="w-full bg-amber-500 hover:bg-amber-600 text-black py-2 rounded-md mt-2 text-center block"
-                >
-                  Accept Order
-                </a>
-              </div>
-            </div>
+            <a
+              onClick={() => acceptOrderHandler(order._id)}
+              className="w-full bg-amber-500 hover:bg-amber-600 text-black py-2 rounded-md mt-2 text-center block"
+            >
+              Accept Order
+            </a>
+          </div>
+        </div>
+      ))}
 
             {/* Order Card 4 */}
-            <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+            {/* <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
               <div className="bg-slate-700 p-3 flex justify-between items-center">
                 <span className="text-gray-300">Order Type</span>
                 <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">Onsite</span>
@@ -547,7 +517,7 @@ const [adminData, setAdminData] = useState({});
                   Accept Order
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </main>

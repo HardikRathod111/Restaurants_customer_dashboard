@@ -11,7 +11,13 @@ const orderSchema = new mongoose.Schema({
           itemId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Item" },
           quantity: { type: Number, required: true },
           totalPrice: { type: Number, required: true },
-          customizations: [{ type: String }],
+          customizations: [
+            {
+              _id: { type: mongoose.Schema.Types.ObjectId }, // Original customization ID
+              title: { type: String }, // Title of the customization
+              option: { type: String }, // Option of the customization
+            },
+          ],
         },
       ],
       paymentMethod: {
@@ -25,9 +31,11 @@ const orderSchema = new mongoose.Schema({
       },
       cookingRequest: {
         type: String,
+        default: "make it best!",
       },
       status: {
         type: String,
+        enum: ["Pending", "isProgress", "isDelivered"],
         default: "Pending",
       },
       orderDate: {
@@ -40,7 +48,12 @@ const orderSchema = new mongoose.Schema({
         default: "Parcel",
         required: true,
       },
-});
+      orderAccepted: {
+        type: Boolean,
+        enum: [true, false],
+        default: false,
+      },
+});   
 
 orderSchema.pre(/^find/, function (next) {
   this.populate([

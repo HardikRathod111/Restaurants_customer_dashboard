@@ -24,7 +24,7 @@ const Createqrcode = () => {
   const [category, setCategory] = useState(qrCodeData.contentCategory || 'Food & Drink');
   const [link, setLink] =  useState(qrCodeData.link || '');
   const [additionalText, setAdditionalText] =useState(qrCodeData.additionalText || '');
-  const [chooseColor, setChooseColor] = useState(qrCodeData.chooseColor || '#000000');
+  const [chooseColor, setChooseColor] = useState(qrCodeData.chooseColor || '#ffffff');
   const [frameColor, setFrameColor] = useState(qrCodeData.frameColor || '#000000');
   const [qrColor, setQRColor] =  useState(qrCodeData.qrColor || '#000000');
   const [contentCategory, setContentCategory] = useState('Food & Drink'); // State for content category

@@ -59,6 +59,41 @@ const [adminData, setAdminData] = useState({});
     setPaymentHistoryOpen(!PaymentHistoryOpen);
   };
 
+  const handleDelivered = async (orderId) => {
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/order/deliverd/${orderId}`, {
+        method: 'PATCH', // Assuming you are patching the order
+      });
+
+      if (response.ok) {
+        // If the order is accepted successfully, navigate to /Kitchen
+        // navigate('/Kitchen');
+      } else {
+        console.error('Failed to accept the order');
+      }
+    } catch (error) {
+      console.error('Error accepting order:', error);
+    }
+  };
+
+  const [orders, setOrders] = useState([]);
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/order/getPlacedOrder");
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const data = await response.json();
+      console.log(data); // Logs the data
+      setOrders(data); // Set the data in the state
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
   return (
     <div className="flex min-h-screen bg-gray-900 text-white font-sans">
       {/* Sidebar */}
@@ -251,7 +286,7 @@ const [adminData, setAdminData] = useState({});
         
         {/* Search Bar */}
         <div className='flex'>
-        <div className="relative sm:w-[200px] md:w-[400px] sm:mr-0 md:mr-28 marker">
+        <div className="relative w-[400px] mr-28 marker">
           <input
             type="text"
             placeholder="Search Here Your Delicious Food..."
@@ -265,7 +300,7 @@ const [adminData, setAdminData] = useState({});
           <div className="flex items-center space-x-4">
             {/* Notification Icon */}
             <div
-              className="relative cursor-pointer sm:hidden md:block"
+              className="relative cursor-pointer"
               onClick={() => setIsOpen(!isOpen)}
             >
               <svg
@@ -346,7 +381,7 @@ const [adminData, setAdminData] = useState({});
 
 
         {/* Delivery Dashboard Content */}
-        <div className="h-screen bg-slate-900 text-white p-4">
+        <div className=" bg-slate-900 text-white p-4">
           <header className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-semibold">Order Lists</h1>
             <div className="flex items-center gap-2">
@@ -356,48 +391,88 @@ const [adminData, setAdminData] = useState({});
           </header>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Order Card 1 */}
-            <OrderCard
-              orderType="Onsite"
-              tableNo="1"
-              customerName="Ramjibhai"
-              itemQuantity="5"
-              items={["Pizza(01)", "Manchurian(02)", "PavBhaji(02)"]}
-              cookingRequest="Make it a little spicy & creamy."
-              customization="(1)100% Wheat Crust,(2)Large,(3) Jalapeno"
-            />
+             {/* Order Card 1 */}
+             {orders
+             .filter(order => order.orderAccepted === true)
+             .map((order, index) => (
+        <div key={order._id || index} className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+          <div className="bg-slate-700 p-3 flex justify-between items-center">
+            <span className="text-gray-300">Order Type</span>
+            <span className={`px-3 py-1 rounded-full text-sm ${
+              order.orderType === "Onsite" ? "bg-blue-500 text-white" : "bg-green-500 text-white"
+            }`}>
+              {order.orderType || "Unknown"}
+            </span>
+          </div>
+          <div className="p-4 space-y-3">
+            {order.orderType === "Onsite" && (
+              <div className="flex justify-between items-center">
+                <span className="text-white">Table No:</span>
+                <span className="bg-gray-700 text-gray-400 px-2 py-1 rounded-md text-sm">{order.tableNumber || "N/A"}</span>
+              </div>
+            )}
+            <div className="flex justify-between items-center">
+              <label className="text-base text-white block">Customer Name:</label>
+              <p className="text-gray-400">{order.userId.name || "Anonymous"}</p>
+            </div>
+            <div className="flex justify-between items-center">
+              <label className="text-base text-white block">Item Quantity:</label>
+              <p className="bg-gray-700 text-blue-400 px-2 py-1 rounded-md text-sm">
+                {order.items.reduce((total, item) => total + item.quantity, 0)}
+              </p>
+            </div>
+            <div>
+              <label className="text-base text-white block mb-1">Item Name:</label>
+              <div className="flex gap-1 flex-wrap">
+                {order.items.map((item, i) => (
+                  <span key={i} className="bg-slate-700 text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
+                    {item.itemId.itemName} ({item.quantity})
+                  </span>
+                ))}
+              </div>
+            </div>
+            {/* {order.cookingRequest && ( */}
+              <div>
+                <label className="text-sm text-white block">Cooking Request:</label>
+                <p className="text-sm text-gray-400">{order.cookingRequest}</p>
+              </div>
+            {/* )} */}
+            {order.items.some((item) => item.customizations.length > 0) && (
+              <div>
+                <label className="text-sm text-white block">Customization:</label>
+                <p className="text-sm text-gray-400">
+                  {order.items
+                    .flatMap((item) =>
+                      item.customizations.map((custom, index) => {
+                        const title = custom.title || "No Title";
+                        const option = custom.option || "No Option";
+                        return `(${index + 1}) ${title}: ${option}`;
+                      })
+                    )
+                    .join(", ")}
+                </p>
+              </div>
+            )}
+            <div className="flex justify-between">
+              {/* Only show "in progress" if the order status is not "isDelivered" */}
+              {order.status !== "isDelivered" && (
+                <p className="text-yellow-500 mt-3 flex">
+                  <GoDotFill className="mt-1 text-lg" /> in progress
+                </p>
+              )}
 
-            {/* Order Card 2 */}
-            <OrderCard
-              orderType="Parcel"
-              customerName="MukeshBhai"
-              itemQuantity="2"
-              items={["Burger (01)", "Pizza (01)"]}
-              cookingRequest="Make it a little spicy & creamy."
-              customization="(1) 100% Wheat Crust, (2) Small, (3) Jalapeno"
-            />
-
-            {/* Order Card 3 */}
-            <OrderCard
-              orderType="Onsite"
-              tableNo="2"
-              customerName="Rajubhai"
-              itemQuantity="3"
-              items={["Burger (01)", "Pizza (02)"]}
-              cookingRequest="Make it a little spicy & creamy."
-              customization="(1) 100% Wheat Crust, (2) Small, (3) Jalapeno"
-            />
-
-            {/* Order Card 4 */}
-            <OrderCard
-              orderType="Onsite"
-              tableNo="3"
-              customerName="Rajubhai"
-              itemQuantity="2"
-              items={["Burger (01)", "Pizza (01)"]}
-              cookingRequest="Make it a little spicy & creamy."
-              customization="(1) 100% Wheat Crust, (2) Small, (3) Jalapeno"
-            />
+              {/* Disable the Delivered button if the status is "isDelivered" */}
+              <button
+                className={`w-24 ${order.status === "isDelivered" ? "bg-gray-500 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"} text-white py-2 rounded-md mt-2`}
+                onClick={() => handleDelivered(order._id)}
+                disabled={order.status === "isDelivered"} // Disable button if the status is "isDelivered"
+              >
+                Delivered
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
           </div>
         </div>
       </main>
@@ -405,67 +480,57 @@ const [adminData, setAdminData] = useState({});
   );
 }
 
-interface OrderCardProps {
-  orderType: 'Onsite' | 'Parcel';
-  tableNo?: string;
-  customerName: string;
-  itemQuantity: string;
-  items: string[];
-  cookingRequest: string;
-  customization: string;
-}
-
-function OrderCard({ orderType, tableNo, customerName, itemQuantity, items, cookingRequest, customization }: OrderCardProps) {
-  return (
-    <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
-      <div className="bg-slate-700 p-3 flex justify-between items-center">
-        <span className="text-gray-300">Order Type</span>
-        <span className={`${orderType === 'Onsite' ? 'bg-blue-500' : 'bg-green-500'} text-white px-3 py-1 rounded-full text-sm`}>
-          {orderType}
-        </span>
-      </div>
-      <div className="p-4 space-y-3">
-        {tableNo && (
-          <div className="flex justify-between items-center">
-            <span className="text-white">Table No:</span>
-            <span className="bg-gray-700 text-gray-400 px-2 py-1 rounded-md text-sm">{tableNo}</span>
-          </div>
-        )}
-        <div className="flex justify-between items-center">
-          <label className="text-base text-white block">Customer Name:</label>
-          <p className="text-gray-400">{customerName}</p>
-        </div>
-        <div className="flex justify-between items-center">
-          <label className="text-base text-white block">Item Quantity:</label>
-          <p className="bg-gray-700 text-blue-400 px-2 py-1 rounded-md text-sm">{itemQuantity}</p>
-        </div>
-        <div>
-          <label className="text-base text-white block mb-1">Item Name:</label>
-          <div className="flex flex-wrap gap-1">
-            {items.map((item, index) => (
-              <span key={index} className="bg-slate-700 text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div>
-          <label className="text-sm text-white block">Cooking Request:</label>
-          <p className="text-sm text-gray-400">{cookingRequest}</p>
-        </div>
-        <div>
-          <label className="text-sm text-white block">Customization:</label>
-          <p className="text-sm text-gray-400">{customization}</p>
-        </div>
-        <div className="flex justify-between">
-          <p className="text-yellow-500 mt-3  flex"> 
-            <GoDotFill className="mt-1 text-lg" />in progress
-          </p>
-          <button className="w-24 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md mt-2">
-            Delivered
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+// function OrderCard({ orderType, tableNo, customerName, itemQuantity, items, cookingRequest, customization }: OrderCardProps) {
+//   return (
+//     <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+//       <div className="bg-slate-700 p-3 flex justify-between items-center">
+//         <span className="text-gray-300">Order Type</span>
+//         <span className={`${orderType === 'Onsite' ? 'bg-blue-500' : 'bg-green-500'} text-white px-3 py-1 rounded-full text-sm`}>
+//           {orderType}
+//         </span>
+//       </div>
+//       <div className="p-4 space-y-3">
+//         {tableNo && (
+//           <div className="flex justify-between items-center">
+//             <span className="text-white">Table No:</span>
+//             <span className="bg-gray-700 text-gray-400 px-2 py-1 rounded-md text-sm">{tableNo}</span>
+//           </div>
+//         )}
+//         <div className="flex justify-between items-center">
+//           <label className="text-base text-white block">Customer Name:</label>
+//           <p className="text-gray-400">{customerName}</p>
+//         </div>
+//         <div className="flex justify-between items-center">
+//           <label className="text-base text-white block">Item Quantity:</label>
+//           <p className="bg-gray-700 text-blue-400 px-2 py-1 rounded-md text-sm">{itemQuantity}</p>
+//         </div>
+//         <div>
+//           <label className="text-base text-white block mb-1">Item Name:</label>
+//           <div className="flex flex-wrap gap-1">
+//             {items.map((item, index) => (
+//               <span key={index} className="bg-slate-700 text-gray-400 px-2 py-1 rounded-xl text-sm flex items-center">
+//                 {item}
+//               </span>
+//             ))}
+//           </div>
+//         </div>
+//         <div>
+//           <label className="text-sm text-white block">Cooking Request:</label>
+//           <p className="text-sm text-gray-400">{cookingRequest}</p>
+//         </div>
+//         <div>
+//           <label className="text-sm text-white block">Customization:</label>
+//           <p className="text-sm text-gray-400">{customization}</p>
+//         </div>
+//         <div className="flex justify-between">
+//           <p className="text-yellow-500 mt-3  flex"> 
+//             <GoDotFill className="mt-1 text-lg" />in progress
+//           </p>
+//           <button className="w-24 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md mt-2">
+//             Delivered
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }

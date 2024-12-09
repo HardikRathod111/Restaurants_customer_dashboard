@@ -168,7 +168,7 @@ export default function CartPage({ cartItems }) {
       }),
       paymentMethod: paymentMethod, // Ensure it's a string and not an event
       totalAmount: totalPrice,
-      cookingRequest: null, // Assuming no cooking request
+      cookingRequest: cookingRequest, // Assuming no cooking request
     };
     // Make the API call to place the order
     axios
