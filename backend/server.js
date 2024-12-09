@@ -12,7 +12,6 @@ connectDB();
 
 app.use(cors({
     origin: [
-        'http://localhost:3000', // For local development
         'https://restaurants-customer-dashboard.vercel.app' // Live frontend URL
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust methods as needed
