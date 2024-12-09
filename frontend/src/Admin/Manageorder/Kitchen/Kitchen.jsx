@@ -73,7 +73,8 @@ const [adminData, setAdminData] = useState({});
 
       if (response.ok) {
         // If the order is accepted successfully, navigate to /Kitchen
-        navigate('/Kitchen');
+        console.log('Order accepted successfully:', response);
+        navigate('/deliver');
       } else {
         console.error('Failed to accept the order');
       }

@@ -381,7 +381,7 @@ const [adminData, setAdminData] = useState({});
 
 
         {/* Delivery Dashboard Content */}
-        <div className="h-screen bg-slate-900 text-white p-4">
+        <div className=" bg-slate-900 text-white p-4">
           <header className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-semibold">Order Lists</h1>
             <div className="flex items-center gap-2">
