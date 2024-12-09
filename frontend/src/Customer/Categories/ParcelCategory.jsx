@@ -10,7 +10,7 @@ const ParcelCategory = () => {
 
   const fetchCategories = async () => {
     try {
-        const response = await fetch('http://localhost:8080/api/v1/category/getCategory');
+        const response = await fetch('https://restaurants-customer-dashboard.onrender.com/api/v1/category/getCategory');
         
         // Check if the response is ok
         if (!response.ok) {
@@ -56,7 +56,7 @@ const ParcelCategory = () => {
           >
             <div className="w-16 h-16 flex items-center justify-center mb-2">
               <img
-                src={`http://localhost:8080/${category.image}`}
+                src={`https://restaurants-customer-dashboard.onrender.com/${category.image}`}
                 alt={category.categoryName}
               />
             </div>
