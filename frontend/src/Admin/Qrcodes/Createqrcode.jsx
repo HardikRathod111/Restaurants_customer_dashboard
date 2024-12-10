@@ -105,7 +105,7 @@ const handleTemplateSelect = (templateId) => {
 
   const createQrCode = async (qrData) => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/qrCode/createQrCode', {
+      const response = await fetch('https://restaurants-customer-dashboard.onrender.com/api/v1/qrCode/createQrCode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(qrData),
@@ -126,7 +126,7 @@ const handleTemplateSelect = (templateId) => {
 
   const updateQrCode = async (id, qrData) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/qrCode/updateQrCode/${id}`, {
+      const response = await fetch(`https://restaurants-customer-dashboard.onrender.com/api/v1/qrCode/updateQrCode/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(qrData),
@@ -188,7 +188,7 @@ const handleTemplateSelect = (templateId) => {
     const token = localStorage.getItem("authToken");
     console.log(token);
 
-    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+    axios.get("https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/getadmin", {
       headers: {
           Authorization:`Bearer ${token}`
       }
@@ -529,7 +529,7 @@ const handleTemplateSelect = (templateId) => {
           {/* Name and Category */}
           <div className="flex space-x-4">
             <div className="w-1/2">
-              <label className="block text-sm mb-1">Name Your QR</label>
+              <label className="block text-sm mb-1">Name Your QR </label>
               <input
                 type="text"
                 className="bg-gray-700 p-3 rounded w-full text-gray-200 placeholder-gray-400"
@@ -625,7 +625,7 @@ const handleTemplateSelect = (templateId) => {
                 <div className="bg-[#2B2F3F] relative rounded-lg w-[250px] h-[250px] p-1 flex justify-center items-center" id="download-container">
                   <span className="text-xl">
                     <img src={backgroundImage} alt='QR Code Background' className='w-96' />
-                    <QRCodeSVG className='absolute top-16 left-[90px] w-[75px]' ref={qrCodeRef}  value={link} bgColor={chooseColor} fgColor={qrColor}/>
+                    <QRCodeSVG className='absolute top-16 left-[88px] w-[75px]' ref={qrCodeRef} fgColor={chooseColor} bgColor={qrColor} value={link}/>
                     <input type="radio" name="payment-method" className="accent-yellow-500 absolute top-56 left-16" />
                     <span className='absolute top-[215px] left-[85px]'>SVG</span>
                     <input type="radio" name="payment-method" className="accent-yellow-500 absolute top-56 left-36" />
