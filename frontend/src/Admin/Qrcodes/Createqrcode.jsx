@@ -625,7 +625,7 @@ const handleTemplateSelect = (templateId) => {
                 <div className="bg-[#2B2F3F] relative rounded-lg w-[250px] h-[250px] p-1 flex justify-center items-center" id="download-container">
                   <span className="text-xl">
                     <img src={backgroundImage} alt='QR Code Background' className='w-96' />
-                    <QRCodeSVG className='absolute top-16 left-[88px] w-[75px]' ref={qrCodeRef}  value={link}/>
+                    <QRCodeSVG className='absolute top-16 left-[88px] w-[75px]' ref={qrCodeRef} fgColor={chooseColor} bgColor={qrColor} value={link}/>
                     <input type="radio" name="payment-method" className="accent-yellow-500 absolute top-56 left-16" />
                     <span className='absolute top-[215px] left-[85px]'>SVG</span>
                     <input type="radio" name="payment-method" className="accent-yellow-500 absolute top-56 left-36" />
