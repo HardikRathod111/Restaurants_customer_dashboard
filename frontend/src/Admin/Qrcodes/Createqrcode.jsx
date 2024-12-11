@@ -105,7 +105,7 @@ const handleTemplateSelect = (templateId) => {
 
   const createQrCode = async (qrData) => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/qrCode/createQrCode', {
+      const response = await fetch('https://restaurants-customer-dashboard.onrender.com/api/v1/qrCode/createQrCode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(qrData),
@@ -126,7 +126,7 @@ const handleTemplateSelect = (templateId) => {
 
   const updateQrCode = async (id, qrData) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/qrCode/updateQrCode/${id}`, {
+      const response = await fetch(`https://restaurants-customer-dashboard.onrender.com/api/v1/qrCode/updateQrCode/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(qrData),
@@ -188,7 +188,7 @@ const handleTemplateSelect = (templateId) => {
     const token = localStorage.getItem("authToken");
     console.log(token);
 
-    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
+    axios.get("https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/getadmin", {
       headers: {
           Authorization:`Bearer ${token}`
       }
