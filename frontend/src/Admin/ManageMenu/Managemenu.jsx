@@ -65,7 +65,7 @@ const Managemenu = () => {
     const [addCat, setAddCat] = useState(false);
     const fetchCategories = async () => {
         try {
-            const response = await fetch('https://restaurants-customer-dashboard.onrender.com/api/v1/category/getCategory');
+            const response = await fetch('http://localhost:8080/api/v1/category/getCategory');
             
             // Check if the response is ok
             if (!response.ok) {
@@ -110,7 +110,7 @@ const Managemenu = () => {
 
     const openEditModal = async (id) => {
         try {
-          const response = await fetch(`https://restaurants-customer-dashboard.onrender.com/api/v1/manageorder/items/${id}`); // Adjust endpoint
+          const response = await fetch(`http://localhost:8080/api/v1/manageorder/items/${id}`); // Adjust endpoint
           const data = await response.json();
       
           if (response.ok) {
@@ -143,7 +143,7 @@ const Managemenu = () => {
             }
           });
       
-          const response = await fetch(`https://restaurants-customer-dashboard.onrender.com/api/v1/manageorder/editItem/${updatedItem._id}`, {
+          const response = await fetch(`http://localhost:8080/api/v1/manageorder/editItem/${updatedItem._id}`, {
             method: 'PUT',
             body: formData,
           });
@@ -185,7 +185,7 @@ const Managemenu = () => {
             }
     
             try {
-                const response = await axios.delete(`https://restaurants-customer-dashboard.onrender.com/api/v1/manageorder/deleteItem/${itemId}`);
+                const response = await axios.delete(`http://localhost:8080/api/v1/manageorder/deleteItem/${itemId}`);
                 console.log('Item deleted:', response.data);
                 setRefreshKey((prevKey) => prevKey + 1);
                 // Optionally, update the UI to reflect the deletion (e.g., remove item from the list)
@@ -228,7 +228,7 @@ const Managemenu = () => {
         formData.append('image', selectedImageFile); // Make sure selectedImageFile is a valid file object
     
         try {
-            const response = await fetch('https://restaurants-customer-dashboard.onrender.com/api/v1/category/createCategory', {
+            const response = await fetch('http://localhost:8080/api/v1/category/createCategory', {
                 method: 'POST',
                 body: formData,
             });
@@ -257,7 +257,7 @@ const Managemenu = () => {
     const token = localStorage.getItem("authToken");
     console.log(token);
 
-    axios.get("https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/getadmin", {
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -277,7 +277,7 @@ const Managemenu = () => {
     useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('https://restaurants-customer-dashboard.onrender.com/api/v1/manageorder/getAllItems');
+        const response = await axios.get('http://localhost:8080/api/v1/manageorder/getAllItems');
         console.log(response.data); // Log the response to verify the structure
         // Assuming the items are at response.data directly
         if (Array.isArray(response.data)) {
@@ -692,7 +692,7 @@ const Managemenu = () => {
                                         className={`bg-gray-800 text-white p-2 rounded-md flex items-center ${selectedCategory === category.name ? 'bg-yellow-600' : ''}`}
                                     >
                                         <img
-                                            src={`http://localhost:8080/${category.image}`} 
+                                            src={`http://localhost:8080${category.image}`} 
                                             alt={category.categoryName}
                                             className="w-10 h-10 mr-2 bg-gray-900"
                                         />
@@ -719,7 +719,7 @@ const Managemenu = () => {
                         items.map((item, index) => (
                             <div key={item._id} className="bg-gray-800 w-full  rounded-lg p-4 text-gray-300 relative">
                                 <div className='bg-gray-700 w-full h-36 flex items-center justify-center rounded-lg'>
-                                <img src={`http://localhost:8080/${item.imageUrl}`} alt={item.itemName} className="w-40 ml-1 h-28  object-cover rounded-md mb-2" />
+                                <img src={`http://localhost:8080${item.imageUrl}`} alt={item.itemName} className="w-40 ml-1 h-28  object-cover rounded-md mb-2" />
                                 </div>
 
                                 {/* Discount Label */}

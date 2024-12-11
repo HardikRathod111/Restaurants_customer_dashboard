@@ -24,7 +24,7 @@ const Resetpassword = () => {
     }
 
     try {
-      const response = await fetch('https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/reset-password', {
+      const response = await fetch('http://localhost:8080/api/v1/adminedit/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

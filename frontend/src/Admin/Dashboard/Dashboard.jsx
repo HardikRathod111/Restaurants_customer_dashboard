@@ -80,7 +80,7 @@ const [adminData, setAdminData] = useState({});
     const token = localStorage.getItem("authToken");
     console.log(token);
 
-    axios.get("https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/getadmin", {
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
       headers: {
           Authorization: `Bearer ${token}`
       }
@@ -134,7 +134,7 @@ const [adminData, setAdminData] = useState({});
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await axios.get('https://restaurants-customer-dashboard.onrender.com/api/v1/resturant/getRestaurant');  // Ensure this matches the backend route
+        const response = await axios.get('http://localhost:8080/api/v1/resturant/getRestaurant');  // Ensure this matches the backend route
         setRestaurants(response.data);  // Save the fetched data into the state
       } catch (error) {
         console.error('Error fetching restaurants', error);

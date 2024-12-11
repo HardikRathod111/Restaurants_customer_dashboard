@@ -5,7 +5,7 @@ import axios from 'axios'; // Import axios for API calls
 import { useNavigate } from 'react-router-dom'; 
 
 function Register() {
-  const { register, handleSubmit, formState: { errors, isValid, isDirty } } = useForm();
+  const { register, handleSubmit,watch, formState: { errors, isValid, isDirty } } = useForm();
   // const { register: restaurantRegister, handleSubmit: handleRestaurantSubmit, formState: { errors: restaurantErrors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -16,7 +16,7 @@ function Register() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await axios.get('https://restaurants-customer-dashboard.onrender.com/api/v1/resturant/getRestaurant');  // Ensure this matches the backend route
+        const response = await axios.get('http://localhost:8080/api/v1/resturant/getRestaurant');  // Ensure this matches the backend route
         setRestaurants(response.data);  // Save the fetched data into the state
       } catch (error) {
         console.error('Error fetching restaurants', error);
@@ -29,7 +29,7 @@ function Register() {
     e.preventDefault();
     try {
       console.log("Submitting form with data:", data); 
-      const response = await axios.post('https://restaurants-customer-dashboard.onrender.com/api/v1/admin/admin', data); 
+      const response = await axios.post('http://localhost:8080/api/v1/admin/admin', data); 
       if (response.data.success) {
         alert("Admin registered successfully!");
         navigate('/login');
@@ -81,7 +81,7 @@ function Register() {
 
     try {
       const response = await axios.post(
-        "https://restaurants-customer-dashboard.onrender.com/api/v1/resturant/create", // Update this to match your route
+        "http://localhost:8080/api/v1/resturant/create", // Update this to match your route
         {
           restaurantName,
           restaurantAddress,
@@ -103,8 +103,72 @@ function Register() {
       setError(err.response?.data?.message || "Server error occurred.");
     }
   };
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const selectedCountry = watch("country");
+  const selectedState = watch("state");
+  useEffect(() => {
+    // Fetch countries from Restcountries API
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get("https://restcountries.com/v3.1/all");
+        const countryData = response.data.map((country) => ({
+          name: country.name.common,
+          code: country.cca2, // Use the country code to fetch states later
+        }));
+        setCountries(countryData);
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+      }
+    };
+    fetchCountries();
+  }, []);
 
-  
+  // Fetch states based on selected country
+  useEffect(() => {
+    const fetchStates = async () => {
+      if (!selectedCountry) return;
+      try {
+        const response = await axios.get(
+          `https://api.countrystatecity.in/v1/countries/${selectedCountry}/states`,
+          {
+            headers: {
+              "X-CSCAPI-KEY": "bDJXdWVSNnV0Wm01MUkyWWhjSm0ySkNjYTcxSTd6eHJ6ZzRxaDBhZw==", // Replace with your API key
+            },
+          }
+        );
+        setStates(response.data);
+        setCities([]); // Reset cities when country changes
+      } catch (error) {
+        console.error("Error fetching states:", error);
+      }
+    };
+    fetchStates();
+  }, [selectedCountry]);
+
+  // Fetch cities based on selected state
+  useEffect(() => {
+    const fetchCities = async () => {
+      if (!selectedState) return;
+      try {
+        const response = await axios.get(
+          `https://api.countrystatecity.in/v1/countries/${selectedCountry}/states/${selectedState}/cities`,
+          {
+            headers: {
+              "X-CSCAPI-KEY": "bDJXdWVSNnV0Wm01MUkyWWhjSm0ySkNjYTcxSTd6eHJ6ZzRxaDBhZw==", // Replace with your API key
+            },
+          }
+        );
+        setCities(response.data);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      }
+    };
+    fetchCities();
+  }, [selectedState]);
+
+
   
   
   return (
@@ -164,28 +228,48 @@ function Register() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-gray-400">Country</label>
-                <select {...register("country", { required: "Country is required" })} className="w-full px-4 py-2 rounded bg-gray-800 text-white">
+                <select
+                  {...register("country", { required: "Country is required" })}
+                  className="w-full px-4 py-2 rounded bg-gray-800 text-white"
+                >
                   <option value="">Select Country</option>
-                  <option value="India">India</option>
-                  <option value="USA">USA</option>
+                  {countries.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.name}
+                    </option>
+                  ))}
                 </select>
                 {errors.country && <p className="text-red-500 text-sm">{errors.country.message}</p>}
               </div>
               <div>
                 <label className="block text-gray-400">State</label>
-                <select {...register("state", { required: "State is required" })} className="w-full px-4 py-2 rounded bg-gray-800 text-white">
+                <select
+                  {...register("state", { required: "State is required" })}
+                  className="w-full px-4 py-2 rounded bg-gray-800 text-white"
+                  disabled={!states.length}
+                >
                   <option value="">Select State</option>
-                  <option value="Gujarat">Gujarat</option>
-                  <option value="California">California</option>
+                  {states.map((state) => (
+                    <option key={state.iso2} value={state.iso2}>
+                      {state.name}
+                    </option>
+                  ))}
                 </select>
                 {errors.state && <p className="text-red-500 text-sm">{errors.state.message}</p>}
               </div>
               <div>
                 <label className="block text-gray-400">City</label>
-                <select {...register("city", { required: "City is required" })} className="w-full px-4 py-2 rounded bg-gray-800 text-white">
+                <select
+                  {...register("city", { required: "City is required" })}
+                  className="w-full px-4 py-2 rounded bg-gray-800 text-white"
+                  disabled={!cities.length}
+                >
                   <option value="">Select City</option>
-                  <option value="Surat">Surat</option>
-                  <option value="San Francisco">San Francisco</option>
+                  {cities.map((city) => (
+                    <option key={city.id} value={city.name}>
+                      {city.name}
+                    </option>
+                  ))}
                 </select>
                 {errors.city && <p className="text-red-500 text-sm">{errors.city.message}</p>}
               </div>

@@ -75,8 +75,7 @@ const createOrder = async (req, res) => {
       console.error("Error accepting order:", error);
       res.status(500).send("Error accepting the order");
     }
-  };
-
+    }
   const deliverOrder = async (req, res) => {
     const { orderId } = req.params;  // Assuming the orderId is passed in the URL
   

@@ -34,7 +34,7 @@ const [adminData, setAdminData] = useState({});
     const token = localStorage.getItem("authToken");
     console.log(token);
 
-    axios.get("https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/getadmin", {
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
       headers: {
           Authorization: `Bearer ${token}`
       }

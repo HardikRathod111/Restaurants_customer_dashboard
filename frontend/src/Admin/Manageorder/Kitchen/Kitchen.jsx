@@ -37,7 +37,7 @@ const [adminData, setAdminData] = useState({});
     const token = localStorage.getItem("authToken");
     console.log(token);
 
-    axios.get("https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/getadmin", {
+    axios.get("http://localhost:8080/api/v1/adminedit/getadmin", {
       headers: {
           Authorization: `Bearer ${token}`
       }
@@ -67,7 +67,7 @@ const [adminData, setAdminData] = useState({});
   const acceptOrderHandler = async (orderId) => {
 
     try {
-      const response = await fetch(`https://restaurants-customer-dashboard.onrender.com/api/v1/order/accept-order/${orderId}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/order/accept-order/${orderId}`, {
         method: 'PATCH', // Assuming you are patching the order
       });
 
@@ -88,7 +88,7 @@ const [adminData, setAdminData] = useState({});
   const [orders, setOrders] = useState([]);
     const fetchOrders = async () => {
       try {
-        const response = await fetch("https://restaurants-customer-dashboard.onrender.com/api/v1/order/getPlacedOrder");
+        const response = await fetch("http://localhost:8080/api/v1/order/getPlacedOrder");
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         console.log(data); // Logs the data

@@ -27,7 +27,7 @@ const ParcelLogin = () => {
 
     try {
       // Send signup request to backend
-      const response = await axios.post('https://restaurants-customer-dashboard.onrender.com/api/v1/user/userSignup', userData);
+      const response = await axios.post('http://localhost:8080/api/v1/user/userSignup', userData);
       console.log(response.data);  // Log the signup response
 
       // Save JWT token in localStorage
