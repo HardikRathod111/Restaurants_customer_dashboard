@@ -12,7 +12,7 @@ connectDB();
 
 app.use(cors({
     origin: [
-        'https://restaurants-customer-dashboard.onrender.com' // Live frontend URL
+        'https://restaurants-customer-dashboard.vercel.app' // Live frontend URL
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust methods as needed
     credentials: true // If cookies or authentication tokens are used
