@@ -39,7 +39,7 @@ function Editprofile() {
     localStorage.removeItem("authToken"); // Adjust this depending on where your user data is stored
   
     // Optionally make an API request to invalidate session if necessary
-    // await axios.post('https://restaurants-customer-dashboard.vercel.app/api/v1/auth/logout'); // Optional backend call
+    // await axios.post('https://restaurants-customer-dashboard.onrender.com/api/v1/auth/logout'); // Optional backend call
   
     // Redirect user to login or home page after logout
     navigate("/login"); // Or any other page
@@ -53,7 +53,7 @@ function Editprofile() {
     // Fetch admin data
     const token = localStorage.getItem("authToken");
 
-    axios.get("https://restaurants-customer-dashboard.vercel.app/api/v1/adminedit/getadmin", {
+    axios.get("https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/getadmin", {
       headers: {
           Authorization: `Bearer ${token}`
       }
@@ -82,7 +82,7 @@ function Editprofile() {
     const token = localStorage.getItem("authToken");
     axios
       .put(
-        "https://restaurants-customer-dashboard.vercel.app/api/v1/adminedit/updateadmin",
+        "https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/updateadmin",
         adminData, // Send the updated admin data
         {
           headers: { Authorization: `Bearer ${token}` },

@@ -88,7 +88,7 @@ const AddItems = () => {
     const token = localStorage.getItem("authToken");
     console.log(token);
 
-    axios.get("https://restaurants-customer-dashboard.vercel.app/api/v1/adminedit/getadmin", {
+    axios.get("https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/getadmin", {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -184,7 +184,7 @@ const AddItems = () => {
             console.log("REC?>>>>", formData);
             
             // Send form data including  image to backend
-            const response = await axios.post('https://restaurants-customer-dashboard.vercel.app/api/v1/manageorder/add', formData, {
+            const response = await axios.post('https://restaurants-customer-dashboard.onrender.com/api/v1/manageorder/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

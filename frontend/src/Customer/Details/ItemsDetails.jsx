@@ -50,7 +50,7 @@ export default function ItemDetails() {
     const fetchItemDetails = async () => {
       try {
         const response = await fetch(
-          `https://restaurants-customer-dashboard.vercel.app/api/v1/manageorder/items/${id}`
+          `https://restaurants-customer-dashboard.onrender.com/api/v1/manageorder/items/${id}`
         ); // Replace with your API URL
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -76,7 +76,7 @@ export default function ItemDetails() {
           return;
         }
 
-        const response = await axios.get('https://restaurants-customer-dashboard.vercel.app/api/v1/user/getUser', {
+        const response = await axios.get('https://restaurants-customer-dashboard.onrender.com/api/v1/user/getUser', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -113,7 +113,7 @@ export default function ItemDetails() {
     console.log("cart", cartData)
   
     try {
-      const response = await axios.post('https://restaurants-customer-dashboard.vercel.app/api/v1/addCart/createOrder', cartData, {
+      const response = await axios.post('https://restaurants-customer-dashboard.onrender.com/api/v1/addCart/createOrder', cartData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -173,7 +173,7 @@ export default function ItemDetails() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center p-4">
-        <img src={`https://restaurants-customer-dashboard.vercel.app/${item.imageUrl}`} alt={item.itemName} className="w-60 h-30 ml-0" />
+        <img src={`https://restaurants-customer-dashboard.onrender.com/${item.imageUrl}`} alt={item.itemName} className="w-60 h-30 ml-0" />
 
         {/* Veg/Non-Veg Toggle and Customization */}
         <div className="w-full flex items-center justify-between mb-3">

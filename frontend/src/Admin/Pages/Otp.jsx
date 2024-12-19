@@ -35,7 +35,7 @@ const Otp = () => {
     }
   
     try {
-      const response = await fetch('https://restaurants-customer-dashboard.vercel.app/api/v1/adminedit/verify-otp', {
+      const response = await fetch('https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/verify-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

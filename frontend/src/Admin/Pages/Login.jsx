@@ -15,7 +15,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://restaurants-customer-dashboard.vercel.app/api/v1/admin/adminlogin', {
+            const response = await axios.post('https://restaurants-customer-dashboard.onrender.com/api/v1/admin/adminlogin', {
                 email,
                 password,
             });
