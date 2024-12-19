@@ -29,7 +29,7 @@ const ParcelHomePage = () => {
 
   const fetchCategories = async () => {
     try {
-        const response = await fetch('https://restaurants-customer-dashboard.onrender.com/api/v1/category/getCategory');
+        const response = await fetch('https://restaurants-customer-dashboard.vercel.app/api/v1/category/getCategory');
         
         // Check if the response is ok
         if (!response.ok) {
@@ -55,7 +55,7 @@ const ParcelHomePage = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('https://restaurants-customer-dashboard.onrender.com/api/v1/manageorder/getAllItems');
+        const response = await axios.get('https://restaurants-customer-dashboard.vercel.app/api/v1/manageorder/getAllItems');
         console.log(response.data); // Log the response to verify the structure
         // Assuming the items are at response.data directly
         if (Array.isArray(response.data)) {
@@ -178,7 +178,7 @@ const ParcelHomePage = () => {
                 <div className="flex items-center space-x-4">
                   <div className="bg-[#2D303E] w-16 h-16 rounded-lg flex items-center justify-center">
                     <img
-                      src={`https://restaurants-customer-dashboard.onrender.com/${result.imageUrl}`}
+                      src={`https://restaurants-customer-dashboard.vercel.app/${result.imageUrl}`}
                       alt={result.itemName}
                       className="object-cover w-full h-full rounded-lg"
                     />
@@ -248,7 +248,7 @@ const ParcelHomePage = () => {
             <div key={index} className="flex flex-col items-center space-y-2">
               <div className="bg-gray-700 w-14 h-14 rounded-lg flex items-center justify-center">
                 <img
-                  src={`https://restaurants-customer-dashboard.onrender.com/${category.image}`}
+                  src={`https://restaurants-customer-dashboard.vercel.app/${category.image}`}
                   alt={category.categoryName}
                 />
               </div>
@@ -276,7 +276,7 @@ const ParcelHomePage = () => {
                 <div className="flex items-center space-x-4">
                   <div className="bg-[#2D303E] w-16 h-16 rounded-lg flex items-center justify-center">
                     <img
-                      src={`https://restaurants-customer-dashboard.onrender.com/${item.imageUrl}`}
+                      src={`https://restaurants-customer-dashboard.vercel.app/${item.imageUrl}`}
                       alt={item.itemName}
                       className="object-cover w-full h-full rounded-lg"
                     />

@@ -16,7 +16,7 @@ function Register() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await axios.get('https://restaurants-customer-dashboard.onrender.com/api/v1/resturant/getRestaurant');  // Ensure this matches the backend route
+        const response = await axios.get('https://restaurants-customer-dashboard.vercel.app/api/v1/resturant/getRestaurant');  // Ensure this matches the backend route
         setRestaurants(response.data);  // Save the fetched data into the state
       } catch (error) {
         console.error('Error fetching restaurants', error);
@@ -29,7 +29,7 @@ function Register() {
     e.preventDefault();
     try {
       console.log("Submitting form with data:", data); 
-      const response = await axios.post('https://restaurants-customer-dashboard.onrender.com/api/v1/admin/admin', data); 
+      const response = await axios.post('https://restaurants-customer-dashboard.vercel.app/api/v1/admin/admin', data); 
       if (response.data.success) {
         alert("Admin registered successfully!");
         navigate('/login');
@@ -81,7 +81,7 @@ function Register() {
 
     try {
       const response = await axios.post(
-        "https://restaurants-customer-dashboard.onrender.com/api/v1/resturant/create", // Update this to match your route
+        "https://restaurants-customer-dashboard.vercel.app/api/v1/resturant/create", // Update this to match your route
         {
           restaurantName,
           restaurantAddress,

@@ -14,7 +14,7 @@ const TrendingMenu = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-    const response = await axios.get('https://restaurants-customer-dashboard.onrender.com/api/v1/manageorder/getAllItems');
+    const response = await axios.get('https://restaurants-customer-dashboard.vercel.app/api/v1/manageorder/getAllItems');
     console.log(response.data); // Log the response to verify the structure
     // Assuming the items are at response.data directly
     if (Array.isArray(response.data)) {
@@ -64,7 +64,7 @@ const TrendingMenu = () => {
                 <div className="flex items-center space-x-4">
                   <div className="bg-[#2D303E] w-16 h-16 rounded-lg flex items-center justify-center">
                     <img
-                      src={`https://restaurants-customer-dashboard.onrender.com/${item.imageUrl}`}
+                      src={`https://restaurants-customer-dashboard.vercel.app/${item.imageUrl}`}
                       alt={item.itemName}
                       className="object-cover w-full h-full rounded-lg"
                     />

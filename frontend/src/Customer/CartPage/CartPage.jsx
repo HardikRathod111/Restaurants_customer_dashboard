@@ -65,7 +65,7 @@ export default function CartPage({ cartItems }) {
       
       try {
         setLoading(true); // Set loading to true when starting fetch
-        const response = await axios.get(`https://restaurants-customer-dashboard.onrender.com/api/v1/addCart/getOrder/${user._id}`);
+        const response = await axios.get(`https://restaurants-customer-dashboard.vercel.app/api/v1/addCart/getOrder/${user._id}`);
 
         console.log("API Response:", response)
 
@@ -119,7 +119,7 @@ export default function CartPage({ cartItems }) {
     try {
       // API call to delete the order by its _id
       const response = await fetch(
-        `https://restaurants-customer-dashboard.onrender.com/api/v1/addCart/deleteItem/${orderId}`, // Ensure backend endpoint matches this URL
+        `https://restaurants-customer-dashboard.vercel.app/api/v1/addCart/deleteItem/${orderId}`, // Ensure backend endpoint matches this URL
         {
           method: "DELETE",
           headers: {
@@ -172,7 +172,7 @@ export default function CartPage({ cartItems }) {
     };
     // Make the API call to place the order
     axios
-      .post('https://restaurants-customer-dashboard.onrender.com/api/v1/order/create', orderData)
+      .post('https://restaurants-customer-dashboard.vercel.app/api/v1/order/create', orderData)
       .then((response) => {
         console.log("Order placed successfully:", response);
         if(paymentMethod === 'Online'){
@@ -232,7 +232,7 @@ export default function CartPage({ cartItems }) {
               <div className="w-12 h-12 bg-slate-800 rounded-md flex items-center justify-center">
                 <span role="img" aria-label="burger" className="text-xl">
                   <img
-                    src={`https://restaurants-customer-dashboard.onrender.com/${item.itemId.imageUrl}`}
+                    src={`https://restaurants-customer-dashboard.vercel.app/${item.itemId.imageUrl}`}
                     alt={item.itemId.itemName}
                   />
                 </span>

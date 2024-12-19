@@ -68,7 +68,7 @@ const ParcelOrder = () => {
     const [orders, setOrders] = useState([]);
     const fetchOrders = async () => {
       try {
-        const response = await fetch("https://restaurants-customer-dashboard.onrender.com/api/v1/order/getPlacedOrder");
+        const response = await fetch("https://restaurants-customer-dashboard.vercel.app/api/v1/order/getPlacedOrder");
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         console.log(data); // Logs the data
@@ -88,7 +88,7 @@ const ParcelOrder = () => {
     const token = localStorage.getItem("authToken");
     console.log(token);
 
-    axios.get("https://restaurants-customer-dashboard.onrender.com/api/v1/adminedit/getadmin", {
+    axios.get("https://restaurants-customer-dashboard.vercel.app/api/v1/adminedit/getadmin", {
       headers: {
           Authorization: `Bearer ${token}`
       }
